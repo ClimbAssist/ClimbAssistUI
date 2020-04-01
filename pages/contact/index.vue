@@ -50,7 +50,7 @@
               :loadRecaptchaScript="true"
             >
             </vue-recaptcha>
-            <v-btn color="primary" :disabled="!form || !verified" class="ml-2" @click="sendEmail()">
+            <v-btn color="primary" :disabled="!form || !recaptchaRes" class="ml-2" @click="sendEmail()">
               Send
             </v-btn>
           </v-layout>
@@ -71,7 +71,7 @@ export default {
     subjectList: ["General Inquery", "Feedback", "Volunteer Dev", "Volunteer Content", "Volunteer Photos"],
     body: undefined,
     form: false,
-    verified: false,
+    recaptchaRes: false,
     rules: {
       required: msg => v => !!v || msg,
       email: msg => v =>
@@ -83,7 +83,8 @@ export default {
       let mail = {
         replyToEmail: this.email,
         subject: "contact form - [" + this.subject + "]",
-        body: this.body
+        body: this.body,
+        recaptchaRes: this.recaptchaRes
       };
         try {
           await this.$axios.$post("/v1/contact", mail);
@@ -116,7 +117,7 @@ export default {
       }
     },
     onVerify(response) {
-      this.verified = response;
+      this.recaptchaRes = response;
     }
   },
   components: { VueRecaptcha }

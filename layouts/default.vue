@@ -234,7 +234,7 @@
             </v-flex>
           </v-layout>
           <v-layout justify-end row>
-            <v-btn class="mx-2"v-show="resetButton" @click="resetFilter()">reset</v-btn>
+            <v-btn class="mx-2" v-show="resetButton" @click="resetFilter()">reset</v-btn>
             <v-btn class="mx-2" v-show="submitButton" @click="setFilter()" color="primary"
               >submit</v-btn
             >
@@ -271,6 +271,7 @@ export default {
   name: "App",
   data: () => ({
     drawer: null,
+    //sidebar
     items: [
       {
         icon: "fa-home",
@@ -288,6 +289,7 @@ export default {
         to: "/map"
       }
     ],
+    //filter
     showSheet: false,
     filterTextSet: "",
     // numListUiaa: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ],
@@ -480,26 +482,31 @@ export default {
     }
   },
   created() {
-    this.fetchData();
-    this.getUser();
+    if (process.env.NODE_ENV !== "development") {
+      this.fetchData();
+      this.getUser();
+    }
   },
   mounted() {
     // local testing
-    // for (let i in this.countries) {
-    //   this.$store.commit("filter/updateRoutes", this.countries[i]);
-    // }
-    // this.$store.commit("filter/dataSet", true);
-    // this.$store.commit(
-    //   "filter/updateLoadedCrags",
-    //   this.countries[0].regions[0].areas[0].subAreas[0].crags[1]
-    // );
-    // this.$store.commit("editor/updateSampleData", true)
-    // this.$store.commit("user/updateUsername", "testuser");
-    // this.$store.commit("user/updateEmail", "test@example.com");
-    // this.$store.commit(
-    //   "user/updateIsAdministrator",
-    //   true
-    // );
+    if (process.env.NODE_ENV === "development") {
+      for (let i in this.countries) {
+        this.$store.commit("filter/updateRoutes", this.countries[i]);
+      }
+      this.$store.commit("filter/dataSet", true);
+      this.$store.commit(
+        "filter/updateLoadedCrags",
+        this.countries[0].regions[0].areas[0].subAreas[0].crags[1]
+      );
+      this.$store.commit("editor/updateSampleData", true)
+      this.$store.commit("user/updateUsername", "testuser");
+      this.$store.commit("user/updateEmail", "test@example.com");
+      this.$store.commit(
+        "user/updateIsAdministrator",
+        true
+      );
+    }
+
   }
 };
 </script>

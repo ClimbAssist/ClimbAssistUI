@@ -54,21 +54,51 @@
               <v-radio label="Path" value="path"></v-radio>
             </v-radio-group>
           </v-layout>
-          <v-layout row align-center justify-center>
-            <v-btn color="red" @click="removePathPoint()" v-if="path.length>0">
+          <v-layout
+            row
+            align-center
+            justify-center
+            v-if="mapSelector === 'parking'"
+          >
+            <v-btn color="green" @click="addParking()">
+              Add Parking
+            </v-btn>
+            <v-btn
+              color="red"
+              @click="removeParking()"
+              v-if="parking.length > 0"
+            >
+              Remove Parking
+            </v-btn>
+          </v-layout>
+          <v-layout
+            row
+            align-center
+            justify-center
+            v-if="mapSelector === 'path'"
+          >
+            <v-btn color="green" @click="addPath()">
+              Add Path
+            </v-btn>
+            <v-btn color="red" @click="removePath()" v-if="path.length > 0">
+              Remove Path
+            </v-btn>
+            <v-btn
+              color="red"
+              @click="removePathPoint()"
+              v-if="path.length > 0 && path[path.length - 1].length > 0"
+            >
               Remove Point
             </v-btn>
           </v-layout>
           <v-layout row align-center justify-center>
-
-              location: {{ location }}
-              <br />
-              zoom: {{ zoom }}
-              <br />
-              parking: {{ parking }}
-              <br />
-              path: {{ path }}
-
+            location: {{ location }}
+            <br />
+            zoom: {{ zoom }}
+            <br />
+            parking: {{ parking }}
+            <br />
+            path: {{ path }}
           </v-layout>
           <v-container>
             <v-card>
@@ -80,10 +110,15 @@
               <v-text-field label="name" v-model="walls[i]"></v-text-field>
             </v-layout>
             <v-layout>
-              <v-btn class="my-2"color="primary" @click="walls.push('')">
+              <v-btn class="my-2" color="primary" @click="walls.push('')">
                 Add Wall
               </v-btn>
-              <v-btn v-if="walls.length > 0" class="ma-2"color="red" @click="walls.pop()">
+              <v-btn
+                v-if="walls.length > 0"
+                class="ma-2"
+                color="red"
+                @click="walls.pop()"
+              >
                 remove Wall
               </v-btn>
             </v-layout>
@@ -282,16 +317,48 @@ export default {
           longitude: this.location.longitude,
           latitude: this.location.latitude,
           zoom: this.zoom
-        },
-        parking: {
-          longitude: this.parking.longitude,
-          latitude: this.parking.latitude
         }
       };
+      if (this.parking.length > 0) {
+        crag.parking = this.parking
+      }
       try {
         let cragId = await this.$axios.$put("/v1/crags", crag);
         console.log("returned id");
         console.log(cragId);
+        if (this.path.length > 0) {
+          try {
+            for (let i in this.path) {
+              let obj = {
+                cragId: cragId.data.cragId
+              }
+              let pathId = await this.$axios.$put("/v1/paths", obj);
+              let points = {
+                newPathPoints: []
+              }
+              for (let pi in this.path[i]) {
+                let point = {
+                  longitude: this.path[i][pi][0],
+                  latitude: this.path[i][pi][1]
+                }
+                points.newPathPoints.push(point)
+              }
+
+              let pointIds = await this.$axios.$put("/v1/paths/" + pathId.data.pathId + "/path-points", points)
+            }
+          } catch(error) {
+            this.$store.commit("snackbar/updateType", "error");
+            this.$store.commit("snackbar/updateTimeout", 10000);
+            this.$store.commit(
+              "snackbar/updateMessage",
+              "failed to create path" + error.response.data.error.message
+            );
+            this.$store.commit("snackbar/updateSnackbar", true);
+            this.$store.commit("snackbar/updateLink", undefined);
+            this.$store.commit("snackbar/updateLinkMessage", undefined);
+            console.log(error.response.data.error.message);
+          }
+        }
 
         if (this.walls.length > 0) {
           let revWalls = this.walls.reverse();
@@ -413,6 +480,18 @@ export default {
         this.$store.commit("editor/updateMapTile", "outdoors-v11")
       }
     },
+    addParking() {
+      this.$store.commit("editor/addParking")
+    },
+    removeParking() {
+      this.$store.commit("editor/removeParking")
+    },
+    addPath() {
+      this.$store.commit("editor/addPath")
+    },
+    removePath() {
+      this.$store.commit("editor/removePath")
+    },
     removePathPoint() {
       this.$store.commit("editor/removePathPoint")
     },
@@ -435,7 +514,7 @@ export default {
       return str;
     }
   },
-  crated() {
+  created() {
     this.$store.commit("editor/updateMapTile", "outdoors-v11")
   },
   components: {

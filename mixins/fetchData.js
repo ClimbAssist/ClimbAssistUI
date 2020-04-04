@@ -12,6 +12,9 @@ export const fetch = {
         countries.push(country);
       };
       for (let ci in countries) {
+        if (!countries[ci].regions) {
+          countries[ci].regions = [];
+        }
         for (let ri in countries[ci].regions) {
           if (!countries[ci].regions[ri].areas) {
             countries[ci].regions[ri].areas = [];

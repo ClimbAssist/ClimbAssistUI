@@ -46,7 +46,12 @@ export default {
     },
     path: {
       handler() {
-        this.setPath()
+        this.setPath();
+      }
+    },
+    parking: {
+      handler() {
+        this.setParking();
       }
     }
   },
@@ -96,9 +101,8 @@ export default {
             this.$store.commit("editor/updateParking", e.lngLat);
             this.setParking();
           } else if (this.mapSelector === "path") {
-            let point = [e.lngLat.lng, e.lngLat.lat]
+            let point = [e.lngLat.lng, e.lngLat.lat];
             this.$store.commit("editor/addPathPoint", point);
-
           }
         });
 
@@ -142,22 +146,24 @@ export default {
         this.map.removeLayer("parking");
         this.map.removeSource("parking");
       }
-
+      let parkingPins = [];
+      for (let i in this.parking) {
+        let pin = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [this.parking[i].longitude, this.parking[i].latitude]
+          }
+        };
+        parkingPins.push(pin);
+      }
       this.map.addLayer({
         id: "parking",
         source: {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                geometry: {
-                  type: "Point",
-                  coordinates: [this.parking.longitude, this.parking.latitude]
-                }
-              }
-            ]
+            features: parkingPins
           }
         },
         type: "symbol",
@@ -172,31 +178,39 @@ export default {
         this.map.removeLayer("path");
         this.map.removeSource("path");
       }
-      if (this.path.length > 1) {
-        this.map.addLayer({
-          id: "path",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              properties: {},
-              geometry: {
-                type: "LineString",
-                coordinates: this.path
-              }
+      let pathLines = [];
+      for (let i in this.path) {
+        if (this.path[i].length > 1) {
+          let line = {
+            type: "feature",
+            geometry: {
+              type: "LineString",
+              coordinates: this.path[i]
             }
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round"
-          },
-          paint: {
-            "line-color": "#888",
-            "line-width": 8
-          }
-        });
+          };
+          pathLines.push(line);
+        }
       }
+
+      this.map.addLayer({
+        id: "path",
+        type: "line",
+        source: {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: pathLines
+          }
+        },
+        layout: {
+          "line-join": "round",
+          "line-cap": "round"
+        },
+        paint: {
+          "line-color": "#888",
+          "line-width": 8
+        }
+      });
     }
   },
   mounted() {
@@ -208,12 +222,10 @@ export default {
       lng: undefined,
       lat: undefined
     });
-    this.$store.commit("editor/updateParking", {
-      lng: undefined,
-      lat: undefined
-    });
-    this.$store.commit("editor/updateMapSelector", "location")
-    this.$store.commit("editor/clearPath")
+    this.$store.commit("editor/clearParking");
+    this.$store.commit("editor/clearPath");
+    this.$store.commit("editor/updateMapSelector", "location");
+    this.$store.commit("editor/clearPath");
   }
 };
 </script>

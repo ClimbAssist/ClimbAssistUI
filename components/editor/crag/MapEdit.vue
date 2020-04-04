@@ -37,6 +37,9 @@ export default {
     },
     path() {
       return this.$store.state.editor.path;
+    },
+    currentPath() {
+      return this.$store.state.editor.currentPath
     }
   },
   watch: {
@@ -59,6 +62,16 @@ export default {
       }
     },
     path: {
+      handler() {
+        this.setPath();
+      }
+    },
+    parking: {
+      handler() {
+        this.setParking();
+      }
+    },
+    currentPath: {
       handler() {
         this.setPath();
       }
@@ -90,9 +103,9 @@ export default {
       map.boxZoom.disable()
       map.dragPan.disable()
       map.doubleClickZoom.disable()
+
       map.addControl(new mapboxgl.FullscreenControl());
       map.on("style.load", () => {
-
         map.loadImage(this.crag_pin, (error, image) => {
           if (error) throw error;
           map.addImage("cragPin", image);
@@ -101,31 +114,32 @@ export default {
           if (error) throw error;
           map.addImage("parkingPin", image);
         });
-
-        this.setPin();
-        this.setParking();
         this.setPath();
+        this.setParking();
+        this.setPin();
 
         map.on("click", e => {
-          if (this.mapEdit) {
+          if (!this.mapEdit) {
+            return
+          } else {
             if (this.mapSelector === "location") {
-              this.$store.commit("editor/updateLocation", e.lngLat);
-              this.setPin();
-            } else if (this.mapSelector === "parking") {
-              this.$store.commit("editor/updateParking", e.lngLat);
-              this.setParking();
-            } else if (this.mapSelector === "path") {
-              let point = [e.lngLat.lng, e.lngLat.lat];
-              this.$store.commit("editor/addPathPoint", point);
-            }
+            this.$store.commit("editor/updateLocation", e.lngLat);
+            this.setPin();
+          } else if (this.mapSelector === "parking") {
+            this.$store.commit("editor/updateParking", e.lngLat);
+            this.setParking();
+          } else if (this.mapSelector === "path") {
+            let point = [e.lngLat.lng, e.lngLat.lat];
+            this.$store.commit("editor/addPathPoint", point);
           }
+        }
+          
         });
 
         map.on("zoomend", () => {
           let zoom = map.getZoom();
           this.$store.commit("editor/updateZoom", zoom);
         });
-
       });
     },
     setPin() {
@@ -133,7 +147,6 @@ export default {
         this.map.removeLayer("crag");
         this.map.removeSource("crag");
       }
-
       this.map.addLayer({
         id: "crag",
         source: {
@@ -163,22 +176,24 @@ export default {
         this.map.removeLayer("parking");
         this.map.removeSource("parking");
       }
-
+      let parkingPins = [];
+      for (let i in this.parking) {
+        let pin = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [this.parking[i].longitude, this.parking[i].latitude]
+          }
+        };
+        parkingPins.push(pin);
+      }
       this.map.addLayer({
         id: "parking",
         source: {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                geometry: {
-                  type: "Point",
-                  coordinates: [this.parking.longitude, this.parking.latitude]
-                }
-              }
-            ]
+            features: parkingPins
           }
         },
         type: "symbol",
@@ -193,54 +208,62 @@ export default {
         this.map.removeLayer("path");
         this.map.removeSource("path");
       }
-      if (this.path.length > 1) {
-        this.map.addLayer({
-          id: "path",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              properties: {},
-              geometry: {
-                type: "LineString",
-                coordinates: this.path
-              }
-            }
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round"
-          },
-          paint: {
-            "line-color": "#888",
-            "line-width": 8
+      let pathLines = [];
+      //paths from server
+      if (this.currentPath) {
+        for (let ci in this.currentPath) {
+          let coordinates = []
+          for (let pi in this.currentPath[ci].pathPoints) {
+            let geo = [this.currentPath[ci].pathPoints[pi].longitude, this.currentPath[ci].pathPoints[pi].latitude]
+            coordinates.push(geo)
           }
-        });
+          let currentLine = {
+            type: "feature",
+            geometry: {
+              type: "LineString",
+              coordinates: coordinates
+            }
+          };
+          pathLines.push(currentLine);
+        }
       }
+      //local paths
+      for (let i in this.path) {
+        if (this.path[i].length > 1) {
+          let line = {
+            type: "feature",
+            geometry: {
+              type: "LineString",
+              coordinates: this.path[i]
+            }
+          };
+          pathLines.push(line);
+        }
+      }
+
+      this.map.addLayer({
+        id: "path",
+        type: "line",
+        source: {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: pathLines
+          }
+        },
+        layout: {
+          "line-join": "round",
+          "line-cap": "round"
+        },
+        paint: {
+          "line-color": "#888",
+          "line-width": 8
+        }
+      });
     }
   },
   mounted() {
     this.createMap();
-    this.$store.commit("editor/updateZoom", this.crag.location.zoom);
-
-    if (this.crag.location.longitude) {
-      this.$store.commit("editor/updateLocation", {lng: this.crag.location.longitude, lat:this.crag.location.latitude});
-    }
-    if (this.crag.parking) {
-      this.$store.commit("editor/updateLocation", {lng: this.crag.parking.longitude, lat:this.crag.parking.latitude});
-    }
-
-  },
-  destroyed() {
-    this.$store.commit("editor/updateZoom", undefined);
-    this.$store.commit("editor/updateLocation", {lng: undefined, lat:undefined});
-    this.$store.commit("editor/updateParking", {
-      lng: undefined,
-      lat: undefined
-    });
-    this.$store.commit("editor/updateMapSelector", "location")
-    this.$store.commit("editor/clearPath")
   }
 };
 </script>

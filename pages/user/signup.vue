@@ -132,7 +132,7 @@ export default {
     };
     return data;
   },
-  middleware: 'nocreation',
+  // middleware: 'nocreation',
   methods: {
     submit() {
       if (!this.$refs.form.validate()) return;

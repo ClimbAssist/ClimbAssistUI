@@ -22,11 +22,11 @@ export const state = () => ({
     latitude: undefined,
     longitude: undefined
   },
-  parking: {
-    latitude: undefined,
-    longitude: undefined
-  },
+  parking: [],
+  parkingIndex: undefined,
   path: [],
+  currentPaths: undefined,
+  pathIndex: undefined,
   zoom: undefined,
   areaStateEditor: {
     areaId: undefined,
@@ -45,7 +45,9 @@ export const state = () => ({
     imageLocation: undefined,
     location: undefined,
     model: undefined,
-    walls: []
+    walls: [],
+    parking: undefined,
+    paths: undefined
   },
   centerLoc: {
     x: undefined,
@@ -103,6 +105,8 @@ export const mutations = {
     state.cragStateEditor.location = payload.location;
     state.cragStateEditor.model = payload.model;
     state.cragStateEditor.walls = payload.walls;
+    state.cragStateEditor.parking = payload.parking;
+    state.cragStateEditor.paths = payload.paths;
   },
   updateRoutes: (state, payload) => {
     state.routeStateEditor = []
@@ -173,14 +177,53 @@ export const mutations = {
     state.location.latitude = payload.lat;
     state.location.longitude = payload.lng;
   },
+  setParking: (state, payload) => {
+    // let parking = []
+    // for(let i in payload) {
+    //   let obj = {lng: payload[i].longitude, lat: payload[i].latitude};
+    //   parking.push(obj)
+    // }
+    state.parking = payload
+  },
   updateParking: (state, payload) => {
-    state.parking.latitude = payload.lat;
-    state.parking.longitude = payload.lng;
+    state.parking[state.parking.length - 1].latitude = payload.lat;
+    state.parking[state.parking.length - 1].longitude = payload.lng;
+  },
+  addParking: (state) => {
+    state.parking.push({
+      latitude: undefined,
+      longitude: undefined
+    })
+  },
+  removeParking: (state) => {
+    state.parking.pop();
+  },
+  clearParking: (state) => {
+    state.parking = [];
+  },
+  setCurrentPath: (state, payload) => {
+    state.currentPath = payload
+  },
+  setPath: (state, payload) => {
+    let path = []
+    for (let i in payload) {
+      path.push([])
+      for (let pi in payload[i]) {
+        path[i].push([payload[i][pi].longitude, payload[i][pi].latitude])
+      }
+    }
+    state.path = path
+  },
+  addPath: (state) => {
+    state.path.push([])
   },
   addPathPoint: (state, payload) => {
-    state.path.push(payload);
+    state.path[state.path.length - 1].push(payload);
   },
   removePathPoint: (state) => {
+    state.path[state.path.length - 1].pop();
+  },
+  removePath: (state) => {
     state.path.pop();
   },
   clearPath: (state) => {

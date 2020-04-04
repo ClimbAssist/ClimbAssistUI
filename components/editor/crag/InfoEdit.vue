@@ -31,7 +31,11 @@
           <v-container>
             <v-container v-if="crag.model">
               <v-layout align-center justify-center row>
-                <v-btn color="primary" :disabled="loading" @click="setModelView()">
+                <v-btn
+                  color="primary"
+                  :disabled="loading"
+                  @click="setModelView()"
+                >
                   Edit Model Settings
                 </v-btn>
               </v-layout>
@@ -118,19 +122,88 @@
               <v-radio label="Path" value="path"></v-radio>
             </v-radio-group>
           </v-layout>
-          <v-layout row align-center justify-center>
-            <v-btn color="red" @click="removePathPoint()" v-if="path.length>0">
-              Remove Point
+          <v-layout
+            row
+            align-center
+            justify-center
+            v-if="mapSelector === 'parking'"
+          >
+            <v-btn color="green" @click="addParking()">
+              Add Parking
+            </v-btn>
+            <v-btn
+              color="red"
+              @click="removeParking()"
+              v-if="parking.length > 0"
+            >
+              Remove Parking
             </v-btn>
           </v-layout>
+          <v-container
+            align-center
+            justify-center
+            v-if="mapSelector === 'path'"
+          >
+            <v-layout
+            align-center
+            justify-center
+
+            >
+              <v-btn
+              color="green"
+               @click="addPath()"
+               v-if="path.length < 1"
+               class="ma-2"
+               >
+                Add Path
+              </v-btn>
+              <v-btn
+              color="grey"
+              @click="removePath()"
+              v-if="path.length > 0"
+              class="ma-2"
+              >
+                Cancel Path
+              </v-btn>
+              <v-btn
+                color="red"
+                @click="removePathPoint()"
+                v-if="path.length > 0 && path[path.length - 1].length > 0"
+                class="ma-2"
+              >
+                Remove Point
+              </v-btn>
+              <v-btn
+                color="green"
+                @click="submitPath()"
+                v-if="path.length > 0 && path[path.length - 1].length > 1"
+                class="ma-2"
+              >
+                submit Path
+              </v-btn>
+            </v-layout>
+            <v-layout
+              align-center
+              justify-center
+              v-for="(currentPath, ci) in currentPath"
+              :key="ci"
+            >
+              path {{ ci }}
+              <v-btn class="ma-2" color="red" @click="deletePath(ci)">
+                Delete Path
+              </v-btn>
+            </v-layout>
+          </v-container>
           <v-layout row align-center justify-center>
-              location: {{ location }}
-              <br />
-              zoom: {{ zoom }}
-              <br />
-              parking: {{ parking }}
-              <br />
-              path: {{ path }}
+            location: {{ location }}
+            <br />
+            zoom: {{ zoom }}
+            <br />
+            parking: {{ parking }}
+            <br />
+            currentPath: {{currentPath}}
+            <br />
+            path: {{ path }}
           </v-layout>
           <v-layout align-center justify-end row>
             <v-btn
@@ -141,7 +214,12 @@
             >
               Delete
             </v-btn>
-            <v-btn class="ma-2" color="primary" :disabled="formCheck" @click="updateCrag()">
+            <v-btn
+              class="ma-2"
+              color="primary"
+              :disabled="formCheck"
+              @click="updateCrag()"
+            >
               Submit
             </v-btn>
           </v-layout>
@@ -286,7 +364,7 @@ export default {
           this.description !== this.crag.description ||
           this.location.latitude !== this.crag.location.latitude ||
           this.location.longitude !== this.crag.location.longitude ||
-          this.zoom !== this.crag.location.zoom 
+          this.zoom !== this.crag.location.zoom
           // this.parking.latitude !== this.crag.parking.latitude ||
           // this.parking.longitude !== this.crag.parking.longitude
         )
@@ -320,6 +398,9 @@ export default {
     path() {
       return this.$store.state.editor.path;
     },
+    currentPath() {
+      return this.$store.state.editor.currentPath;
+    },
     mapEdit() {
       return this.$store.state.editor.mapEdit
     },
@@ -342,6 +423,18 @@ export default {
       } else {
         this.$store.commit("editor/updateMapTile", "outdoors-v11")
       }
+    },
+    addParking() {
+      this.$store.commit("editor/addParking")
+    },
+    removeParking() {
+      this.$store.commit("editor/removeParking")
+    },
+    addPath() {
+      this.$store.commit("editor/addPath")
+    },
+    removePath() {
+      this.$store.commit("editor/removePath")
     },
     removePathPoint() {
       this.$store.commit("editor/removePathPoint")
@@ -427,6 +520,111 @@ export default {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit("snackbar/updateMessage", "failed to upload models" + error.response.data.error.message);
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+        console.log(error.response.data.error.message);
+      }
+    },
+    async submitPath() {
+      try {
+        this.loading = true
+        for (let i in this.path) {
+          let obj = {
+            cragId: this.crag.cragId
+          }
+          let pathId = await this.$axios.$put("/v1/paths", obj);
+          let points = {
+            newPathPoints: []
+          }
+          for (let pi in this.path[i]) {
+            let point = {
+              longitude: this.path[i][pi][0],
+              latitude: this.path[i][pi][1]
+            }
+            points.newPathPoints.push(point)
+          }
+          console.log(points)
+
+          let pointIds = await this.$axios.$put("/v1/paths/" + pathId.data.pathId + "/path-points", points)
+        }
+        let crag = _.clone(this.crag);
+
+        let api = await this.$axios.$get(
+          "/v1/crags/" + this.crag.cragId + "/paths?depth=2"
+        );
+        let paths = api.data;
+        this.$store.commit("editor/setCurrentPath", paths)
+        crag.paths = paths;
+
+        console.log(crag);
+
+        this.$store.commit("editor/updateCrag", crag);
+
+        this.getCrag();
+        this.loading=false;
+        this.$store.commit("snackbar/updateType", "success");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit("snackbar/updateMessage", "Path Created");
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+      } catch(error) {
+        this.loading = false;
+        this.$store.commit("snackbar/updateType", "error");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to create path" + error.response.data.error.message
+        );
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+        console.log(error.response.data.error.message);
+      }
+    },
+    async deletePath(ci) {
+      try {
+        this.loading=true;
+        if (this.currentPath[ci].pathPoints) {
+          let obj = {
+            pathPointIds: []
+          }
+          for (let i in this.currentPath[ci].pathPoints) {
+            obj.pathPointIds.push(this.currentPath[ci].pathPoints[i].pathPointId)
+          }
+          console.log(obj)
+          await this.$axios.delete("/v1/path-points", {data: obj});
+        }
+        await this.$axios.delete("/v1/paths/" + this.currentPath[ci].pathId);
+
+        let crag = _.clone(this.crag);
+
+        let api = await this.$axios.$get(
+          "/v1/crags/" + this.crag.cragId + "/paths?depth=2"
+        );
+        let paths = api.data;
+        this.$store.commit("editor/setCurrentPath", paths)
+        crag.paths = paths;
+
+        console.log(crag);
+
+        this.$store.commit("editor/updateCrag", crag);
+
+        this.getCrag();
+
+        this.loading=false;
+        this.$store.commit("snackbar/updateType", "success");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit("snackbar/updateMessage", "Path Deleted");
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+      } catch (error) {
+        this.loading = false;
+        this.$store.commit("snackbar/updateType", "error");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit("snackbar/updateMessage", "failed to delete path" + error.response.data.error.message);
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -627,7 +825,8 @@ export default {
         this.description !== this.crag.description ||
         this.location.longitude !== this.crag.location.longitude ||
         this.location.latitude !== this.crag.location.latitude ||
-        this.zoom !== this.crag.location.zoom
+        this.zoom !== this.crag.location.zoom ||
+        this.parking !== this.crag.parking
       ) {
         try {
           let obj = {
@@ -639,12 +838,11 @@ export default {
               latitude: this.location.latitude,
               longitude: this.location.longitude,
               zoom: this.zoom
-            },
-            parking: {
-              latitude: this.parking.latitude,
-              longitude: this.parking.longitude
             }
           };
+          if (this.parking.length > 0 ) {
+            obj.parking = this.parking
+          }
           if (this.crag.imageLocation) {
             obj.imageLocation = this.crag.imageLocation;
           }

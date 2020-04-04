@@ -26,6 +26,10 @@ export default {
   async fetch({ store, params }) {
     if (store.state.editor.sampleData) {
       store.commit("editor/updateCrag", store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1]);
+      store.commit("editor/updateZoom", store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1].location.zoom);
+      store.commit("editor/setParking", store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1].parking);
+      store.commit("editor/setCurrentPath", store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1].paths);
+      store.commit("editor/updateLocation", {lng: store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1].location.longitude, lat: store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1].location.latitude});
       store.commit("editor/updateSubArea", store.state.filter.countries[0].regions[0].areas[0].subAreas[0]);
       store.commit("editor/updateArea", store.state.filter.countries[0].regions[0].areas[0]);
       store.commit("editor/updateRegion", store.state.filter.countries[0].regions[0]);
@@ -44,8 +48,19 @@ export default {
       }
     }
     console.info("cragView Walls");
-    console.log(crag);
     store.commit("editor/updateCrag", crag);
+    if (crag.location.zoom) {
+      store.commit("editor/updateZoom", crag.location.zoom);
+    }
+    if (crag.location.longitude) {
+      store.commit("editor/updateLocation", {lng: crag.location.longitude, lat: crag.location.latitude});
+    }
+    if (crag.parking) {
+      store.commit("editor/setParking", crag.parking);
+    }
+    if (crag.paths) {
+      store.commit("editor/setCurrentPath", crag.paths);
+    }
 
     const subArea = (await axios.get("/v1/sub-areas/" + crag.subAreaId)).data;
     console.info("subArea");
@@ -78,8 +93,15 @@ export default {
     this.$store.commit("sidebar/updateSidebar", "editorcragV");
   },
   destroyed() {
+    //clear sidebar
     this.$store.commit("editor/editView", null);
     this.$store.commit("sidebar/updateSidebar", "defaultV");
+    //clear map
+    this.$store.commit("editor/updateZoom", undefined);
+    this.$store.commit("editor/updateLocation", {lng: undefined, lat:undefined});
+    this.$store.commit("editor/updateMapSelector", "location")
+    this.$store.commit("editor/clearParking");
+    this.$store.commit("editor/clearPath")
   }
 };
 </script>

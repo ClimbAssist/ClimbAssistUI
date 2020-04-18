@@ -110,8 +110,19 @@ export const mutations = {
   },
   updateRoutes: (state, payload) => {
     state.routeStateEditor = []
+    const serializePitch = (pitch) => _.defaults(pitch, {
+        danger: undefined,
+        description: undefined,
+        grade: undefined,
+        gradeModifier: undefined
+      })
+
+    const serializeRoute = (route) => _.defaultsDeep(route, {
+        pitches: _.map(route.pitches, (p) => serializePitch(p))
+      })
+
     for (let i in payload) {
-      state.routeStateEditor.push(payload[i])
+      state.routeStateEditor.push(serializeRoute(payload[i]))
     }
   },
   updateSelectedRoute: (state, payload) => {

@@ -565,11 +565,12 @@ export default {
               //grade modifier doesn't match
               check = false;
             }
+
             if (
-              (this.routeList[this.panel].pitches[pi].danger &&
+              (this.routeState[this.panel].pitches[pi].danger &&
                 this.routeList[this.panel].pitches[pi].danger !==
                   this.routeState[this.panel].pitches[pi].danger) ||
-              (!this.routeList[this.panel].pitches[pi].danger &&
+              (!this.routeState[this.panel].pitches[pi].danger &&
                 this.routeList[this.panel].pitches[pi].danger &&
                 this.routeList[this.panel].pitches[pi].danger !== "")
             ) {
@@ -582,6 +583,7 @@ export default {
           }
         }
       }
+
       return pitchCheck;
     },
     routeCheck() {

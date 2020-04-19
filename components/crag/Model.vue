@@ -817,7 +817,6 @@ export default {
       this.scene.add(this.group);
     },
     loadLines() {
-      console.log('load lines')
       this.linesGroup = new THREE.Group();
       for (let wkey in this.crag.walls) {
         for (let rkey in this.crag.walls[wkey].routes) {

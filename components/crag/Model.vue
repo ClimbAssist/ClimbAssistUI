@@ -41,10 +41,11 @@
       color="rgba(255,255,255,0.7)"
       >fa-undo</v-icon
     >
-    <!-- <v-icon
+    <v-icon
+      v-if="dev"
       class="lose-ctx-btn"
       @click="loseContext()"
-      >fa-sad-tear</v-icon> -->
+      >fa-sad-tear</v-icon>
       <v-dialog
         v-model="dialog"
         max-width="500"
@@ -424,7 +425,14 @@ export default {
     },
     scaleSizeFt() {
       return (this.scaleSize * 3.28).toFixed(1);
-    }
+    },
+    dev() {
+      if (process.env.NODE_ENV === 'development') {
+        return true
+      } else {
+        return false
+      }
+    },
   },
   methods: {
     init: function() {

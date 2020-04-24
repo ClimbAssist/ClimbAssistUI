@@ -45,7 +45,7 @@
           ></v-textarea>
           <v-layout wrap justify-end class="my-2">
             <vue-recaptcha
-              sitekey="6LcnK9EUAAAAALYOXAnSTCv7wYkWoMJQX0U4gY02"
+              :sitekey="siteKey"
               @verify="onVerify"
               :loadRecaptchaScript="true"
             >
@@ -78,6 +78,15 @@ export default {
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg
     },
   }),
+  computed: {
+    siteKey() {
+      if (process.env.NODE_ENV === 'development') {
+        return "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+      } else {
+        return "6LcnK9EUAAAAALYOXAnSTCv7wYkWoMJQX0U4gY02"
+      }
+    }
+  },
   methods: {
     async sendEmail() {
       let mail = {

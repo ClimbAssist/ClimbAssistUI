@@ -354,7 +354,6 @@ export default {
               }
               let activeObject = this.group.children[key];
               this.lastActiveObject = activeObject;
-              this.lastActive = this.activeRoute;
               activeObject.scale.set(
                 this.scaleFactor * 1.5,
                 this.scaleFactor * 1.5,
@@ -367,14 +366,14 @@ export default {
                 this.activeLine !== this.linesGroup.children[key]
               ) {
                 if (
-                  this.crag.walls[this.activeRoute.wall].routes[
-                    this.activeRoute.route
+                  this.crag.walls[this.lastActive.wall].routes[
+                    this.lastActive.route
                   ].style === "sport"
                 ) {
                   this.activeLine.material.color.set("#0000ff");
                 } else if (
-                  this.crag.walls[this.activeRoute.wall].routes[
-                    this.activeRoute.route
+                  this.crag.walls[this.lastActive.wall].routes[
+                    this.lastActive.route
                   ].style === "trad"
                 ) {
                   this.activeLine.material.color.set("#ff0000");
@@ -384,6 +383,7 @@ export default {
               }
               this.activeLine = this.linesGroup.children[key];
               this.activeLine.material.color.set("#40FF70");
+              this.lastActive = this.activeRoute;
 
               this.loadAnchors();
               return activeObject;

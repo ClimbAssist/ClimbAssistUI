@@ -969,7 +969,13 @@ export default {
 
         let route = api.data;
         route.points = [];
+        if (!route.pitches) {
+          route.pitches = [];
+        }
         for (let i in route.pitches) {
+          if (!route.pitches[i].points) {
+            route.pitches[i].points = [];
+          }
           route.points = route.points.concat(route.pitches[i].points);
         }
         let crag = _.clone(this.crag);
@@ -1237,10 +1243,20 @@ export default {
         let api = await this.$axios.$get(
           "/v1/walls/" + this.crag.walls[this.wallIndex].wallId + "?depth=3"
         );
+        console.log(api)
         let wall = api.data;
+        if (!wall.routes) {
+          wall.routes = [];
+        }
         for (let ri in wall.routes) {
-          walls.routes[ri].points = [];
+          wall.routes[ri].points = [];
+          if (!wall.routes[ri].pitches) {
+            wall.routes[ri].pitches = [];
+          }
           for (let pi in wall.routes[ri].pitches) {
+            if (!wall.routes[ri].pitches[pi].points) {
+              wall.routes[ri].pitches[pi].points = [];
+            }
             wall.routes[ri].points = wall.routes[ri].points.concat(
               wall.routes[ri].pitches[pi].points
             );
@@ -1248,7 +1264,7 @@ export default {
         }
         this.panel = null;
         let crag = _.clone(this.crag);
-        crag.walls[this.wallIndex].routes = routes;
+        crag.walls[this.wallIndex] = wall;
         this.$store.commit("editor/updateCrag", crag);
         this.updateRouteList();
       } catch (error) {
@@ -1258,11 +1274,19 @@ export default {
     async deletePitch(ri, pi) {
       try {
         this.loading = true;
-        for (let i in this.routeList[ri].pitches[pi].points) {
-          await this.$axios.$delete(
-            "/v1/points/" + this.routeList[ri].pitches[pi].points[i].pointId
-          );
+        let pointIds = [];
+        if (this.routeList[ri].pitches[pi].points.length > 0) {
+          for (let i in this.routeList[ri].pitches[pi].points) {
+            pointIds.push( this.routeList[ri].pitches[pi].points[i].pointId);
+          }
+          let obj = {
+            pointIds: pointIds
+          };
+          console.log("obj");
+          console.log(obj);
+          await this.$axios.$delete("/v1/points",{data: obj});
         }
+        
         await this.$axios.$delete(
           "/v1/pitches/" + this.routeList[ri].pitches[pi].pitchId
         );

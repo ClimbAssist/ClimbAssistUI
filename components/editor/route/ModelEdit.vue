@@ -1064,7 +1064,7 @@ export default {
       let points = [];
       let distances = [];
       for (let i in this.selectedRoute.pitches) {
-        if (this.selectedRoute.pitches[i].points) {
+        if (this.selectedRoute.pitches[i].points.length > 0) {
           points[i] = this.selectedRoute.pitches[i].points;
         }
         if (this.selectedRoute.pitches[i].distance) {

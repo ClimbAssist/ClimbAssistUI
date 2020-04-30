@@ -787,58 +787,22 @@ export default {
 
         let addedRoute = api.data;
         if (this.routeList.length !== 0) {
-          let prevRoute = this.routeList[this.routeList.length - 1];
-          let obj = {
-            name: prevRoute.name,
-            wallId: prevRoute.wallId,
-            routeId: prevRoute.routeId,
-            style: prevRoute.style,
-            next: addedRoute.routeId
-          };
-          if (prevRoute.description) {
-            obj.description = prevRoute.description;
-          }
-          if (prevRoute.grade) {
-            obj.grade = prevRoute.grade;
-          }
-          if (prevRoute.gradeModifier) {
-            obj.gradeModifier = prevRoute.gradeModifier;
-          }
-          if (prevRoute.danger) {
-            obj.danger = prevRoute.danger;
-          }
-          if (prevRoute.mainImageLocation) {
-            obj.mainImageLocation = prevRoute.mainImageLocation;
-          }
-          if (prevRoute.protection) {
-            obj.protection = prevRoute.protection;
-          }
-          if (prevRoute.first) {
-            obj.first = prevRoute.first;
-          }
+          let prevRoute = _.cloneDeep(this.routeState[this.routeList.length - 1]);
+          prevRoute.next = addedRoute.routeId;
+          delete prevRoute.pitches;
+          delete prevRoute.points;
 
-          await this.$axios.$post("/v1/routes/", obj);
+          await this.$axios.$post("/v1/routes/", prevRoute);
         }
-        let pitches = await this.$axios.$get(
-          "/v1/routes/" + addedRoute.routeId + "/pitches?ordered=true"
-        );
-        addedRoute.pitches = pitches.data;
-        addedRoute.points = [];
-        for (let i in addedRoute.pitches) {
-          addedRoute.pitches[i].points = [];
-        }
+        this.fetchRoutes();
+        this.loading = false;
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit("snackbar/updateMessage", "Route Created");
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-
-        crag.walls[this.wallIndex].routes.push(addedRoute);
-
-        this.$store.commit("editor/updateCrag", crag);
-        this.updateRouteList();
-        this.loading = false;
+       
       } catch (error) {
         this.loading = false;
         this.$store.commit("snackbar/updateType", "error");

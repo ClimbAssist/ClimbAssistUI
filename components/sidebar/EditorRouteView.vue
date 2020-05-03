@@ -217,34 +217,65 @@ export default {
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-
-
-
-
-
         this.$store.commit("editor/updateLoading", false);
       }
     },
     async submit() {
       this.$store.commit("editor/updateLoading", true);
       for (let i in this.selectedRoute.pitches) {
-        let pitch = _.cloneDeep(this.selectedRoute.pitches[i]);
-        delete pitch.points;
-        if (this.anchors[i]) {
+        if (
+          this.selectedRoute.pitches[i].anchors &&
+          this.anchors[i].fixed !==
+            this.selectedRoute.pitches[i].anchors.fixed
+        ) {
+          //update anchor fixed
+          let pitch = _.cloneDeep(this.selectedRoute.pitches[i]);
+          delete pitch.points;
           pitch.anchors = this.anchors[i];
+          console.log("pitch");
+          console.log(pitch);
+          try {
+            await this.$axios.$post("/v1/pitches", pitch);
+          } catch(error) {
+            this.$store.commit("editor/updateLoading", false);
+            this.$store.commit("snackbar/updateType", "error");
+            this.$store.commit("snackbar/updateTimeout", 10000);
+            this.$store.commit(
+              "snackbar/updateMessage",
+              "failed to update pitch" + error.response.data.error.message
+            );
+            this.$store.commit("snackbar/updateSnackbar", true);
+            this.$store.commit("snackbar/updateLink", undefined);
+            this.$store.commit("snackbar/updateLinkMessage", undefined);
+            console.log(error.message);
+         }
         }
-        console.log("pitch");
-        console.log(pitch);
-        await this.$axios.$post("/v1/pitches", pitch);
       }
-      let route = _.cloneDeep(this.selectedRoute);
-      delete route.pitches;
+     
       if (this.center.x && this.center.y && this.center.z) {
+        //update center location
+        let route = _.cloneDeep(this.selectedRoute);
+        delete route.pitches;
         route.center = this.center;
+        console.log("route");
+        console.log(route);
+        try {
+          await this.$axios.$post("/v1/routes", route);
+        } catch(error) {
+          this.$store.commit("editor/updateLoading", false);
+          this.$store.commit("snackbar/updateType", "error");
+          this.$store.commit("snackbar/updateTimeout", 10000);
+          this.$store.commit(
+            "snackbar/updateMessage",
+            "failed to update route" + error.response.data.error.message
+          );
+          this.$store.commit("snackbar/updateSnackbar", true);
+          this.$store.commit("snackbar/updateLink", undefined);
+          this.$store.commit("snackbar/updateLinkMessage", undefined);
+          console.log(error.message);
+        }
       }
-      console.log("route");
-      console.log(route);
-      await this.$axios.$post("/v1/routes", route);
+      
       this.updateSelectedRoute();
     },
     async updateSelectedRoute() {

@@ -72,21 +72,13 @@ export default {
     body: undefined,
     form: false,
     recaptchaRes: false,
+    siteKey: undefined,
     rules: {
       required: msg => v => !!v || msg,
       email: msg => v =>
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg
     },
   }),
-  computed: {
-    siteKey() {
-      if (process.env.NODE_ENV === 'development') {
-        return "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-      } else {
-        return "6LcnK9EUAAAAALYOXAnSTCv7wYkWoMJQX0U4gY02"
-      }
-    }
-  },
   methods: {
     async sendEmail() {
       let mail = {
@@ -125,9 +117,24 @@ export default {
           this.$store.commit("snackbar/updateLinkMessage", undefined);
       }
     },
+    async getRecaptchaKey() {
+      if (process.env.NODE_ENV === 'development') {
+        this.siteKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+      } else {
+        try {
+          let key = await this.$axios.$get('/v1/recaptcha-site-key')
+          this.siteKey = key.data.siteKey
+        } catch(error) {
+          console.log(error)
+        }
+      }
+    },
     onVerify(response) {
       this.recaptchaRes = response;
     }
+  },
+  created () {
+    this.getRecaptchaKey();
   },
   components: { VueRecaptcha }
 };

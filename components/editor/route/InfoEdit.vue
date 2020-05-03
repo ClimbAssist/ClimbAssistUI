@@ -782,17 +782,25 @@ export default {
             console.log(error.response.data.error.message);
           }
         }
-
-        let api = await this.$axios.$get("/v1/routes/" + routeId.data.routeId);
-
-        let addedRoute = api.data;
         if (this.routeList.length !== 0) {
           let prevRoute = _.cloneDeep(this.routeState[this.routeList.length - 1]);
-          prevRoute.next = addedRoute.routeId;
+          prevRoute.next = routeId.data.routeId;
           delete prevRoute.pitches;
           delete prevRoute.points;
-
-          await this.$axios.$post("/v1/routes/", prevRoute);
+          try {
+            await this.$axios.$post("/v1/routes/", prevRoute);
+          } catch(error) {
+            this.$store.commit("snackbar/updateType", "error");
+            this.$store.commit("snackbar/updateTimeout", 10000);
+            this.$store.commit(
+              "snackbar/updateMessage",
+              "failed to create route" + error.response.data.error.message
+            );
+            this.$store.commit("snackbar/updateSnackbar", true);
+            this.$store.commit("snackbar/updateLink", undefined);
+            this.$store.commit("snackbar/updateLinkMessage", undefined);
+            console.log(error.response.data.error.message);
+          }
         }
         this.fetchRoutes();
         this.loading = false;

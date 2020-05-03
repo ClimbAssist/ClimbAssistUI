@@ -47,82 +47,22 @@ export default {
         })
       );
       map.on("style.load", () => {
-        let popup = new mapboxgl.Popup({
-          closeButton: false
-        });
-        map.addSource("paths", {
-          type: "geojson",
-          data: "https://s3-us-west-2.amazonaws.com/map-data-172776452117-us-west-2/Trails.json"
-        });
-        map.addSource("parking", {
-          type: "geojson",
-          data: "https://s3-us-west-2.amazonaws.com/map-data-172776452117-us-west-2/ParkingPoint.json"
-        });
-        map.addLayer({
-          id: "trails",
-          source: "paths",
-          type: "line",
-          layout: {
-            "line-join": "round",
-            "line-cap": "round"
-          },
-          paint: {
-            "line-color": "#888",
-            "line-width": 8
-          },
-          filter: ["==", "Area", this.crag.crag.subAreaId]
-        });
-        map.loadImage(this.parking_pin, (error, image) => {
-          if (error) throw error;
-          map.addImage("pin", image);
-          map.addLayer({
-            id: "parking",
-            source: "parking",
-            type: "symbol",
-            layout: {
-              "icon-image": "pin",
-              "icon-size": 1
-            },
-            filter: ["==", "Area", this.crag.crag.subAreaId]
-          });
-        });
         map.loadImage(this.crag_pin, (error, image) => {
           if (error) throw error;
           map.addImage("cragPin", image);
-          map.addLayer({
-            id: "crag",
-            source: {
-              type: "geojson",
-              data: {
-                type: "FeatureCollection",
-                features: [
-                  {
-                    type: "Feature",
-                    geometry: {
-                      type: "Point",
-                      coordinates: [
-                        this.crag.crag.location.longitude,
-                        this.crag.crag.location.latitude
-                      ]
-                    },
-                    properties: {
-                      title: this.crag.name
-                    }
-                  }
-                ]
-              }
-            },
-            type: "symbol",
-            layout: {
-              "icon-image": "cragPin",
-              "icon-size": 0.7,
-              "text-field": "{title}",
-              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-              "text-offset": [0, 0.6],
-              "text-anchor": "top"
-            }
-          });
         });
+        map.loadImage(this.parking_pin, (error, image) => {
+          if (error) throw error;
+          map.addImage("parkingPin", image);
+        });
+        this.setPath();
+        this.setParking();
+        this.setPin();
+
+        let popup = new mapboxgl.Popup({
+          closeButton: false
+        });
+        
         map.on("mousemove", "parking", e => {
           // Change the cursor style as a UI indicator.
           map.getCanvas().style.cursor = "pointer";
@@ -208,6 +148,102 @@ export default {
               "z"
           );
         });
+      });
+    },
+    setPin() {
+      this.map.addLayer({
+        id: "crag",
+        source: {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: [
+              {
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: [this.crag.crag.location.longitude, this.crag.crag.location.latitude]
+                }
+              }
+            ]
+          }
+        },
+        type: "symbol",
+        layout: {
+          "icon-image": "cragPin",
+          "icon-size": 0.7
+        }
+      });
+    },
+    setParking() {
+      if (this.crag.crag.parking) {
+        let parkingPins = [];
+        for (let i in this.crag.crag.parking) {
+          let pin = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [this.crag.crag.parking[i].longitude, this.crag.crag.parking[i].latitude]
+            }
+          };
+          parkingPins.push(pin);
+        }
+        this.map.addLayer({
+          id: "parking",
+          source: {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: parkingPins
+            }
+          },
+          type: "symbol",
+          layout: {
+            "icon-image": "parkingPin",
+            "icon-size": 0.7
+          }
+        });
+      }
+    },
+    setPath() {
+      console.log("in set path")
+      let pathLines = [];
+      //paths from server
+      if (this.crag.crag.paths) {
+        for (let ci in this.crag.crag.paths) {
+          let coordinates = []
+          for (let pi in this.crag.crag.paths[ci].pathPoints) {
+            let geo = [this.crag.crag.paths[ci].pathPoints[pi].longitude, this.crag.crag.paths[ci].pathPoints[pi].latitude]
+            coordinates.push(geo)
+          }
+          let currentLine = {
+            type: "feature",
+            geometry: {
+              type: "LineString",
+              coordinates: coordinates
+            }
+          };
+          pathLines.push(currentLine);
+        }
+      }
+      this.map.addLayer({
+        id: "path",
+        type: "line",
+        source: {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: pathLines
+          }
+        },
+        layout: {
+          "line-join": "round",
+          "line-cap": "round"
+        },
+        paint: {
+          "line-color": "#888",
+          "line-width": 8
+        }
       });
     }
   },

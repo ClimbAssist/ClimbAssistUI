@@ -72,13 +72,17 @@ export default {
     body: undefined,
     form: false,
     recaptchaRes: false,
-    siteKey: undefined,
     rules: {
       required: msg => v => !!v || msg,
       email: msg => v =>
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg
     },
   }),
+  computed: {
+    siteKey() {
+      return this.$store.state.contact.recaptchaKey;
+    }
+  },
   methods: {
     async sendEmail() {
       let mail = {
@@ -117,24 +121,23 @@ export default {
           this.$store.commit("snackbar/updateLinkMessage", undefined);
       }
     },
-    async getRecaptchaKey() {
-      if (process.env.NODE_ENV === 'development') {
-        this.siteKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-      } else {
-        try {
-          let key = await this.$axios.$get('/v1/recaptcha-site-key')
-          this.siteKey = key.data.siteKey
-        } catch(error) {
-          console.log(error)
-        }
-      }
-    },
     onVerify(response) {
       this.recaptchaRes = response;
     }
   },
-  created () {
-    this.getRecaptchaKey();
+  async fetch({store}) {
+    if (process.env.NODE_ENV === 'development') {
+      let devKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+      store.commit("contact/updateRecaptchaKey", devKey);
+    } else {
+      try {
+        let api = (await axios.get('/v1/recaptcha-site-key')).data;
+        let siteKey = api.data.siteKey
+        store.commit("contact/updateRecaptchaKey", siteKey);
+      } catch(error) {
+        console.log(error)
+      }
+    }
   },
   components: { VueRecaptcha }
 };

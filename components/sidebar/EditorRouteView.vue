@@ -32,6 +32,15 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-container 
+      v-if="refresh"
+      >
+        <v-btn
+          color="primary"
+          @click="updateSelectedRoute()"
+          >Refresh</v-btn
+        >
+      </v-container>
       <v-container v-if="anchors.length > 0" row>
         <v-btn color="red" :disabled="loading" @click="deletePoints()">
           Delete Pitch Line
@@ -58,7 +67,8 @@ export default {
   data() {
     return {
       radioGroup: ["Line", "Location"],
-      fixed: []
+      fixed: [],
+      refresh: false
     };
   },
   watch: {
@@ -311,17 +321,20 @@ export default {
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
+        this.refresh = false;
+        this.retry = false;
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit(
           "snackbar/updateMessage",
-          "failed to update route" + error.response.data.error.message
+          "failed to update route, database not ready, please wait a few seconds and click refresh from the sidebar." + error.response.data.error.code
         );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-        console.log(error.message);
+        console.log(error.response.data.error.message);
+        this.refresh=true
       }
     }
   }

@@ -322,7 +322,6 @@ export default {
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         this.refresh = false;
-        this.retry = false;
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);

@@ -32,6 +32,15 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-container 
+      v-if="refresh"
+      >
+        <v-btn
+          color="primary"
+          @click="updateSelectedRoute()"
+          >Refresh</v-btn
+        >
+      </v-container>
       <v-container v-if="anchors.length > 0" row>
         <v-btn color="red" :disabled="loading" @click="deletePoints()">
           Delete Pitch Line
@@ -58,7 +67,8 @@ export default {
   data() {
     return {
       radioGroup: ["Line", "Location"],
-      fixed: []
+      fixed: [],
+      refresh: false
     };
   },
   watch: {
@@ -173,11 +183,6 @@ export default {
         pointIds.push(this.selectedRoute.pitches[len - 1].points[i].pointId);
       }
       try {
-        //delete loop
-        // for (let pi in pointIds) {
-        //   await this.$axios.$delete("/v1/points/" + pointIds[pi]);
-        // }
-
         //batch point delete
         let obj = {
           pointIds: pointIds
@@ -222,53 +227,82 @@ export default {
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-
-
-
-
-
         this.$store.commit("editor/updateLoading", false);
       }
     },
     async submit() {
       this.$store.commit("editor/updateLoading", true);
       for (let i in this.selectedRoute.pitches) {
-        let pitch = _.cloneDeep(this.selectedRoute.pitches[i]);
-        delete pitch.points;
-        if (this.anchors[i]) {
+        if (
+          this.selectedRoute.pitches[i].anchors &&
+          this.anchors[i].fixed !==
+            this.selectedRoute.pitches[i].anchors.fixed
+        ) {
+          //update anchor fixed
+          let pitch = _.cloneDeep(this.selectedRoute.pitches[i]);
+          delete pitch.points;
           pitch.anchors = this.anchors[i];
+          console.log("pitch");
+          console.log(pitch);
+          try {
+            await this.$axios.$post("/v1/pitches", pitch);
+          } catch(error) {
+            this.$store.commit("editor/updateLoading", false);
+            this.$store.commit("snackbar/updateType", "error");
+            this.$store.commit("snackbar/updateTimeout", 10000);
+            this.$store.commit(
+              "snackbar/updateMessage",
+              "failed to update pitch" + error.response.data.error.message
+            );
+            this.$store.commit("snackbar/updateSnackbar", true);
+            this.$store.commit("snackbar/updateLink", undefined);
+            this.$store.commit("snackbar/updateLinkMessage", undefined);
+            console.log(error.message);
+         }
         }
-        console.log("pitch");
-        console.log(pitch);
-        await this.$axios.$post("/v1/pitches", pitch);
       }
-      let route = _.cloneDeep(this.selectedRoute);
-      delete route.pitches;
+     
       if (this.center.x && this.center.y && this.center.z) {
+        //update center location
+        let route = _.cloneDeep(this.selectedRoute);
+        delete route.pitches;
         route.center = this.center;
+        console.log("route");
+        console.log(route);
+        try {
+          await this.$axios.$post("/v1/routes", route);
+        } catch(error) {
+          this.$store.commit("editor/updateLoading", false);
+          this.$store.commit("snackbar/updateType", "error");
+          this.$store.commit("snackbar/updateTimeout", 10000);
+          this.$store.commit(
+            "snackbar/updateMessage",
+            "failed to update route" + error.response.data.error.message
+          );
+          this.$store.commit("snackbar/updateSnackbar", true);
+          this.$store.commit("snackbar/updateLink", undefined);
+          this.$store.commit("snackbar/updateLinkMessage", undefined);
+          console.log(error.message);
+        }
       }
-      console.log("route");
-      console.log(route);
-      await this.$axios.$post("/v1/routes", route);
+      
       this.updateSelectedRoute();
     },
     async updateSelectedRoute() {
       try {
         let api = await this.$axios.$get(
-          "/v1/routes/" + this.selectedRoute.routeId
-        );
-        let pitches = await this.$axios.$get(
-          "/v1/routes/" + this.selectedRoute.routeId + "/pitches?ordered=true"
+          "/v1/routes/" + this.selectedRoute.routeId + "?depth=2"
         );
         let route = api.data;
         route.points = [];
-        route.pitches = pitches.data;
+        if (!route.pitches) {
+          route.pitches = [];
+        }
         for (let i in route.pitches) {
-          let points = await this.$axios.$get(
-            "/v1/pitches/" + route.pitches[i].pitchId + "/points?ordered=true"
-          );
-          route.pitches[i].points = points.data;
-          route.points = route.points.concat(points.data);
+          if (!route.pitches[i].points) {
+            route.pitches[i].points = [];
+          }
+          route.points = route.points.concat(route.pitches[i].points);
         }
         this.$store.commit("editor/updateSelectedRoute", route);
         let crag = _.clone(this.crag);
@@ -287,17 +321,19 @@ export default {
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
+        this.refresh = false;
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit(
           "snackbar/updateMessage",
-          "failed to update route" + error.response.data.error.message
+          "failed to update route, database not ready, please wait a few seconds and click refresh from the sidebar." + error.response.data.error.code
         );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-        console.log(error.message);
+        console.log(error.response.data.error.message);
+        this.refresh=true
       }
     }
   }

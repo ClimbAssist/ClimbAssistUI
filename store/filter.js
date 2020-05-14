@@ -20,6 +20,8 @@ export const state = () => ({
     description: null,
     location: null,
     model: null,
+    parking: null,
+    paths: [],
     walls: []
   },
   areaState: {
@@ -534,6 +536,8 @@ export const mutations = {
       state.cragState.model= payload.model;
       state.cragState.walls= payload.walls;
       state.cragState.area= payload.area;
+      state.cragState.parking = payload.parking;
+      state.cragState.paths = payload.paths;
     // state.cragState = payload;
   },
   updateCragPoints: (state, payload) => {

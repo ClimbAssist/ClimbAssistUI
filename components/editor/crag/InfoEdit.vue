@@ -115,84 +115,86 @@
               {{ mapButton }}
             </v-btn>
           </v-layout>
-          <v-layout row align-center justify-center v-if="mapEdit">
-            <v-radio-group v-model="mapSelector">
-              <v-radio label="Location" value="location"></v-radio>
-              <v-radio label="Parking" value="parking"></v-radio>
-              <v-radio label="Path" value="path"></v-radio>
-            </v-radio-group>
-          </v-layout>
-          <v-layout
-            row
-            align-center
-            justify-center
-            v-if="mapSelector === 'parking'"
-          >
-            <v-btn color="green" @click="addParking()">
-              Add Parking
-            </v-btn>
-            <v-btn
-              color="red"
-              @click="removeParking()"
-              v-if="parking.length > 0"
-            >
-              Remove Parking
-            </v-btn>
-          </v-layout>
-          <v-container
-            align-center
-            justify-center
-            v-if="mapSelector === 'path'"
-          >
+          <v-container v-if="mapEdit">
+            <v-layout row align-center justify-center>
+              <v-radio-group v-model="mapSelector">
+                <v-radio label="Location" value="location"></v-radio>
+                <v-radio label="Parking" value="parking"></v-radio>
+                <v-radio label="Path" value="path"></v-radio>
+              </v-radio-group>
+            </v-layout>
             <v-layout
-            align-center
-            justify-center
-
+              row
+              align-center
+              justify-center
+              v-if="mapSelector === 'parking'"
             >
-              <v-btn
-              color="green"
-               @click="addPath()"
-               v-if="path.length < 1"
-               class="ma-2"
-               >
-                Add Path
-              </v-btn>
-              <v-btn
-              color="grey"
-              @click="removePath()"
-              v-if="path.length > 0"
-              class="ma-2"
-              >
-                Cancel Path
+              <v-btn color="green" @click="addParking()">
+                Add Parking
               </v-btn>
               <v-btn
                 color="red"
-                @click="removePathPoint()"
-                v-if="path.length > 0 && path[path.length - 1].length > 0"
-                class="ma-2"
+                @click="removeParking()"
+                v-if="parking.length > 0"
               >
-                Remove Point
-              </v-btn>
-              <v-btn
-                color="green"
-                @click="submitPath()"
-                v-if="path.length > 0 && path[path.length - 1].length > 1"
-                class="ma-2"
-              >
-                submit Path
+                Remove Parking
               </v-btn>
             </v-layout>
-            <v-layout
+            <v-container
               align-center
               justify-center
-              v-for="(currentPath, ci) in currentPath"
-              :key="ci"
+              v-if="mapSelector === 'path'"
             >
-              path {{ ci }}
-              <v-btn class="ma-2" color="red" @click="deletePath(ci)">
-                Delete Path
-              </v-btn>
-            </v-layout>
+              <v-layout
+              align-center
+              justify-center
+
+              >
+                <v-btn
+                color="green"
+                @click="addPath()"
+                v-if="path.length < 1"
+                class="ma-2"
+                >
+                  Add Path
+                </v-btn>
+                <v-btn
+                color="grey"
+                @click="removePath()"
+                v-if="path.length > 0"
+                class="ma-2"
+                >
+                  Cancel Path
+                </v-btn>
+                <v-btn
+                  color="red"
+                  @click="removePathPoint()"
+                  v-if="path.length > 0 && path[path.length - 1].length > 0"
+                  class="ma-2"
+                >
+                  Remove Point
+                </v-btn>
+                <v-btn
+                  color="green"
+                  @click="submitPath()"
+                  v-if="path.length > 0 && path[path.length - 1].length > 1"
+                  class="ma-2"
+                >
+                  submit Path
+                </v-btn>
+              </v-layout>
+              <v-layout
+                align-center
+                justify-center
+                v-for="(currentPath, ci) in currentPath"
+                :key="ci"
+              >
+                path {{ ci }}
+                <v-btn class="ma-2" color="red" @click="deletePath(ci)">
+                  Delete Path
+                </v-btn>
+              </v-layout>
+            </v-container>
           </v-container>
           <v-layout row align-center justify-center>
             location: {{ location }}

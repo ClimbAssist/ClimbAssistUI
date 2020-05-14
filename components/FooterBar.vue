@@ -13,6 +13,9 @@
       <a href="https://instagram.com/climbassist" target="_blank" rel="noopener" class="px-2" alt="instagram">
         <v-icon large>fab fa-instagram</v-icon>
       </a>
+      <a href="https://github.com/ClimbAssist" target="_blank" rel="noopener" class="px-2" alt="GitHub">
+        <v-icon large>fab fa-github</v-icon>
+      </a>
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-card-title class="headline text-align-center"

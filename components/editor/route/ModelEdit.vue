@@ -830,20 +830,18 @@ export default {
     async updateSelectedRoute() {
       try {
         let api = await this.$axios.$get(
-          "/v1/routes/" + this.selectedRoute.routeId
-        );
-        let pitches = await this.$axios.$get(
-          "/v1/routes/" + this.selectedRoute.routeId + "/pitches?ordered=true"
+          "/v1/routes/" + this.selectedRoute.routeId + "?depth=2"
         );
         let route = api.data;
         route.points = [];
-        route.pitches = pitches.data;
+        if (!route.pitches) {
+          route.pitches = [];
+        }
         for (let i in route.pitches) {
-          let points = await this.$axios.$get(
-            "/v1/pitches/" + route.pitches[i].pitchId + "/points?ordered=true"
-          );
-          route.pitches[i].points = points.data;
-          route.points = route.points.concat(points.data);
+          if (!route.pitches[i].points) {
+            route.pitches[i].points = [];
+          }
+          route.points = route.points.concat(route.pitches[i].points);
         }
         console.log("route");
         console.log(route);
@@ -1064,7 +1062,7 @@ export default {
       let points = [];
       let distances = [];
       for (let i in this.selectedRoute.pitches) {
-        if (this.selectedRoute.pitches[i].points) {
+        if (this.selectedRoute.pitches[i].points.length > 0) {
           points[i] = this.selectedRoute.pitches[i].points;
         }
         if (this.selectedRoute.pitches[i].distance) {

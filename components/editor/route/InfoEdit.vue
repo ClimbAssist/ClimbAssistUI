@@ -784,63 +784,35 @@ export default {
             console.log(error.response.data.error.message);
           }
         }
-
-        let api = await this.$axios.$get("/v1/routes/" + routeId.data.routeId);
-
-        let addedRoute = api.data;
         if (this.routeList.length !== 0) {
-          let prevRoute = this.routeList[this.routeList.length - 1];
-          let obj = {
-            name: prevRoute.name,
-            wallId: prevRoute.wallId,
-            routeId: prevRoute.routeId,
-            style: prevRoute.style,
-            next: addedRoute.routeId
-          };
-          if (prevRoute.description) {
-            obj.description = prevRoute.description;
+          let prevRoute = _.cloneDeep(this.routeState[this.routeList.length - 1]);
+          prevRoute.next = routeId.data.routeId;
+          delete prevRoute.pitches;
+          delete prevRoute.points;
+          try {
+            await this.$axios.$post("/v1/routes/", prevRoute);
+          } catch(error) {
+            this.$store.commit("snackbar/updateType", "error");
+            this.$store.commit("snackbar/updateTimeout", 10000);
+            this.$store.commit(
+              "snackbar/updateMessage",
+              "failed to create route" + error.response.data.error.message
+            );
+            this.$store.commit("snackbar/updateSnackbar", true);
+            this.$store.commit("snackbar/updateLink", undefined);
+            this.$store.commit("snackbar/updateLinkMessage", undefined);
+            console.log(error.response.data.error.message);
           }
-          if (prevRoute.grade) {
-            obj.grade = prevRoute.grade;
-          }
-          if (prevRoute.gradeModifier) {
-            obj.gradeModifier = prevRoute.gradeModifier;
-          }
-          if (prevRoute.danger) {
-            obj.danger = prevRoute.danger;
-          }
-          if (prevRoute.mainImageLocation) {
-            obj.mainImageLocation = prevRoute.mainImageLocation;
-          }
-          if (prevRoute.protection) {
-            obj.protection = prevRoute.protection;
-          }
-          if (prevRoute.first) {
-            obj.first = prevRoute.first;
-          }
-
-          await this.$axios.$post("/v1/routes/", obj);
         }
-        let pitches = await this.$axios.$get(
-          "/v1/routes/" + addedRoute.routeId + "/pitches?ordered=true"
-        );
-        addedRoute.pitches = pitches.data;
-        addedRoute.points = [];
-        for (let i in addedRoute.pitches) {
-          addedRoute.pitches[i].points = [];
-        }
+        this.fetchRoutes();
+        this.loading = false;
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit("snackbar/updateMessage", "Route Created");
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-
-        crag.walls[this.wallIndex].routes.push(addedRoute);
-
-        this.$store.commit("editor/updateCrag", crag);
-        this.updateRouteList();
-        this.loading = false;
+       
       } catch (error) {
         this.loading = false;
         this.$store.commit("snackbar/updateType", "error");
@@ -971,7 +943,13 @@ export default {
 
         let route = api.data;
         route.points = [];
+        if (!route.pitches) {
+          route.pitches = [];
+        }
         for (let i in route.pitches) {
+          if (!route.pitches[i].points) {
+            route.pitches[i].points = [];
+          }
           route.points = route.points.concat(route.pitches[i].points);
         }
         let crag = _.clone(this.crag);
@@ -1239,10 +1217,20 @@ export default {
         let api = await this.$axios.$get(
           "/v1/walls/" + this.crag.walls[this.wallIndex].wallId + "?depth=3"
         );
+        console.log(api)
         let wall = api.data;
+        if (!wall.routes) {
+          wall.routes = [];
+        }
         for (let ri in wall.routes) {
-          walls.routes[ri].points = [];
+          wall.routes[ri].points = [];
+          if (!wall.routes[ri].pitches) {
+            wall.routes[ri].pitches = [];
+          }
           for (let pi in wall.routes[ri].pitches) {
+            if (!wall.routes[ri].pitches[pi].points) {
+              wall.routes[ri].pitches[pi].points = [];
+            }
             wall.routes[ri].points = wall.routes[ri].points.concat(
               wall.routes[ri].pitches[pi].points
             );
@@ -1250,7 +1238,7 @@ export default {
         }
         this.panel = null;
         let crag = _.clone(this.crag);
-        crag.walls[this.wallIndex].routes = routes;
+        crag.walls[this.wallIndex] = wall;
         this.$store.commit("editor/updateCrag", crag);
         this.updateRouteList();
       } catch (error) {
@@ -1260,11 +1248,19 @@ export default {
     async deletePitch(ri, pi) {
       try {
         this.loading = true;
-        for (let i in this.routeList[ri].pitches[pi].points) {
-          await this.$axios.$delete(
-            "/v1/points/" + this.routeList[ri].pitches[pi].points[i].pointId
-          );
+        let pointIds = [];
+        if (this.routeList[ri].pitches[pi].points.length > 0) {
+          for (let i in this.routeList[ri].pitches[pi].points) {
+            pointIds.push( this.routeList[ri].pitches[pi].points[i].pointId);
+          }
+          let obj = {
+            pointIds: pointIds
+          };
+          console.log("obj");
+          console.log(obj);
+          await this.$axios.$delete("/v1/points",{data: obj});
         }
+        
         await this.$axios.$delete(
           "/v1/pitches/" + this.routeList[ri].pitches[pi].pitchId
         );

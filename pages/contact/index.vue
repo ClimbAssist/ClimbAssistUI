@@ -45,7 +45,7 @@
           ></v-textarea>
           <v-layout wrap justify-end class="my-2">
             <vue-recaptcha
-              sitekey="6LcnK9EUAAAAALYOXAnSTCv7wYkWoMJQX0U4gY02"
+              :sitekey="siteKey"
               @verify="onVerify"
               :loadRecaptchaScript="true"
             >
@@ -78,6 +78,11 @@ export default {
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg
     },
   }),
+  computed: {
+    siteKey() {
+      return this.$store.state.contact.recaptchaKey;
+    }
+  },
   methods: {
     async sendEmail() {
       let mail = {
@@ -118,6 +123,20 @@ export default {
     },
     onVerify(response) {
       this.recaptchaRes = response;
+    }
+  },
+  async fetch({store}) {
+    if (process.env.NODE_ENV === 'development') {
+      let devKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+      store.commit("contact/updateRecaptchaKey", devKey);
+    } else {
+      try {
+        let api = (await axios.get('/v1/recaptcha-site-key')).data;
+        let siteKey = api.data.siteKey
+        store.commit("contact/updateRecaptchaKey", siteKey);
+      } catch(error) {
+        console.log(error)
+      }
     }
   },
   components: { VueRecaptcha }

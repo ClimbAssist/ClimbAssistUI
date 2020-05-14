@@ -118,6 +118,11 @@ export const mutations = {
       });
 
     const serializeRoute = (route) => _.defaultsDeep(route, {
+        style: undefined,
+        description: undefined,
+        protection: undefined,
+        grade: undefined,
+        gradeModifier: undefined,
         pitches: _.map(route.pitches, (p) => serializePitch(p))
       });
 

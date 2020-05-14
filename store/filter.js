@@ -559,7 +559,6 @@ export const mutations = {
     // state.areaState = payload;
   },
   updateMapBounds: (state, payload) => {
-    console.log('UPDATE MAP BOUNDS')
     state.mapBounds = payload;
   },
   updateBoundsDisable: (state, payload) => {

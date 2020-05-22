@@ -27,20 +27,16 @@
             ]"
           />
           <v-select
-          label="Topic"
-          v-model="subject"
-          :items="subjectList"
-          :rules="[
-            rules.required('Select a Topic')
-          ]"
+            label="Topic"
+            v-model="subject"
+            :items="subjectList"
+            :rules="[rules.required('Select a Topic')]"
           />
           <v-textarea
             name="input-7-4"
             label="Message"
             v-model="body"
-            :rules="[
-              rules.required('Enter a message')
-            ]"
+            :rules="[rules.required('Enter a message')]"
             auto-grow
           ></v-textarea>
           <v-layout wrap justify-end class="my-2">
@@ -50,7 +46,12 @@
               :loadRecaptchaScript="true"
             >
             </vue-recaptcha>
-            <v-btn color="primary" :disabled="!form || !recaptchaRes" class="ml-2" @click="sendEmail()">
+            <v-btn
+              color="primary"
+              :disabled="!form || !recaptchaRes"
+              class="ml-2"
+              @click="sendEmail()"
+            >
               Send
             </v-btn>
           </v-layout>
@@ -68,7 +69,13 @@ export default {
   data: () => ({
     email: undefined,
     subject: undefined,
-    subjectList: ["General Inquery", "Feedback", "Volunteer Dev", "Volunteer Content", "Volunteer Photos"],
+    subjectList: [
+      "General Inquery",
+      "Feedback",
+      "Volunteer Dev",
+      "Volunteer Content",
+      "Volunteer Photos"
+    ],
     body: undefined,
     form: false,
     recaptchaRes: false,
@@ -76,7 +83,7 @@ export default {
       required: msg => v => !!v || msg,
       email: msg => v =>
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg
-    },
+    }
   }),
   computed: {
     siteKey() {
@@ -89,53 +96,50 @@ export default {
         replyToEmail: this.email,
         subject: "contact form - [" + this.subject + "]",
         body: this.body,
+        emailBody: this.body,
         recaptchaRes: this.recaptchaRes
       };
-        try {
-          await this.$axios.$post("/v1/contact", mail);
+      try {
+        await this.$axios.$post("/v1/contact", mail);
 
-          this.$store.commit("snackbar/updateType", "success");
-          this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit(
-            "snackbar/updateMessage",
-            "Message Sent"
-          );
-          this.$store.commit("snackbar/updateSnackbar", true);
-          this.$store.commit("snackbar/updateLink", undefined);
-          this.$store.commit("snackbar/updateLinkMessage", undefined);
-          if(document.referrer.indexOf('climbassist.com') >= 0) {
-              history.go(-1);
-          }
-          else {
-              this.$router.push('/') // this might just be '/' of your site
-          }
-        } catch (error) {
-          this.$store.commit("snackbar/updateType", "error");
-          this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit(
-            "snackbar/updateMessage",
-            "Unable to send message" + error.response.data.error.message
-          );
-          this.$store.commit("snackbar/updateSnackbar", true);
-          this.$store.commit("snackbar/updateLink", undefined);
-          this.$store.commit("snackbar/updateLinkMessage", undefined);
+        this.$store.commit("snackbar/updateType", "success");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit("snackbar/updateMessage", "Message Sent");
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+        if (document.referrer.indexOf("climbassist.com") >= 0) {
+          history.go(-1);
+        } else {
+          this.$router.push("/"); // this might just be '/' of your site
+        }
+      } catch (error) {
+        this.$store.commit("snackbar/updateType", "error");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "Unable to send message" + error.response.data.error.message
+        );
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
       }
     },
     onVerify(response) {
       this.recaptchaRes = response;
     }
   },
-  async fetch({store}) {
-    if (process.env.NODE_ENV === 'development') {
+  async fetch({ store }) {
+    if (process.env.NODE_ENV === "development") {
       let devKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
       store.commit("contact/updateRecaptchaKey", devKey);
     } else {
       try {
-        let api = (await axios.get('/v1/recaptcha-site-key')).data;
-        let siteKey = api.data.siteKey
+        let api = (await axios.get("/v1/recaptcha-site-key")).data;
+        let siteKey = api.data.siteKey;
         store.commit("contact/updateRecaptchaKey", siteKey);
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
     }
   },

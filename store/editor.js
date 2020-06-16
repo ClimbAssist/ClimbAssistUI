@@ -109,9 +109,25 @@ export const mutations = {
     state.cragStateEditor.paths = payload.paths;
   },
   updateRoutes: (state, payload) => {
-    state.routeStateEditor = []
+    state.routeStateEditor = [];
+    const serializePitch = (pitch) => _.defaults(pitch, {
+        danger: undefined,
+        description: undefined,
+        grade: undefined,
+        gradeModifier: undefined
+      });
+
+    const serializeRoute = (route) => _.defaultsDeep(route, {
+        style: undefined,
+        description: undefined,
+        protection: undefined,
+        grade: undefined,
+        gradeModifier: undefined,
+        pitches: _.map(route.pitches, (p) => serializePitch(p))
+      });
+
     for (let i in payload) {
-      state.routeStateEditor.push(payload[i])
+      state.routeStateEditor.push(serializeRoute(payload[i]));
     }
   },
   updateSelectedRoute: (state, payload) => {

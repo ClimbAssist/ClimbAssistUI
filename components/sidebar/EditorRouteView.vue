@@ -32,14 +32,8 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-container 
-      v-if="refresh"
-      >
-        <v-btn
-          color="primary"
-          @click="updateSelectedRoute()"
-          >Refresh</v-btn
-        >
+      <v-container v-if="refresh">
+        <v-btn color="primary" @click="updateSelectedRoute()">Refresh</v-btn>
       </v-container>
       <v-container v-if="anchors.length > 0" row>
         <v-btn color="red" :disabled="loading" @click="deletePoints()">
@@ -177,20 +171,11 @@ export default {
     async deletePoints() {
       this.$store.commit("editor/updateLoading", true);
       let len = this.anchors.length;
-
-      let pointIds = [];
-      for (let i in this.selectedRoute.pitches[len - 1].points) {
-        pointIds.push(this.selectedRoute.pitches[len - 1].points[i].pointId);
-      }
+      let pitch = _.cloneDeep(this.selectedRoute.pitches[len - 1]);
       try {
         //batch point delete
-        let obj = {
-          pointIds: pointIds
-        };
-        console.log("obj");
-        console.log(obj);
-        await this.$axios.$delete("/v1/points",{data: obj});
-        let pitch = _.cloneDeep(this.selectedRoute.pitches[len - 1]);
+        await this.$axios.$delete("/v1/pitches/" + pitch.pitchId + "/points");
+
         if (pitch.points) {
           delete pitch.points;
         }
@@ -235,8 +220,7 @@ export default {
       for (let i in this.selectedRoute.pitches) {
         if (
           this.selectedRoute.pitches[i].anchors &&
-          this.anchors[i].fixed !==
-            this.selectedRoute.pitches[i].anchors.fixed
+          this.anchors[i].fixed !== this.selectedRoute.pitches[i].anchors.fixed
         ) {
           //update anchor fixed
           let pitch = _.cloneDeep(this.selectedRoute.pitches[i]);
@@ -246,7 +230,7 @@ export default {
           console.log(pitch);
           try {
             await this.$axios.$post("/v1/pitches", pitch);
-          } catch(error) {
+          } catch (error) {
             this.$store.commit("editor/updateLoading", false);
             this.$store.commit("snackbar/updateType", "error");
             this.$store.commit("snackbar/updateTimeout", 10000);
@@ -258,10 +242,10 @@ export default {
             this.$store.commit("snackbar/updateLink", undefined);
             this.$store.commit("snackbar/updateLinkMessage", undefined);
             console.log(error.message);
-         }
+          }
         }
       }
-     
+
       if (this.center.x && this.center.y && this.center.z) {
         //update center location
         let route = _.cloneDeep(this.selectedRoute);
@@ -271,7 +255,7 @@ export default {
         console.log(route);
         try {
           await this.$axios.$post("/v1/routes", route);
-        } catch(error) {
+        } catch (error) {
           this.$store.commit("editor/updateLoading", false);
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
@@ -285,7 +269,7 @@ export default {
           console.log(error.message);
         }
       }
-      
+
       this.updateSelectedRoute();
     },
     async updateSelectedRoute() {
@@ -327,13 +311,14 @@ export default {
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit(
           "snackbar/updateMessage",
-          "failed to update route, database not ready, please wait a few seconds and click refresh from the sidebar." + error.response.data.error.code
+          "failed to update route, database not ready, please wait a few seconds and click refresh from the sidebar." +
+            error.response.data.error.code
         );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
-        this.refresh=true
+        this.refresh = true;
       }
     }
   }

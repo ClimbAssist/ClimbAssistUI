@@ -136,9 +136,9 @@
 
 <script>
 import MapCreate from "../../../components/editor/crag/MapCreate.vue";
-import { fetch } from "../../../mixins/fetchData.js"
+import { fetch } from "../../../mixins/fetchData.js";
 export default {
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {
       countries: this.$store.state.filter.countries,
@@ -189,8 +189,9 @@ export default {
     },
     areaList() {
       var areaList = [];
-      for (let key in this.countries[this.countryIndex].regions[this.regionIndex]
-        .areas) {
+      for (let key in this.countries[this.countryIndex].regions[
+        this.regionIndex
+      ].areas) {
         areaList.push(
           this.countries[this.countryIndex].regions[this.regionIndex].areas[key]
             .name
@@ -200,8 +201,9 @@ export default {
     },
     subAreaList() {
       var subAreaList = [];
-      for (let key in this.countries[this.countryIndex].regions[this.regionIndex]
-        .areas[this.areaIndex].subAreas) {
+      for (let key in this.countries[this.countryIndex].regions[
+        this.regionIndex
+      ].areas[this.areaIndex].subAreas) {
         subAreaList.push(
           this.countries[this.countryIndex].regions[this.regionIndex].areas[
             this.areaIndex
@@ -257,16 +259,14 @@ export default {
     },
     subAreaId() {
       if (this.subArea) {
-        return this.countries[this.countryIndex].regions[this.regionIndex].areas[
-          this.areaIndex
-        ].subAreas[this.subAreaIndex].subAreaId;
+        return this.countries[this.countryIndex].regions[this.regionIndex]
+          .areas[this.areaIndex].subAreas[this.subAreaIndex].subAreaId;
       }
     },
     areaId() {
       if (this.subArea) {
-        return this.countries[this.countryIndex].regions[this.regionIndex].areas[
-          this.areaIndex
-        ].areaId;
+        return this.countries[this.countryIndex].regions[this.regionIndex]
+          .areas[this.areaIndex].areaId;
       }
     },
     regionId() {
@@ -317,52 +317,61 @@ export default {
           longitude: this.location.longitude,
           latitude: this.location.latitude,
           zoom: this.zoom
-        }
+        },
+        parking: []
       };
-      if (this.parking.length > 0) {
-        crag.parking = this.parking
+      for (let i in this.parking) {
+        if (this.parking[i].latitude) {
+          crag.parking.push(this.parking[i]);
+        }
+      }
+      if (crag.parking.length < 1) {
+        delete crag.parking;
       }
       try {
         let cragId = await this.$axios.$put("/v1/crags", crag);
         console.log("returned id");
         console.log(cragId);
         if (this.path.length > 0) {
-          try {
-            for (let i in this.path) {
+          for (let i in this.path) {
+            try {
               let obj = {
                 cragId: cragId.data.cragId
-              }
+              };
               let pathId = await this.$axios.$put("/v1/paths", obj);
               let points = {
                 newPathPoints: []
-              }
+              };
               for (let pi in this.path[i]) {
                 let point = {
                   longitude: this.path[i][pi][0],
                   latitude: this.path[i][pi][1]
-                }
-                points.newPathPoints.push(point)
+                };
+                points.newPathPoints.push(point);
               }
 
-              let pointIds = await this.$axios.$put("/v1/paths/" + pathId.data.pathId + "/path-points", points)
+              let pointIds = await this.$axios.$put(
+                "/v1/paths/" + pathId.data.pathId + "/path-points",
+                points
+              );
+            } catch (error) {
+              this.$store.commit("snackbar/updateType", "error");
+              this.$store.commit("snackbar/updateTimeout", 10000);
+              this.$store.commit(
+                "snackbar/updateMessage",
+                "failed to create path" + error.response.data.error.message
+              );
+              this.$store.commit("snackbar/updateSnackbar", true);
+              this.$store.commit("snackbar/updateLink", undefined);
+              this.$store.commit("snackbar/updateLinkMessage", undefined);
+              console.log(error.response.data.error.message);
             }
-          } catch(error) {
-            this.$store.commit("snackbar/updateType", "error");
-            this.$store.commit("snackbar/updateTimeout", 10000);
-            this.$store.commit(
-              "snackbar/updateMessage",
-              "failed to create path" + error.response.data.error.message
-            );
-            this.$store.commit("snackbar/updateSnackbar", true);
-            this.$store.commit("snackbar/updateLink", undefined);
-            this.$store.commit("snackbar/updateLinkMessage", undefined);
-            console.log(error.response.data.error.message);
           }
         }
 
         if (this.walls.length > 0) {
           let revWalls = this.walls.reverse();
-          let wallIds = []
+          let wallIds = [];
           for (let i in revWalls) {
             try {
               let wall;
@@ -381,21 +390,21 @@ export default {
                 wall = {
                   cragId: cragId.data.cragId,
                   name: revWalls[i],
-                  next: wallIds[parseInt(i)-1].wallId
+                  next: wallIds[parseInt(i) - 1].wallId
                 };
               } else {
                 wall = {
                   cragId: cragId.data.cragId,
                   name: revWalls[i],
-                  next: wallIds[parseInt(i)-1].wallId,
+                  next: wallIds[parseInt(i) - 1].wallId,
                   first: true
                 };
               }
 
               let wallId = await this.$axios.$put("/v1/walls", wall);
-              console.log(wallId.data)
+              console.log(wallId.data);
 
-              wallIds.push(wallId.data)
+              wallIds.push(wallId.data);
 
               this.$store.commit("snackbar/updateType", "success");
               this.$store.commit("snackbar/updateTimeout", 10000);
@@ -451,7 +460,7 @@ export default {
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
 
-        this.$store.commit("filter/removeRoutes")
+        this.$store.commit("filter/removeRoutes");
         this.$store.commit("filter/dataSet", false);
         this.fetchData();
 
@@ -461,13 +470,14 @@ export default {
             edit: cragId.data.cragId
           }
         });
-
-
       } catch (error) {
         console.log(error.response.data.error.message);
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to create crag" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to create crag" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -475,25 +485,25 @@ export default {
     },
     toggleTile() {
       if (this.$store.state.editor.mapTile === "outdoors-v11") {
-        this.$store.commit("editor/updateMapTile", "satellite-streets-v11")
+        this.$store.commit("editor/updateMapTile", "satellite-streets-v11");
       } else {
-        this.$store.commit("editor/updateMapTile", "outdoors-v11")
+        this.$store.commit("editor/updateMapTile", "outdoors-v11");
       }
     },
     addParking() {
-      this.$store.commit("editor/addParking")
+      this.$store.commit("editor/addParking");
     },
     removeParking() {
-      this.$store.commit("editor/removeParking")
+      this.$store.commit("editor/removeParking");
     },
     addPath() {
-      this.$store.commit("editor/addPath")
+      this.$store.commit("editor/addPath");
     },
     removePath() {
-      this.$store.commit("editor/removePath")
+      this.$store.commit("editor/removePath");
     },
     removePathPoint() {
-      this.$store.commit("editor/removePathPoint")
+      this.$store.commit("editor/removePathPoint");
     },
     string_to_slug(str) {
       str = str.replace(/^\s+|\s+$/g, ""); // trim
@@ -515,7 +525,18 @@ export default {
     }
   },
   created() {
-    this.$store.commit("editor/updateMapTile", "outdoors-v11")
+    this.$store.commit("editor/updateMapTile", "outdoors-v11");
+  },
+  destroyed() {
+    //clear map
+    this.$store.commit("editor/updateZoom", undefined);
+    this.$store.commit("editor/updateLocation", {
+      lng: undefined,
+      lat: undefined
+    });
+    this.$store.commit("editor/updateMapSelector", "location");
+    this.$store.commit("editor/clearParking");
+    this.$store.commit("editor/clearPath");
   },
   components: {
     mapcreate: MapCreate

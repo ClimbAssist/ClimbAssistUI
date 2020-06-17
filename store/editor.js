@@ -25,7 +25,7 @@ export const state = () => ({
   parking: [],
   parkingIndex: undefined,
   path: [],
-  currentPaths: undefined,
+  currentPath: undefined,
   pathIndex: undefined,
   zoom: undefined,
   areaStateEditor: {
@@ -110,20 +110,22 @@ export const mutations = {
   },
   updateRoutes: (state, payload) => {
     state.routeStateEditor = [];
-    const serializePitch = (pitch) => _.defaults(pitch, {
+    const serializePitch = pitch =>
+      _.defaults(pitch, {
         danger: undefined,
         description: undefined,
         grade: undefined,
         gradeModifier: undefined
       });
 
-    const serializeRoute = (route) => _.defaultsDeep(route, {
+    const serializeRoute = route =>
+      _.defaultsDeep(route, {
         style: undefined,
         description: undefined,
         protection: undefined,
         grade: undefined,
         gradeModifier: undefined,
-        pitches: _.map(route.pitches, (p) => serializePitch(p))
+        pitches: _.map(route.pitches, p => serializePitch(p))
       });
 
     for (let i in payload) {
@@ -131,7 +133,7 @@ export const mutations = {
     }
   },
   updateSelectedRoute: (state, payload) => {
-    state.selectedRoute = payload
+    state.selectedRoute = payload;
   },
   updateAnchors: (state, payload) => {
     state.anchors = payload;
@@ -153,12 +155,12 @@ export const mutations = {
     state.centerLoc.z = payload.z;
   },
   addPoints: (state, payload) => {
-    state.points.push(payload)
+    state.points.push(payload);
   },
   updatePoints: (state, payload) => {
     state.points = payload;
   },
-  removePoints: (state) => {
+  removePoints: state => {
     state.points.pop();
   },
   updateDistances: (state, payload) => {
@@ -167,7 +169,7 @@ export const mutations = {
   addDistance: (state, payload) => {
     state.distances.push(payload);
   },
-  removeDistance: (state) => {
+  removeDistance: state => {
     state.distances.pop();
   },
   updateCountry: (state, payload) => {
@@ -199,59 +201,59 @@ export const mutations = {
     //   let obj = {lng: payload[i].longitude, lat: payload[i].latitude};
     //   parking.push(obj)
     // }
-    state.parking = payload
+    state.parking = payload;
   },
   updateParking: (state, payload) => {
     state.parking[state.parking.length - 1].latitude = payload.lat;
     state.parking[state.parking.length - 1].longitude = payload.lng;
   },
-  addParking: (state) => {
+  addParking: state => {
     state.parking.push({
       latitude: undefined,
       longitude: undefined
-    })
+    });
   },
-  removeParking: (state) => {
+  removeParking: state => {
     state.parking.pop();
   },
-  clearParking: (state) => {
+  clearParking: state => {
     state.parking = [];
   },
   setCurrentPath: (state, payload) => {
-    state.currentPath = payload
+    state.currentPath = payload;
   },
   setPath: (state, payload) => {
-    let path = []
+    let path = [];
     for (let i in payload) {
-      path.push([])
+      path.push([]);
       for (let pi in payload[i]) {
-        path[i].push([payload[i][pi].longitude, payload[i][pi].latitude])
+        path[i].push([payload[i][pi].longitude, payload[i][pi].latitude]);
       }
     }
-    state.path = path
+    state.path = path;
   },
-  addPath: (state) => {
-    state.path.push([])
+  addPath: state => {
+    state.path.push([]);
   },
   addPathPoint: (state, payload) => {
     state.path[state.path.length - 1].push(payload);
   },
-  removePathPoint: (state) => {
+  removePathPoint: state => {
     state.path[state.path.length - 1].pop();
   },
-  removePath: (state) => {
+  removePath: state => {
     state.path.pop();
   },
-  clearPath: (state) => {
+  clearPath: state => {
     state.path = [];
   },
   updateZoom: (state, payload) => {
     state.zoom = payload;
   },
-  updateMapEdit: (state) => {
+  updateMapEdit: state => {
     state.mapEdit = !state.mapEdit;
   },
-  clearMapEdit: (state) => {
+  clearMapEdit: state => {
     state.mapEdit = false;
   },
   updateMapTile: (state, payload) => {

@@ -129,7 +129,7 @@
               justify-center
               v-if="mapSelector === 'parking'"
             >
-              <v-btn color="green" @click="addParking()">
+              <v-btn v-if="parkingCheck" color="green" @click="addParking()">
                 Add Parking
               </v-btn>
               <v-btn
@@ -145,24 +145,20 @@
               justify-center
               v-if="mapSelector === 'path'"
             >
-              <v-layout
-              align-center
-              justify-center
-
-              >
+              <v-layout align-center justify-center>
                 <v-btn
-                color="green"
-                @click="addPath()"
-                v-if="path.length < 1"
-                class="ma-2"
+                  color="green"
+                  @click="addPath()"
+                  v-if="path.length < 1"
+                  class="ma-2"
                 >
                   Add Path
                 </v-btn>
                 <v-btn
-                color="grey"
-                @click="removePath()"
-                v-if="path.length > 0"
-                class="ma-2"
+                  color="grey"
+                  @click="removePath()"
+                  v-if="path.length > 0"
+                  class="ma-2"
                 >
                   Cancel Path
                 </v-btn>
@@ -203,7 +199,7 @@
             <br />
             parking: {{ parking }}
             <br />
-            currentPath: {{currentPath}}
+            currentPath: {{ currentPath }}
             <br />
             path: {{ path }}
           </v-layout>
@@ -298,7 +294,8 @@ export default {
       imageFile: undefined,
       afterList: [],
       deleteWallCheck: [],
-      loading: false
+      loading: false,
+      currentParking: []
     };
   },
   computed: {
@@ -359,6 +356,15 @@ export default {
         return true;
       }
     },
+    parkingCheck() {
+      if (this.parking.length === 0) {
+        return true;
+      } else if (this.parking[this.parking.length - 1].latitude) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     formCheck() {
       if (
         !this.loading &&
@@ -366,12 +372,33 @@ export default {
           this.description !== this.crag.description ||
           this.location.latitude !== this.crag.location.latitude ||
           this.location.longitude !== this.crag.location.longitude ||
-          this.zoom !== this.crag.location.zoom
-          // this.parking.latitude !== this.crag.parking.latitude ||
-          // this.parking.longitude !== this.crag.parking.longitude
-        )
+          this.zoom !== this.crag.location.zoom)
       ) {
         return false;
+      } else if (this.parking.length > 0 && this.currentParking.length > 0) {
+        //compare values
+        if (!this.parking[this.parking.length - 1].latitude) {
+          //parking not selected
+          return true;
+        } else if (
+          this.parking.length !== this.currentParking.length ||
+          this.parking[this.currentParking.length - 1].latitude !==
+            this.currentParking[this.currentParking.length - 1].latitude ||
+          this.parking[this.currentParking.length - 1].longitude !==
+            this.currentParking[this.currentParking.length - 1].longitude
+        ) {
+          //do not match
+          return false;
+        } else {
+          //no comparison detected
+          return true;
+        }
+      } else if (this.parking.length !== this.currentParking.length) {
+        if (this.parkingCheck) {
+          return false;
+        } else {
+          return true;
+        }
       } else {
         return true;
       }
@@ -404,7 +431,7 @@ export default {
       return this.$store.state.editor.currentPath;
     },
     mapEdit() {
-      return this.$store.state.editor.mapEdit
+      return this.$store.state.editor.mapEdit;
     },
     mapSelector: {
       get() {
@@ -421,25 +448,25 @@ export default {
     },
     toggleTile() {
       if (this.$store.state.editor.mapTile === "outdoors-v11") {
-        this.$store.commit("editor/updateMapTile", "satellite-streets-v11")
+        this.$store.commit("editor/updateMapTile", "satellite-streets-v11");
       } else {
-        this.$store.commit("editor/updateMapTile", "outdoors-v11")
+        this.$store.commit("editor/updateMapTile", "outdoors-v11");
       }
     },
     addParking() {
-      this.$store.commit("editor/addParking")
+      this.$store.commit("editor/addParking");
     },
     removeParking() {
-      this.$store.commit("editor/removeParking")
+      this.$store.commit("editor/removeParking");
     },
     addPath() {
-      this.$store.commit("editor/addPath")
+      this.$store.commit("editor/addPath");
     },
     removePath() {
-      this.$store.commit("editor/removePath")
+      this.$store.commit("editor/removePath");
     },
     removePathPoint() {
-      this.$store.commit("editor/removePathPoint")
+      this.$store.commit("editor/removePathPoint");
     },
     newHighRes() {
       this.highResFile = this.$refs.highResFile.files[0];
@@ -471,20 +498,25 @@ export default {
         console.log(crag);
 
         this.$store.commit("editor/updateCrag", crag);
-        this.getCrag();
         this.loading = false;
 
         //success message
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "Image Uploaded (replaced images may take several minutes to change)");
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "Image Uploaded (replaced images may take several minutes to change)"
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to upload image" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to upload image" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -508,20 +540,25 @@ export default {
         console.log(crag);
 
         this.$store.commit("editor/updateCrag", crag);
-        this.getCrag();
         this.loading = false;
 
         //success message
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "Models Uploaded (replaced models may take several minutes to change)");
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "Models Uploaded (replaced models may take several minutes to change)"
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to upload models" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to upload models" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -530,48 +567,39 @@ export default {
     },
     async submitPath() {
       try {
-        this.loading = true
+        this.loading = true;
         for (let i in this.path) {
           let obj = {
             cragId: this.crag.cragId
-          }
+          };
           let pathId = await this.$axios.$put("/v1/paths", obj);
           let points = {
             newPathPoints: []
-          }
+          };
           for (let pi in this.path[i]) {
             let point = {
               longitude: this.path[i][pi][0],
               latitude: this.path[i][pi][1]
-            }
-            points.newPathPoints.push(point)
+            };
+            points.newPathPoints.push(point);
           }
-          console.log(points)
+          console.log(points);
 
-          let pointIds = await this.$axios.$put("/v1/paths/" + pathId.data.pathId + "/path-points", points)
+          let pointIds = await this.$axios.$put(
+            "/v1/paths/" + pathId.data.pathId + "/path-points",
+            points
+          );
         }
-        let crag = _.clone(this.crag);
-
-        let api = await this.$axios.$get(
-          "/v1/crags/" + this.crag.cragId + "/paths?depth=2"
-        );
-        let paths = api.data;
-        this.$store.commit("editor/setCurrentPath", paths)
-        crag.paths = paths;
-
-        console.log(crag);
-
-        this.$store.commit("editor/updateCrag", crag);
-
-        this.getCrag();
-        this.loading=false;
+        this.$store.commit("editor/clearPath");
+        await this.fetchCrag();
+        this.loading = false;
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit("snackbar/updateMessage", "Path Created");
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-      } catch(error) {
+      } catch (error) {
         this.loading = false;
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
@@ -587,35 +615,16 @@ export default {
     },
     async deletePath(ci) {
       try {
-        this.loading=true;
+        this.loading = true;
         if (this.currentPath[ci].pathPoints) {
-          let obj = {
-            pathPointIds: []
-          }
-          for (let i in this.currentPath[ci].pathPoints) {
-            obj.pathPointIds.push(this.currentPath[ci].pathPoints[i].pathPointId)
-          }
-          console.log(obj)
-          await this.$axios.delete("/v1/path-points", {data: obj});
+          await this.$axios.delete(
+            "/v1/paths/" + this.currentPath[ci].pathId + "/path-points"
+          );
         }
         await this.$axios.delete("/v1/paths/" + this.currentPath[ci].pathId);
 
-        let crag = _.clone(this.crag);
-
-        let api = await this.$axios.$get(
-          "/v1/crags/" + this.crag.cragId + "/paths?depth=2"
-        );
-        let paths = api.data;
-        this.$store.commit("editor/setCurrentPath", paths)
-        crag.paths = paths;
-
-        console.log(crag);
-
-        this.$store.commit("editor/updateCrag", crag);
-
-        this.getCrag();
-
-        this.loading=false;
+        await this.fetchCrag();
+        this.loading = false;
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
         this.$store.commit("snackbar/updateMessage", "Path Deleted");
@@ -626,7 +635,60 @@ export default {
         this.loading = false;
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to delete path" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to delete path" + error.response.data.error.message
+        );
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+        console.log(error.response.data.error.message);
+      }
+    },
+    async fetchCrag() {
+      try {
+        let api = await this.$axios.$get(
+          "/v1/crags/" + this.crag.cragId + "?depth=2"
+        );
+        let crag = api.data;
+        if (!crag.walls) {
+          crag.walls = [];
+        }
+        for (let i in crag.walls) {
+          if (!crag.walls[i].routes) {
+            crag.walls[i].routes = [];
+          }
+        }
+        this.$store.commit("editor/updateCrag", crag);
+        if (crag.location.zoom) {
+          this.$store.commit("editor/updateZoom", crag.location.zoom);
+        }
+        if (crag.location.longitude) {
+          this.$store.commit("editor/updateLocation", {
+            lng: crag.location.longitude,
+            lat: crag.location.latitude
+          });
+        }
+        if (crag.parking) {
+          this.currentParking = _.cloneDeep(crag.parking);
+          this.$store.commit("editor/setParking", crag.parking);
+        } else {
+          this.$store.commit("editor/clearParking");
+          this.currentParking = [];
+        }
+        if (crag.paths) {
+          this.$store.commit("editor/setCurrentPath", crag.paths);
+        } else {
+          this.$store.commit("editor/setCurrentPath", undefined);
+        }
+      } catch (error) {
+        this.loading = false;
+        this.$store.commit("snackbar/updateType", "error");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to fetch crag" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -674,7 +736,7 @@ export default {
     },
     async addWall() {
       try {
-        this.loading = true
+        this.loading = true;
         let wall = {
           name: this.walls[0],
           cragId: this.crag.cragId
@@ -722,7 +784,10 @@ export default {
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to create wall" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to create wall" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -731,7 +796,7 @@ export default {
     },
     async deleteWall(ci) {
       try {
-        this.loading=true;
+        this.loading = true;
         await this.$axios.delete("/v1/walls/" + this.currentWalls[ci].wallId);
 
         if (ci == 0 && this.currentWalls.length > 1) {
@@ -787,7 +852,10 @@ export default {
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to delete wall" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to delete wall" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -814,7 +882,10 @@ export default {
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to delete crag" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to delete crag" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -822,69 +893,73 @@ export default {
       }
     },
     async updateCrag() {
-      if (
-        this.name !== this.crag.name ||
-        this.description !== this.crag.description ||
-        this.location.longitude !== this.crag.location.longitude ||
-        this.location.latitude !== this.crag.location.latitude ||
-        this.zoom !== this.crag.location.zoom ||
-        this.parking !== this.crag.parking
-      ) {
-        try {
-          let obj = {
-            subAreaId: this.crag.subAreaId,
-            cragId: this.crag.cragId,
-            name: this.name,
-            description: this.description,
-            location: {
-              latitude: this.location.latitude,
-              longitude: this.location.longitude,
-              zoom: this.zoom
-            }
-          };
-          if (this.parking.length > 0 ) {
-            obj.parking = this.parking
+      try {
+        this.loading = true;
+        let obj = {
+          subAreaId: this.crag.subAreaId,
+          cragId: this.crag.cragId,
+          name: this.name,
+          description: this.description,
+          location: {
+            latitude: this.location.latitude,
+            longitude: this.location.longitude,
+            zoom: this.zoom
+          },
+          parking: []
+        };
+        for (let i in this.parking) {
+          if (this.parking[i].latitude) {
+            obj.parking.push(this.parking[i]);
           }
-          if (this.crag.imageLocation) {
-            obj.imageLocation = this.crag.imageLocation;
-          }
-          if (this.crag.model) {
-            obj.model = {
-              modelLocation: this.crag.model.modelLocation,
-              lowResModelLocation: this.crag.model.lowResModelLocation
-            };
-            if (this.crag.model.light) {
-              obj.model.light = this.crag.model.light;
-            }
-            if (this.crag.model.scale) {
-              obj.model.scale = this.crag.model.scale;
-            }
-            if (this.crag.model.modelAngle != undefined) {
-              obj.model.modelAngle = this.crag.model.modelAngle;
-            }
-            if (this.crag.model.azimuth) {
-              obj.model.azimuth = {
-                minimum: this.crag.model.azimuth.minimum,
-                maximum: this.crag.model.azimuth.maximum
-              };
-            }
-          }
-          await this.$axios.post("/v1/crags", obj);
-          this.$store.commit("snackbar/updateType", "success");
-          this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit("snackbar/updateMessage", "Crag Updated");
-          this.$store.commit("snackbar/updateSnackbar", true);
-          this.$store.commit("snackbar/updateLink", undefined);
-          this.$store.commit("snackbar/updateLinkMessage", undefined);
-        } catch (error) {
-          this.$store.commit("snackbar/updateType", "error");
-          this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit("snackbar/updateMessage", "failed to update crag" + error.response.data.error.message);
-          this.$store.commit("snackbar/updateSnackbar", true);
-          this.$store.commit("snackbar/updateLink", undefined);
-          this.$store.commit("snackbar/updateLinkMessage", undefined);
-          console.log(error.response.data.error.message);
         }
+        if (obj.parking.length < 1) {
+          delete obj.parking;
+        }
+        if (this.crag.imageLocation) {
+          obj.imageLocation = this.crag.imageLocation;
+        }
+        if (this.crag.model) {
+          obj.model = {
+            modelLocation: this.crag.model.modelLocation,
+            lowResModelLocation: this.crag.model.lowResModelLocation
+          };
+          if (this.crag.model.light) {
+            obj.model.light = this.crag.model.light;
+          }
+          if (this.crag.model.scale) {
+            obj.model.scale = this.crag.model.scale;
+          }
+          if (this.crag.model.modelAngle != undefined) {
+            obj.model.modelAngle = this.crag.model.modelAngle;
+          }
+          if (this.crag.model.azimuth) {
+            obj.model.azimuth = {
+              minimum: this.crag.model.azimuth.minimum,
+              maximum: this.crag.model.azimuth.maximum
+            };
+          }
+        }
+        await this.$axios.post("/v1/crags", obj);
+        await this.fetchCrag();
+        this.loading = false;
+        this.$store.commit("snackbar/updateType", "success");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit("snackbar/updateMessage", "Crag Updated");
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+      } catch (error) {
+        this.loading = false;
+        this.$store.commit("snackbar/updateType", "error");
+        this.$store.commit("snackbar/updateTimeout", 10000);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to update crag" + error.response.data.error.message
+        );
+        this.$store.commit("snackbar/updateSnackbar", true);
+        this.$store.commit("snackbar/updateLink", undefined);
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+        console.log(error.response.data.error.message);
       }
     },
     async updateWall(ci) {
@@ -1026,7 +1101,10 @@ export default {
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to update wall" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to update wall" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -1036,6 +1114,7 @@ export default {
   },
   created() {
     this.getCrag();
+    this.currentParking = _.cloneDeep(this.parking);
     this.getWallDeleteCheck();
   },
   mixins: [fetch],

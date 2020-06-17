@@ -785,13 +785,15 @@ export default {
           }
         }
         if (this.routeList.length !== 0) {
-          let prevRoute = _.cloneDeep(this.routeState[this.routeList.length - 1]);
+          let prevRoute = _.cloneDeep(
+            this.routeState[this.routeList.length - 1]
+          );
           prevRoute.next = routeId.data.routeId;
           delete prevRoute.pitches;
           delete prevRoute.points;
           try {
             await this.$axios.$post("/v1/routes/", prevRoute);
-          } catch(error) {
+          } catch (error) {
             this.$store.commit("snackbar/updateType", "error");
             this.$store.commit("snackbar/updateTimeout", 10000);
             this.$store.commit(
@@ -812,7 +814,6 @@ export default {
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
-       
       } catch (error) {
         this.loading = false;
         this.$store.commit("snackbar/updateType", "error");
@@ -1217,7 +1218,7 @@ export default {
         let api = await this.$axios.$get(
           "/v1/walls/" + this.crag.walls[this.wallIndex].wallId + "?depth=3"
         );
-        console.log(api)
+        console.log(api);
         let wall = api.data;
         if (!wall.routes) {
           wall.routes = [];
@@ -1248,19 +1249,12 @@ export default {
     async deletePitch(ri, pi) {
       try {
         this.loading = true;
-        let pointIds = [];
         if (this.routeList[ri].pitches[pi].points.length > 0) {
-          for (let i in this.routeList[ri].pitches[pi].points) {
-            pointIds.push( this.routeList[ri].pitches[pi].points[i].pointId);
-          }
-          let obj = {
-            pointIds: pointIds
-          };
-          console.log("obj");
-          console.log(obj);
-          await this.$axios.$delete("/v1/points",{data: obj});
+          await this.$axios.$delete(
+            "/v1/pitches/" + this.routeList[ri].pitches[pi].pitchId + "/points"
+          );
         }
-        
+
         await this.$axios.$delete(
           "/v1/pitches/" + this.routeList[ri].pitches[pi].pitchId
         );

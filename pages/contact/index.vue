@@ -95,7 +95,6 @@ export default {
       let mail = {
         replyToEmail: this.email,
         subject: "contact form - [" + this.subject + "]",
-        body: this.body,
         emailBody: this.body,
         recaptchaRes: this.recaptchaRes
       };
@@ -111,7 +110,7 @@ export default {
         if (document.referrer.indexOf("climbassist.com") >= 0) {
           history.go(-1);
         } else {
-          this.$router.push("/"); // this might just be '/' of your site
+          this.$router.push("/");
         }
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");

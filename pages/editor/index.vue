@@ -5,25 +5,22 @@
         <v-toolbar-title>New Places</v-toolbar-title>
         <v-spacer />
         <v-flex>
-        <v-btn nuxt to="/editor/country/create">Add Country</v-btn>
+          <v-btn nuxt to="/editor/country/create">Add Country</v-btn>
         </v-flex>
         <v-flex>
-        <v-btn nuxt to="/editor/region/create">Add Region</v-btn>
+          <v-btn nuxt to="/editor/region/create">Add Region</v-btn>
         </v-flex>
         <v-flex>
-        <v-btn nuxt to="/editor/area/create">Add Area</v-btn>
+          <v-btn nuxt to="/editor/area/create">Add Area</v-btn>
         </v-flex>
         <v-flex>
-        <v-btn nuxt to="/editor/crag/create">Add Crag</v-btn>
-      </v-flex>
+          <v-btn nuxt to="/editor/crag/create">Add Crag</v-btn>
+        </v-flex>
       </v-toolbar>
     </v-container>
     <div class="text-xs-center" v-if="!dataSet">
       <p>loading</p>
-      <v-progress-circular
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
     <v-container v-for="(country, i) in countries" :key="i">
       <v-toolbar color="primary" dark>
@@ -60,11 +57,8 @@
         </v-card-title>
         <v-container>
           <v-expansion-panels>
-            <v-expansion-panel
-              v-for="(area, ai) in state.areas"
-              :key="ai"
-            >
-              <v-expansion-panel-header color="primary">
+            <v-expansion-panel v-for="(area, ai) in state.areas" :key="ai">
+              <v-expansion-panel-header>
                 <v-layout align-center justify-start row>
                   {{ area.name }}
 
@@ -93,65 +87,67 @@
                   >
                 </v-layout>
               </v-expansion-panel-header>
-                <v-expansion-panel-content v-for="(subArea, subi) in area.subAreas" :key="subi">
-                  <div
-                    class="primary white--text pa-2"
-                    v-if="area.subAreas.length > 1"
-                  >
-                    {{ subArea.name }}
-                  </div>
-                  <v-layout
-                    align-center
-                    justify-start
-                    row
-                    v-for="(crag, ci) in subArea.crags"
-                    :key="ci"
-                  >
-                    {{ crag.name }}
-                    <v-chip
-                      class="mx-1"
-                      small
-                      outlined
-                      color="primary"
-                      v-for="(wall, walli) in crag.walls"
-                      :key="walli"
-                      >{{ wall.name }}</v-chip
-                    >
-                    <v-spacer />
-                    <v-btn
-                      nuxt
-                      class="ma-2"
-                      :to="{
-                        name: 'editor-crag-edit',
-                        params: {
-                          countryKey: i,
-                          stateKey: si,
-                          areaKey: ai,
-                          subAreaKey: subi,
-                          cragKey: ci,
-                          edit: crag.cragId
-                        }
-                      }"
-                      >edit crag</v-btn
-                    >
-                    <v-btn
-                      nuxt
-                      class="ma-2"
-                      :to="{
-                        name: 'editor-crag-edit-routes',
-                        params: {
-                          countryKey: i,
-                          stateKey: si,
-                          areaKey: ai,
-                          subAreaKey: subi,
-                          cragKey: ci,
-                          edit: crag.cragId
-                        }
-                      }"
-                      >edit routes</v-btn
-                    >
-                  </v-layout>
+              <v-expansion-panel-content
+                v-for="(subArea, subi) in area.subAreas"
+                :key="subi"
+              >
+                <div
+                  class="primary white--text pa-2"
+                  v-if="area.subAreas.length > 1"
+                >
+                  {{ subArea.name }}
                 </div>
+                <v-layout
+                  align-center
+                  justify-start
+                  row
+                  v-for="(crag, ci) in subArea.crags"
+                  :key="ci"
+                >
+                  {{ crag.name }}
+                  <v-chip
+                    class="mx-1"
+                    small
+                    outlined
+                    color="primary"
+                    v-for="(wall, walli) in crag.walls"
+                    :key="walli"
+                    >{{ wall.name }}</v-chip
+                  >
+                  <v-spacer />
+                  <v-btn
+                    nuxt
+                    class="ma-2"
+                    :to="{
+                      name: 'editor-crag-edit',
+                      params: {
+                        countryKey: i,
+                        stateKey: si,
+                        areaKey: ai,
+                        subAreaKey: subi,
+                        cragKey: ci,
+                        edit: crag.cragId
+                      }
+                    }"
+                    >edit crag</v-btn
+                  >
+                  <v-btn
+                    nuxt
+                    class="ma-2"
+                    :to="{
+                      name: 'editor-crag-edit-routes',
+                      params: {
+                        countryKey: i,
+                        stateKey: si,
+                        areaKey: ai,
+                        subAreaKey: subi,
+                        cragKey: ci,
+                        edit: crag.cragId
+                      }
+                    }"
+                    >edit routes</v-btn
+                  >
+                </v-layout>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -165,7 +161,7 @@
 import { mapGetters } from "vuex";
 export default {
   name: "list",
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {
       countries: this.$store.state.filter.countries

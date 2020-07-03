@@ -1,7 +1,7 @@
 <template>
   <v-bottom-navigation v-if="sidebar === 'frameV'" app v-model="frameTabs" color="white">
     <v-btn color="green" text value="info" data-testid="bottom-nav-info-button">
-      <span id="what">Info</span>
+      <span>Info</span>
       <v-icon>fa-info</v-icon>
     </v-btn>
 

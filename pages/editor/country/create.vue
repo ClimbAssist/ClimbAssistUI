@@ -7,9 +7,7 @@
             <v-text-field label="name" v-model="name"></v-text-field>
           </v-layout>
           <v-layout align-center justify-end row>
-            <v-btn @click="submit()" color="primary" :disabled="formCheck">
-              Submit
-            </v-btn>
+            <v-btn @click="submit()" color="primary" :disabled="formCheck">Submit</v-btn>
           </v-layout>
         </v-container>
       </v-container>
@@ -18,19 +16,17 @@
 </template>
 
 <script>
-import { fetch } from "../../../mixins/fetchData.js"
+import { fetch } from "../../../mixins/fetchData.js";
 export default {
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {
-      name: "",
+      name: ""
     };
   },
   computed: {
     formCheck() {
-      if (
-        this.name !== ""
-      ) {
+      if (this.name !== "") {
         return false;
       } else {
         return true;
@@ -40,18 +36,18 @@ export default {
   methods: {
     async submit() {
       try {
-        let country = {name: this.name}
+        let country = { name: this.name };
 
         let countryId = await this.$axios.$put("/v1/countries/", country);
-        console.log(countryId);
+
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "Coiuntry Created");
+        this.$store.commit("snackbar/updateMessage", "Country Created");
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
 
-        this.$store.commit("filter/removeRoutes")
+        this.$store.commit("filter/removeRoutes");
         this.$store.commit("filter/dataSet", false);
         this.fetchData();
 
@@ -64,7 +60,10 @@ export default {
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to create country" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to create country" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);

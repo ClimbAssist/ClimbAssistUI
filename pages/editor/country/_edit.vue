@@ -32,10 +32,10 @@
 import axios from "axios";
 import { fetch } from "../../../mixins/fetchData.js";
 export default {
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {
-      name: undefined
+      name: undefined,
     };
   },
   computed: {
@@ -48,7 +48,7 @@ export default {
     },
     country() {
       return this.$store.state.editor.country;
-    }
+    },
   },
   methods: {
     getCountry() {
@@ -60,7 +60,7 @@ export default {
       try {
         let obj = {
           countryId: this.country.countryId,
-          name: this.name
+          name: this.name,
         };
         await this.$axios.post("/v1/countries", obj);
         this.$store.commit("snackbar/updateType", "success");
@@ -97,7 +97,7 @@ export default {
         this.fetchData();
 
         this.$router.push({
-          name: "editor"
+          name: "editor",
         });
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
@@ -111,7 +111,7 @@ export default {
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
       }
-    }
+    },
   },
   async fetch({ store, params }) {
     if (store.state.editor.sampleData) {
@@ -121,7 +121,8 @@ export default {
     }
 
     console.log("from fresh");
-    const api = (await axios.get("/v1/countries/" + params.edit + "?depth=1")).data;
+    const api = (await axios.get("/v1/countries/" + params.edit + "?depth=1"))
+      .data;
 
     let country = api.data;
     if (!country.regions) {
@@ -133,6 +134,6 @@ export default {
   mixins: [fetch],
   created() {
     this.getCountry();
-  }
+  },
 };
 </script>

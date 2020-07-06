@@ -4,7 +4,7 @@ export const state = () => ({
   timeout: 1000,
   type: undefined,
   link: undefined,
-  linkMessage: undefined
+  linkMessage: undefined,
 });
 export const getters = {};
 export const mutations = {
@@ -25,25 +25,25 @@ export const mutations = {
   },
   updateLinkMessage: (state, payload) => {
     state.linkMessage = payload;
-  }
+  },
 };
 export const actions = {
   updateMessage: (payload) => {
-    payload.commit('updateMessage');
+    payload.commit("updateMessage");
   },
   updateTimeout: (payload) => {
-    payload.commit('updateTimeout');
+    payload.commit("updateTimeout");
   },
   updateSnackbar: (payload) => {
-    payload.commit('updateSnackbar')
+    payload.commit("updateSnackbar");
   },
   updateType: (payload) => {
-    payload.commit('updateType')
+    payload.commit("updateType");
   },
   updateLink: (payload) => {
-    payload.commit('updateLink')
+    payload.commit("updateLink");
   },
   updateLinkMessage: (payload) => {
-    payload.commit('updateLinkMessage')
-  }
+    payload.commit("updateLinkMessage");
+  },
 };

@@ -119,15 +119,15 @@
         <span
           v-if="
             crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
-              'boulder'
+            'boulder'
           "
           >V</span
         ><span
           v-if="
             crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
               'trad' ||
-              crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
-                'sport'
+            crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
+              'sport'
           "
           >5.</span
         >{{ crag.walls[activeRoute.wall].routes[activeRoute.route].grade
@@ -238,12 +238,12 @@ export default {
       intersection: {
         intersects: false,
         point: new THREE.Vector3(),
-        normal: new THREE.Vector3()
+        normal: new THREE.Vector3(),
       },
       mouseHelper: undefined,
       timeout: undefined,
       lastTap: 0,
-      animateId: undefined
+      animateId: undefined,
     };
   },
   watch: {
@@ -257,14 +257,14 @@ export default {
         // this.removeDecals()
         // this.loadDecals()
       },
-      deep: true
+      deep: true,
     },
     mesh: {
       handler() {
         if (this.mesh && !this.fromStore) {
           this.scene.remove(this.lowMesh);
         }
-      }
+      },
     },
     activeRoute: {
       handler() {
@@ -282,12 +282,12 @@ export default {
           );
           this.setControlPoint(controlPoint);
         }
-      }
-    }
+      },
+    },
   },
   computed: {
     ...mapGetters({
-      crag: "filter/crag"
+      crag: "filter/crag",
     }),
     pointsLoaded() {
       return this.$store.state.filter.pointsLoaded;
@@ -421,10 +421,10 @@ export default {
       } else {
         return false;
       }
-    }
+    },
   },
   methods: {
-    init: function() {
+    init: function () {
       let container = document.getElementById("container");
 
       this.scene = new THREE.Scene();
@@ -555,7 +555,7 @@ export default {
         }
       });
     },
-    animate: function() {
+    animate: function () {
       if (this.play) {
         this.animationId = requestAnimationFrame(this.animate);
 
@@ -634,7 +634,7 @@ export default {
       }
       this.navHeight = nav;
     },
-    onWindowResize: function() {
+    onWindowResize: function () {
       if (this.play) {
         this.getNavHeight();
         this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -686,7 +686,7 @@ export default {
       //     this.scene.add(this.mesh);
       //   });
       // } else {
-      loader.load(this.crag.crag.model.lowResModelLocation, gltf => {
+      loader.load(this.crag.crag.model.lowResModelLocation, (gltf) => {
         //low res model
         this.lowMesh = gltf.scene.children[0];
         this.lowMesh.layers.set(1);
@@ -742,7 +742,7 @@ export default {
       // });
       // let objectURL = URL.createObjectURL(blob.data);
 
-      loader.load(this.crag.crag.model.modelLocation, gltf => {
+      loader.load(this.crag.crag.model.modelLocation, (gltf) => {
         this.mesh = gltf.scene.children[0];
         this.mesh.layers.set(1);
         this.mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
@@ -760,7 +760,7 @@ export default {
       let loader = new GLTFLoader();
       loader.load(
         "https://s3-us-west-2.amazonaws.com/models-172776452117-us-west-2/north.glb",
-        gltf => {
+        (gltf) => {
           this.north = gltf.scene.children[0];
           this.north.scale.set(5, 5, 5);
           let northAngle = this.crag.crag.model.modelAngle + Math.PI;
@@ -768,12 +768,12 @@ export default {
           this.north.layers.set(10);
           this.scene.add(this.north);
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
     },
-    loadSprites: function() {
+    loadSprites: function () {
       this.group = new THREE.Group();
       const x = 32;
       const y = 32;
@@ -797,7 +797,7 @@ export default {
               transparent: true,
               depthTest: false,
               depthWrite: false,
-              sizeAttenuation: true
+              sizeAttenuation: true,
             });
 
             // Number definition
@@ -865,7 +865,7 @@ export default {
             color = 0xffff00;
           }
           var material = new THREE.LineBasicMaterial({
-            color: color
+            color: color,
           });
           let line = new THREE.Line(geometry, material);
           // let dist = line.computeLineDistances();
@@ -878,7 +878,7 @@ export default {
       }
       this.scene.add(this.linesGroup);
     },
-    loadAnchors: function() {
+    loadAnchors: function () {
       this.scene.remove(this.anchorsGroup);
       if (!this.activeRoute) return;
       this.anchorsGroup = new THREE.Group();
@@ -910,7 +910,7 @@ export default {
             transparent: true,
             depthTest: false,
             depthWrite: false,
-            sizeAttenuation: true
+            sizeAttenuation: true,
           });
 
           // Number definition
@@ -1009,7 +1009,7 @@ export default {
     //   }
     //   this.decals = []
     // },
-    onDocumentMouseMove: function(event) {
+    onDocumentMouseMove: function (event) {
       event.preventDefault();
       if (this.selectedObject) {
         if (this.activeObject != this.selectedObject) {
@@ -1030,7 +1030,7 @@ export default {
         );
       }
       if (intersects.length > 0) {
-        let res = intersects.filter(function(res) {
+        let res = intersects.filter(function (res) {
           return res && res.object;
         })[0];
         if (res && res.object && res.object.material.opacity > 0) {
@@ -1041,7 +1041,7 @@ export default {
             1
           );
           this.selectedPos = this.group.children.findIndex(
-            x => x.id === this.selectedObject.id
+            (x) => x.id === this.selectedObject.id
           );
 
           let vector = this.selectedObject.position.clone();
@@ -1067,7 +1067,7 @@ export default {
         }
       }
     },
-    getIntersects: function(x, y) {
+    getIntersects: function (x, y) {
       x = (x / window.innerWidth) * 2 - 1;
       y = -(y / window.innerHeight) * 2 + 1;
       this.mouseVector.set(x, y);
@@ -1097,7 +1097,7 @@ export default {
         this.intersection.intersects = false;
       }
     },
-    onDocumentTouchEnd: function(event) {
+    onDocumentTouchEnd: function (event) {
       event.preventDefault();
       //check double-tap
       let currentTime = new Date().getTime();
@@ -1138,13 +1138,13 @@ export default {
           );
         }
         if (intersects.length > 0) {
-          let res = intersects.filter(function(res) {
+          let res = intersects.filter(function (res) {
             return res && res.object;
           })[0];
           if (res && res.object) {
             this.selectedObject = res.object;
             this.selectedPos = this.group.children.findIndex(
-              x => x.id === this.selectedObject.id
+              (x) => x.id === this.selectedObject.id
             );
 
             let newRoute = this.routePos[this.selectedPos];
@@ -1153,7 +1153,7 @@ export default {
         } else {
           this.$store.commit("frame/updateActiveRoute", null);
         }
-        this.timeout = setTimeout(function() {
+        this.timeout = setTimeout(function () {
           clearTimeout(this.timeout);
         }, 200);
       }
@@ -1166,7 +1166,7 @@ export default {
         this.play = true;
       }
     },
-    onDocumentMouseclick: function() {
+    onDocumentMouseclick: function () {
       if (this.moved) return;
       if (this.selectedObject) {
         let newRoute = this.routePos[this.selectedPos];
@@ -1186,7 +1186,7 @@ export default {
       this.controls.target = input;
       this.controls.update();
     },
-    checkAnnotationDistance: function() {
+    checkAnnotationDistance: function () {
       if (this.group) {
         if (
           this.camera.position.distanceTo(this.controls.target).toFixed(0) > 90
@@ -1322,7 +1322,7 @@ export default {
     loseContext() {
       this.renderer.forceContextLoss();
       console.log(this.renderer);
-    }
+    },
   },
   mounted() {
     this.init();
@@ -1341,7 +1341,7 @@ export default {
     this.play = true;
     this.onWindowResize();
     this.animate();
-  }
+  },
 };
 </script>
 

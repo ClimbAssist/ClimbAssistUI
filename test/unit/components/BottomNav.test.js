@@ -20,21 +20,21 @@ describe("BottomNav", () => {
   it("renders bar on frameV", () => {
     state = {
       sidebar: {
-        sidebar: "frameV"
+        sidebar: "frameV",
       },
       frame: {
-        frameTabs: "info"
-      }
+        frameTabs: "info",
+      },
     };
     store = new Vuex.Store({
-      state
+      state,
     });
     const wrapper = shallowMount(BottomNav, {
       localVue,
       store,
       stubs: {
-        NuxtLink: RouterLinkStub
-      }
+        NuxtLink: RouterLinkStub,
+      },
     });
     expect(
       wrapper.contains("[data-testid=bottom-nav-info-button]")
@@ -43,21 +43,44 @@ describe("BottomNav", () => {
   it("hides bar off frameV", () => {
     state = {
       sidebar: {
-        sidebar: "areaV"
+        sidebar: "frameV",
       },
       frame: {
-        frameTabs: "info"
-      }
+        frameTabs: "info",
+      },
     };
     store = new Vuex.Store({
-      state
+      state,
     });
     const wrapper = shallowMount(BottomNav, {
       localVue,
       store,
       stubs: {
-        NuxtLink: RouterLinkStub
-      }
+        NuxtLink: RouterLinkStub,
+      },
+    });
+    expect(
+      wrapper.contains("[data-testid=bottom-nav-info-button]")
+    ).toBeTruthy();
+  });
+  it("hides bar off frameV", () => {
+    state = {
+      sidebar: {
+        sidebar: "areaV",
+      },
+      frame: {
+        frameTabs: "info",
+      },
+    };
+    store = new Vuex.Store({
+      state,
+    });
+    const wrapper = shallowMount(BottomNav, {
+      localVue,
+      store,
+      stubs: {
+        NuxtLink: RouterLinkStub,
+      },
     });
     expect(
       wrapper.contains("[data-testid=bottom-nav-info-button]")

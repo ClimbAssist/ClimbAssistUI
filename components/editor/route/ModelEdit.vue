@@ -8,7 +8,13 @@
     <div id="scale">
       <p>{{ scaleSize }} m ({{ scaleSizeFt }} ft)</p>
     </div>
-    <v-btn v-if="showUndo" class="undo-btn" @click="removePoint()" :disabled="loading">undo</v-btn>
+    <v-btn
+      v-if="showUndo"
+      class="undo-btn"
+      @click="removePoint()"
+      :disabled="loading"
+      >undo</v-btn
+    >
     <v-btn
       v-if="showSave"
       class="save-btn"
@@ -63,12 +69,12 @@ export default {
       centerLoc: {
         x: null,
         y: null,
-        z: null
+        z: null,
       },
       intersection: {
         intersects: false,
         point: new THREE.Vector3(),
-        normal: new THREE.Vector3()
+        normal: new THREE.Vector3(),
       },
       mouseHelper: null,
       mouse: new THREE.Vector2(),
@@ -76,7 +82,7 @@ export default {
       inputPoints: [],
       lines: [],
       activeLine: null,
-      lineEnd: false
+      lineEnd: false,
     };
   },
   watch: {
@@ -85,19 +91,19 @@ export default {
         this.scene.remove(this.anchorsGroup);
         this.loadAnchors();
       },
-      deep: true
+      deep: true,
     },
     storePoints: {
       handler() {
         if (!this.play) {
-          return
+          return;
         }
         this.addPitchLine();
         this.setActivePitch();
         this.updateSelectedRoute();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
     crag() {
@@ -193,7 +199,7 @@ export default {
               ),
               z: parseFloat(
                 this.lines[lkey].geometry.vertices[pkey].z.toFixed(4)
-              )
+              ),
             };
             if (lkey == 0 && pkey == 0) {
               savePoint.first = true;
@@ -248,10 +254,10 @@ export default {
           return null;
         }
       }
-    }
+    },
   },
   methods: {
-    init: function() {
+    init: function () {
       let container = document.getElementById("container");
 
       this.scene = new THREE.Scene();
@@ -352,7 +358,7 @@ export default {
       });
       this.onWindowResize();
     },
-    animate: function() {
+    animate: function () {
       if (this.play) {
         requestAnimationFrame(this.animate);
 
@@ -389,7 +395,7 @@ export default {
         this.renderer.setScissorTest(false);
       }
     },
-    onWindowResize: function() {
+    onWindowResize: function () {
       if (this.play) {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
@@ -406,10 +412,10 @@ export default {
         this.camera2.updateProjectionMatrix();
       }
     },
-    loadModel: function() {
+    loadModel: function () {
       let loader = new GLTFLoader();
 
-      loader.load(this.crag.model.modelLocation, gltf => {
+      loader.load(this.crag.model.modelLocation, (gltf) => {
         this.mesh = gltf.scene.children[0];
         this.mesh.layers.set(1);
         this.mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
@@ -418,12 +424,12 @@ export default {
         // this.loadDecals()
       });
     },
-    loadNorth: function() {
+    loadNorth: function () {
       let loader = new GLTFLoader();
 
       loader.load(
         "https://s3-us-west-2.amazonaws.com/models-172776452117-us-west-2/north.glb",
-        gltf => {
+        (gltf) => {
           this.north = gltf.scene.children[0];
           this.north.scale.set(5, 5, 5);
           let northAngle = this.crag.model.modelAngle + Math.PI;
@@ -433,7 +439,7 @@ export default {
         }
       );
     },
-    loadSprites: function() {
+    loadSprites: function () {
       this.group = new THREE.Group();
       const x = 32;
       const y = 32;
@@ -458,7 +464,7 @@ export default {
                 transparent: true,
                 depthTest: false,
                 depthWrite: false,
-                sizeAttenuation: true
+                sizeAttenuation: true,
               });
 
               // Number definition
@@ -514,7 +520,7 @@ export default {
       this.$store.commit("editor/updateAnchors", anchors);
       this.loadAnchors();
     },
-    loadAnchors: function() {
+    loadAnchors: function () {
       this.anchorsGroup = new THREE.Group();
       const x = 32;
       const y = 32;
@@ -535,7 +541,7 @@ export default {
           transparent: true,
           depthTest: false,
           depthWrite: false,
-          sizeAttenuation: true
+          sizeAttenuation: true,
         });
 
         // Number definition
@@ -610,7 +616,7 @@ export default {
               color = 0xffff00;
             }
             var material = new THREE.LineBasicMaterial({
-              color: color
+              color: color,
             });
             let line = new THREE.Line(geometry, material);
             line.layers.set(3);
@@ -641,7 +647,7 @@ export default {
         transparent: true,
         depthTest: false,
         depthWrite: false,
-        sizeAttenuation: true
+        sizeAttenuation: true,
       });
 
       ctx.canvas.width = 64;
@@ -694,7 +700,7 @@ export default {
 
       const pLoc = {
         point: new THREE.Vector3(),
-        normal: new THREE.Vector3()
+        normal: new THREE.Vector3(),
       };
       pLoc.point.copy(this.intersection.point);
       pLoc.normal.copy(this.intersection.normal);
@@ -737,7 +743,7 @@ export default {
           if (lineIntersects.length > 0) {
             let surfLoc = {
               point: new THREE.Vector3(),
-              normal: new THREE.Vector3()
+              normal: new THREE.Vector3(),
             };
             surfLoc.point.copy(lineIntersects[0].point);
             surfLoc.normal.copy(lineIntersects[0].face.normal);
@@ -755,7 +761,7 @@ export default {
 
         var material = new THREE.LineBasicMaterial({
           color: "#40FF70",
-          linewidth: 10
+          linewidth: 10,
         });
 
         var line = new THREE.Line(geometry, material);
@@ -778,19 +784,25 @@ export default {
     },
     async submitPoints() {
       //post points
-      this.$store.commit("editor/updateLoading", true)
+      this.$store.commit("editor/updateLoading", true);
 
       try {
         let pitchId = this.selectedRoute.pitches[this.activePitch - 1].pitchId;
         let submitPoints = {
-          newPoints: this.savePoints
-        }
-        let pointIds = await this.$axios.$put('/v1/pitches/' + pitchId + '/points', submitPoints);
-      } catch (error){
+          newPoints: this.savePoints,
+        };
+        let pointIds = await this.$axios.$put(
+          "/v1/pitches/" + pitchId + "/points",
+          submitPoints
+        );
+      } catch (error) {
         this.$store.commit("editor/updateLoading", false);
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 100000);
-        this.$store.commit("snackbar/updateMessage", "failed to add line" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to add line" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -803,7 +815,7 @@ export default {
       pitch.anchors = {
         x: this.savePoints[this.savePoints.length - 1].x,
         y: this.savePoints[this.savePoints.length - 1].y,
-        z: this.savePoints[this.savePoints.length - 1].z
+        z: this.savePoints[this.savePoints.length - 1].z,
       };
       pitch.distance = this.lineDist;
       if (this.selectedRoute.style === "sport") {
@@ -815,10 +827,13 @@ export default {
       try {
         await this.$axios.$post("/v1/pitches", pitch);
       } catch (error) {
-        this.$store.commit("editor/updateLoading", false)
+        this.$store.commit("editor/updateLoading", false);
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 100000);
-        this.$store.commit("snackbar/updateMessage", "failed to add anchors" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to add anchors" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
@@ -849,8 +864,8 @@ export default {
         let crag = _.clone(this.crag);
         crag.walls[this.activeRoute[0]].routes[this.activeRoute[1]] = route;
         this.$store.commit("editor/updateCrag", crag);
-        console.log("crag")
-        console.log(this.crag)
+        console.log("crag");
+        console.log(this.crag);
       } catch (error) {
         console.log(error.message);
       }
@@ -927,7 +942,7 @@ export default {
     //     }
     //   }
     // },
-    onDocumentMouseclick: function() {
+    onDocumentMouseclick: function () {
       if (this.moved || this.loading) return;
       this.checkMeshIntersection();
       if (!this.moved && this.intersection.intersects) {
@@ -960,7 +975,7 @@ export default {
     //     this.scaleFactor = 1;
     //   }
     // }
-    checkAnnotationDistance: function() {
+    checkAnnotationDistance: function () {
       if (this.group) {
         // if (
         //   this.camera.position.distanceTo(this.camera.target).toFixed(0) >=
@@ -1039,7 +1054,7 @@ export default {
       let anchor = {
         x: this.savePoints[this.savePoints.length - 1].x,
         y: this.savePoints[this.savePoints.length - 1].y,
-        z: this.savePoints[this.savePoints.length - 1].z
+        z: this.savePoints[this.savePoints.length - 1].z,
       };
       if (this.selectedRoute.style === "sport") {
         anchor.fixed = true;
@@ -1056,7 +1071,7 @@ export default {
         this.scene.remove(this.lines[i]);
       }
       this.lines = [];
-      this.$store.commit("editor/updateLoading", false)
+      this.$store.commit("editor/updateLoading", false);
     },
     setPoints() {
       let points = [];
@@ -1127,12 +1142,12 @@ export default {
         color = 0xffff00;
       }
       var material = new THREE.LineBasicMaterial({
-        color: color
+        color: color,
       });
       this.activeLine = new THREE.Line(geometry, material);
       this.activeLine.layers.set(3);
       this.scene.add(this.activeLine);
-    }
+    },
   },
   mounted() {
     this.$store.commit(
@@ -1160,7 +1175,7 @@ export default {
     this.$store.commit("editor/updateCenterLoc", {
       x: undefined,
       y: undefined,
-      z: undefined
+      z: undefined,
     });
   },
   activated() {
@@ -1174,7 +1189,7 @@ export default {
     this.loadLines();
     this.play = true;
     this.animate();
-  }
+  },
 };
 </script>
 

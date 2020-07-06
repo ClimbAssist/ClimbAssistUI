@@ -18,9 +18,18 @@
                 <span v-if="area.sport"> sport {{ area.sport }}</span>
                 <span v-if="area.boulder">
                   boulder {{ area.boulder }}</span
-              ></v-list-item-subtitle>
+                ></v-list-item-subtitle
+              >
               <v-list-item-subtitle class="grey--text text--lighten-2">
-                <v-chip x-small outlined color="white" v-for="(subArea, subi) in area.filteredSubAreas" :key="subi" v-if="subArea.name !==area.name">{{subArea.name}}</v-chip>
+                <v-chip
+                  x-small
+                  outlined
+                  color="white"
+                  v-for="(subArea, subi) in area.filteredSubAreas"
+                  :key="subi"
+                  v-if="subArea.name !== area.name"
+                  >{{ subArea.name }}</v-chip
+                >
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -35,7 +44,15 @@
                 ></v-list-item-subtitle
               >
               <v-list-item-subtitle class="grey--text text--lighten-2">
-                <v-chip x-small outlined color="primary" v-for="(wall, walli) in crag.walls" :key="walli" v-if="wall.name !==crag.name">{{wall.name}}</v-chip>
+                <v-chip
+                  x-small
+                  outlined
+                  color="primary"
+                  v-for="(wall, walli) in crag.walls"
+                  :key="walli"
+                  v-if="wall.name !== crag.name"
+                  >{{ wall.name }}</v-chip
+                >
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -54,18 +71,18 @@ export default {
       return this.$store.state.filter.filter.filterText;
     },
     ...mapGetters({
-      filteredRoutes: "filter/filteredRoutes"
+      filteredRoutes: "filter/filteredRoutes",
     }),
     dataSet() {
       return this.$store.state.filter.dataSet;
-    }
+    },
   },
   watch: {
-    dataSet:  {
+    dataSet: {
       handler() {
         this.$forceUpdate();
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

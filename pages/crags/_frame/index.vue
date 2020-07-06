@@ -18,8 +18,8 @@ export default {
       handler() {
         this.$store.commit("frame/updateActiveRoute", null);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
     frameTabs() {
@@ -29,8 +29,8 @@ export default {
       return this.$store.state.filter.filter;
     },
     crag() {
-      return this.$store.state.filter.cragState
-    }
+      return this.$store.state.filter.cragState;
+    },
   },
   methods: {
     string_to_slug(str) {
@@ -50,12 +50,12 @@ export default {
         .replace(/-+/g, "-"); // collapse dashes
 
       return str;
-    }
+    },
   },
   components: {
     model: Model,
     mapcrag: MapCrag,
-    info: Info
+    info: Info,
   },
   async fetch({ store, params }) {
     if (
@@ -70,11 +70,12 @@ export default {
           return;
         }
       }
-      const api = (await axios.get("/v1/crags/" + params.frame + "?depth=4")).data;
+      const api = (await axios.get("/v1/crags/" + params.frame + "?depth=4"))
+        .data;
 
       let crag = api.data;
       if (!crag.walls) {
-        crag.walls = []
+        crag.walls = [];
       }
 
       for (let wi in crag.walls) {
@@ -82,30 +83,41 @@ export default {
           crag.walls[wi].routes = [];
         }
         for (let ri in crag.walls[wi].routes) {
-          crag.walls[wi].routes[ri].points = []
+          crag.walls[wi].routes[ri].points = [];
           crag.walls[wi].routes[ri].distance = 0;
           if (!crag.walls[wi].routes[ri].pitches) {
-            crag.walls[wi].routes[ri].pitches =[];
+            crag.walls[wi].routes[ri].pitches = [];
           }
           for (let pi in crag.walls[wi].routes[ri].pitches) {
             if (crag.walls[wi].routes[ri].pitches[pi].distance) {
-              crag.walls[wi].routes[ri].distance += crag.walls[wi].routes[ri].pitches[pi].distance
+              crag.walls[wi].routes[ri].distance +=
+                crag.walls[wi].routes[ri].pitches[pi].distance;
             }
             if (!crag.walls[wi].routes[ri].pitches[pi].points) {
               crag.walls[wi].routes[ri].pitches[pi].points = [];
             }
-            crag.walls[wi].routes[ri].points = crag.walls[wi].routes[ri].points.concat(crag.walls[wi].routes[ri].pitches[pi].points);
+            crag.walls[wi].routes[ri].points = crag.walls[wi].routes[
+              ri
+            ].points.concat(crag.walls[wi].routes[ri].pitches[pi].points);
           }
         }
       }
       if (params.countryKey) {
         crag.area = {
-          name: store.state.filter.countries[params.countryKey].regions[params.stateKey].areas[params.areaKey].name,
-          areaId: store.state.filter.countries[params.countryKey].regions[params.stateKey].areas[params.areaKey].areaId
+          name:
+            store.state.filter.countries[params.countryKey].regions[
+              params.stateKey
+            ].areas[params.areaKey].name,
+          areaId:
+            store.state.filter.countries[params.countryKey].regions[
+              params.stateKey
+            ].areas[params.areaKey].areaId,
         };
       } else {
-        const subAreaApi = (await axios.get("/v1/sub-areas/" + crag.subAreaId)).data;
-        const areaApi = (await axios.get("/v1/areas/" + subAreaApi.data.areaId)).data;
+        const subAreaApi = (await axios.get("/v1/sub-areas/" + crag.subAreaId))
+          .data;
+        const areaApi = (await axios.get("/v1/areas/" + subAreaApi.data.areaId))
+          .data;
         crag.area = areaApi.data;
       }
       store.commit("filter/updateCrag", crag);
@@ -114,7 +126,7 @@ export default {
   },
   created() {
     this.$store.commit("filter/updateFilterText", "");
-    if (this.$route.query.viewer ) {
+    if (this.$route.query.viewer) {
       this.$store.commit("frame/cragView", "model");
     } else {
       this.$store.commit("frame/cragView", "info");
@@ -133,10 +145,14 @@ export default {
       title: "Climb Assist - " + this.$store.state.filter.cragState.name,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        { hid: 'description', name: 'description', content: this.$store.state.filter.cragState.description }
-      ]
-    }
-  }
+        {
+          hid: "description",
+          name: "description",
+          content: this.$store.state.filter.cragState.description,
+        },
+      ],
+    };
+  },
 };
 </script>
 

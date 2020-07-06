@@ -25,11 +25,17 @@
             ></v-textarea>
           </v-layout>
           <v-card>
-            <v-card-title class="primary headline  white--text"
+            <v-card-title class="primary headline white--text"
               >Sub-Areas (not required)</v-card-title
             >
           </v-card>
-          <v-layout v-for="(subArea, i) in subAreas" :key="i" row wrap class="mx-2">
+          <v-layout
+            v-for="(subArea, i) in subAreas"
+            :key="i"
+            row
+            wrap
+            class="mx-2"
+          >
             <v-flex xs12>
               <v-text-field
                 label="name"
@@ -49,7 +55,7 @@
               Add sub-area
             </v-btn>
             <v-btn
-            class="ma-2"
+              class="ma-2"
               v-if="subAreas.length > 0"
               color="red"
               @click="subAreas.pop()"
@@ -69,9 +75,9 @@
 </template>
 
 <script>
-import { fetch } from "../../../mixins/fetchData.js"
+import { fetch } from "../../../mixins/fetchData.js";
 export default {
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {
       countries: this.$store.state.filter.countries,
@@ -80,7 +86,7 @@ export default {
       name: null,
       description: null,
       loading: false,
-      subAreas: []
+      subAreas: [],
     };
   },
   computed: {
@@ -130,7 +136,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     addSubArea() {
@@ -143,7 +149,7 @@ export default {
         let areaData = {
           name: this.name,
           regionId: this.regionId,
-          description: this.description
+          description: this.description,
         };
         console.log(areaData);
 
@@ -175,7 +181,7 @@ export default {
             let subArea = {
               name: this.name,
               description: this.description,
-              areaId: areaId.data.areaId
+              areaId: areaId.data.areaId,
             };
             let subAreaId = await this.$axios.$put("/v1/sub-areas/", subArea);
           } catch (error) {
@@ -199,27 +205,30 @@ export default {
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
 
-        this.$store.commit("filter/removeRoutes")
+        this.$store.commit("filter/removeRoutes");
         this.$store.commit("filter/dataSet", false);
         this.fetchData();
 
         this.$router.push({
           name: "editor-area-edit",
           params: {
-            edit: areaId.data.areaId
-          }
+            edit: areaId.data.areaId,
+          },
         });
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to create area" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to create area" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
       }
-    }
+    },
   },
-  mixins: [fetch]
+  mixins: [fetch],
 };
 </script>

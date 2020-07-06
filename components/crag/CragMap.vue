@@ -10,13 +10,13 @@ export default {
       access:
         "pk.eyJ1IjoiY2xpbWJhc3Npc3QiLCJhIjoiY2pmMDZ1ejBvMGpxZDJ3cWpiZ2w3c2w4NiJ9.Xwqm5bhXRQU-LrC2keGw3g",
       crag_pin: require("@/static/map_icon.png"),
-      parking_pin: require("@/static/parking.png")
+      parking_pin: require("@/static/parking.png"),
     };
   },
   computed: {
     ...mapGetters({
-      crag: "filter/crag"
-    })
+      crag: "filter/crag",
+    }),
   },
   methods: {
     createMap() {
@@ -29,9 +29,9 @@ export default {
         style: "mapbox://styles/mapbox/outdoors-v11",
         center: [
           this.crag.crag.location.longitude,
-          this.crag.crag.location.latitude
+          this.crag.crag.location.latitude,
         ],
-        zoom: this.crag.crag.location.zoom
+        zoom: this.crag.crag.location.zoom,
       });
       this.mapLoaded(this.map, mapboxgl);
     },
@@ -41,9 +41,9 @@ export default {
       map.addControl(
         new mapboxgl.GeolocateControl({
           positionOptions: {
-            enableHighAccuracy: true
+            enableHighAccuracy: true,
           },
-          trackUserLocation: true
+          trackUserLocation: true,
         })
       );
       map.on("style.load", () => {
@@ -60,15 +60,15 @@ export default {
         this.setPin();
 
         let popup = new mapboxgl.Popup({
-          closeButton: false
+          closeButton: false,
         });
-        
-        map.on("mousemove", "parking", e => {
+
+        map.on("mousemove", "parking", (e) => {
           // Change the cursor style as a UI indicator.
           map.getCanvas().style.cursor = "pointer";
 
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["parking"]
+            layers: ["parking"],
           });
           if (!features.length) {
             return;
@@ -90,9 +90,9 @@ export default {
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
-        map.on("click", "parking", e => {
+        map.on("click", "parking", (e) => {
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["parking"]
+            layers: ["parking"],
           });
           if (!features.length) {
             return;
@@ -117,11 +117,17 @@ export default {
 
           let LatD = Math.floor(Math.abs(Lat));
           let LatM = Math.floor(Math.abs(Math.abs(Lat) - LatD) * 60);
-          let LatS = ((Math.abs(Math.abs(Lat) - LatD) - LatM / 60) * 3600).toFixed(1);
+          let LatS = (
+            (Math.abs(Math.abs(Lat) - LatD) - LatM / 60) *
+            3600
+          ).toFixed(1);
           //
           let LongD = Math.floor(Math.abs(Long));
           let LongM = Math.floor(Math.abs(Math.abs(Long) - LongD) * 60);
-          let LongS = ((Math.abs(Math.abs(Long) - LongD) - LongM / 60) * 3600).toFixed(1);
+          let LongS = (
+            (Math.abs(Math.abs(Long) - LongD) - LongM / 60) *
+            3600
+          ).toFixed(1);
           window.open(
             "https://www.google.com/maps/place/" +
               LatD +
@@ -162,17 +168,20 @@ export default {
                 type: "Feature",
                 geometry: {
                   type: "Point",
-                  coordinates: [this.crag.crag.location.longitude, this.crag.crag.location.latitude]
-                }
-              }
-            ]
-          }
+                  coordinates: [
+                    this.crag.crag.location.longitude,
+                    this.crag.crag.location.latitude,
+                  ],
+                },
+              },
+            ],
+          },
         },
         type: "symbol",
         layout: {
           "icon-image": "cragPin",
-          "icon-size": 0.7
-        }
+          "icon-size": 0.7,
+        },
       });
     },
     setParking() {
@@ -183,8 +192,11 @@ export default {
             type: "Feature",
             geometry: {
               type: "Point",
-              coordinates: [this.crag.crag.parking[i].longitude, this.crag.crag.parking[i].latitude]
-            }
+              coordinates: [
+                this.crag.crag.parking[i].longitude,
+                this.crag.crag.parking[i].latitude,
+              ],
+            },
           };
           parkingPins.push(pin);
         }
@@ -194,34 +206,37 @@ export default {
             type: "geojson",
             data: {
               type: "FeatureCollection",
-              features: parkingPins
-            }
+              features: parkingPins,
+            },
           },
           type: "symbol",
           layout: {
             "icon-image": "parkingPin",
-            "icon-size": 0.7
-          }
+            "icon-size": 0.7,
+          },
         });
       }
     },
     setPath() {
-      console.log("in set path")
+      console.log("in set path");
       let pathLines = [];
       //paths from server
       if (this.crag.crag.paths) {
         for (let ci in this.crag.crag.paths) {
-          let coordinates = []
+          let coordinates = [];
           for (let pi in this.crag.crag.paths[ci].pathPoints) {
-            let geo = [this.crag.crag.paths[ci].pathPoints[pi].longitude, this.crag.crag.paths[ci].pathPoints[pi].latitude]
-            coordinates.push(geo)
+            let geo = [
+              this.crag.crag.paths[ci].pathPoints[pi].longitude,
+              this.crag.crag.paths[ci].pathPoints[pi].latitude,
+            ];
+            coordinates.push(geo);
           }
           let currentLine = {
             type: "feature",
             geometry: {
               type: "LineString",
-              coordinates: coordinates
-            }
+              coordinates: coordinates,
+            },
           };
           pathLines.push(currentLine);
         }
@@ -233,26 +248,28 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: pathLines
-          }
+            features: pathLines,
+          },
         },
         layout: {
           "line-join": "round",
-          "line-cap": "round"
+          "line-cap": "round",
         },
         paint: {
           "line-color": "#888",
-          "line-width": 8
-        }
+          "line-width": 8,
+        },
       });
-    }
+    },
   },
   mounted() {
     this.createMap();
   },
   activated() {
-    setTimeout(() =>{this.map.resize()}, 200)
-  }
+    setTimeout(() => {
+      this.map.resize();
+    }, 200);
+  },
 };
 </script>
 
@@ -261,7 +278,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 </style>
 <style>
 .mapboxgl-canvas {

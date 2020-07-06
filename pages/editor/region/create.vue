@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import { fetch } from "../../../mixins/fetchData.js"
+import { fetch } from "../../../mixins/fetchData.js";
 export default {
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {
       countries: this.$store.state.filter.countries,
@@ -57,22 +57,19 @@ export default {
       }
     },
     formCheck() {
-      if (
-        this.country &&
-        this.name
-      ) {
+      if (this.country && this.name) {
         return false;
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     async submit() {
       try {
         let obj = {
           name: this.name,
-          countryId: this.countryId
+          countryId: this.countryId,
         };
 
         let regionId = await this.$axios.$put("/v1/regions/", obj);
@@ -83,26 +80,29 @@ export default {
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
 
-        this.$store.commit("filter/removeRoutes")
+        this.$store.commit("filter/removeRoutes");
         this.$store.commit("filter/dataSet", false);
         this.fetchData();
 
         this.$router.push({
           name: "editor-region-edit",
           params: {
-            edit: regionId.data.regionId
-          }
+            edit: regionId.data.regionId,
+          },
         });
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to create region" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to create region" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
       }
-    }
-  }
+    },
+  },
 };
 </script>

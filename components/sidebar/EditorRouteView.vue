@@ -62,15 +62,15 @@ export default {
     return {
       radioGroup: ["Line", "Location"],
       fixed: [],
-      refresh: false
+      refresh: false,
     };
   },
   watch: {
     fixed: {
       handler() {
         this.$store.commit("editor/editAnchors", this.fixed);
-      }
-    }
+      },
+    },
   },
   computed: {
     crag() {
@@ -130,7 +130,7 @@ export default {
       },
       set(value) {
         this.$store.commit("editor/updateActivePitch", value);
-      }
+      },
     },
     editing: {
       get() {
@@ -138,7 +138,7 @@ export default {
       },
       set(value) {
         this.$store.commit("editor/updateEditing", value);
-      }
+      },
     },
     activeRoute() {
       return this.$store.state.editor.activeRoute;
@@ -162,7 +162,7 @@ export default {
     },
     distances() {
       return this.$store.state.editor.distances;
-    }
+    },
   },
   methods: {
     editInfo() {
@@ -320,7 +320,7 @@ export default {
         console.log(error.response.data.error.message);
         this.refresh = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>

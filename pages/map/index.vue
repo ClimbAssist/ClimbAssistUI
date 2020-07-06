@@ -21,7 +21,7 @@ export default {
       areaInfo: null,
       subAreaNames: [],
       pin: require("@/static/map_icon.png"),
-      climbPin: require("@/static/climbing.png")
+      climbPin: require("@/static/climbing.png"),
     };
   },
   watch: {
@@ -51,7 +51,7 @@ export default {
           this.addLayers();
         }, 100);
       },
-      deep: true
+      deep: true,
     },
     dataSet: {
       handler() {
@@ -87,12 +87,12 @@ export default {
           this.addLayers();
           this.addSubAreaLayers();
         }, 100);
-      }
-    }
+      },
+    },
   },
   computed: {
     ...mapGetters({
-      filteredRoutes: "filter/filteredRoutes"
+      filteredRoutes: "filter/filteredRoutes",
     }),
     boundsDisable() {
       return this.$store.state.filter.boundsDisable;
@@ -118,8 +118,8 @@ export default {
                   this.filteredRoutes.areas[akey].filteredSubAreas[subkey]
                     .filteredCrags[ckey].location.longitude,
                   this.filteredRoutes.areas[akey].filteredSubAreas[subkey]
-                    .filteredCrags[ckey].location.latitude
-                ]
+                    .filteredCrags[ckey].location.latitude,
+                ],
               },
               properties: {
                 title: this.filteredRoutes.areas[akey].filteredSubAreas[subkey]
@@ -148,8 +148,8 @@ export default {
                 ].filteredCrags[ckey].subAreaKey,
                 cragKey: this.filteredRoutes.areas[akey].filteredSubAreas[
                   subkey
-                ].filteredCrags[ckey].cragKey
-              }
+                ].filteredCrags[ckey].cragKey,
+              },
             };
             pins.push(pin);
           }
@@ -171,8 +171,8 @@ export default {
             type: "Point",
             coordinates: [
               this.filteredRoutes.areas[key].location.longitude,
-              this.filteredRoutes.areas[key].location.latitude
-            ]
+              this.filteredRoutes.areas[key].location.latitude,
+            ],
           },
           properties: {
             title: this.filteredRoutes.areas[key].name,
@@ -183,8 +183,8 @@ export default {
             countryKey: this.filteredRoutes.areas[key].countryKey,
             stateKey: this.filteredRoutes.areas[key].stateKey,
             areaKey: this.filteredRoutes.areas[key].areaKey,
-            maps: mapnum
-          }
+            maps: mapnum,
+          },
         };
         pins.push(pin);
       }
@@ -201,21 +201,27 @@ export default {
             geometry: {
               type: "Point",
               coordinates: [
-                this.filteredRoutes.areas[key].filteredSubAreas[subkey].location.longitude,
-                this.filteredRoutes.areas[key].filteredSubAreas[subkey].location.latitude
-              ]
+                this.filteredRoutes.areas[key].filteredSubAreas[subkey].location
+                  .longitude,
+                this.filteredRoutes.areas[key].filteredSubAreas[subkey].location
+                  .latitude,
+              ],
             },
             properties: {
-              title: this.filteredRoutes.areas[key].filteredSubAreas[subkey].name,
+              title: this.filteredRoutes.areas[key].filteredSubAreas[subkey]
+                .name,
               area: this.filteredRoutes.areas[key].slug,
-              trad: this.filteredRoutes.areas[key].filteredSubAreas[subkey].trad,
-              sport: this.filteredRoutes.areas[key].filteredSubAreas[subkey].sport,
-              boulder: this.filteredRoutes.areas[key].filteredSubAreas[subkey].boulder,
+              trad: this.filteredRoutes.areas[key].filteredSubAreas[subkey]
+                .trad,
+              sport: this.filteredRoutes.areas[key].filteredSubAreas[subkey]
+                .sport,
+              boulder: this.filteredRoutes.areas[key].filteredSubAreas[subkey]
+                .boulder,
               countryKey: this.filteredRoutes.areas[key].countryKey,
               stateKey: this.filteredRoutes.areas[key].stateKey,
               areaKey: this.filteredRoutes.areas[key].areaKey,
-              maps: mapnum
-            }
+              maps: mapnum,
+            },
           };
           pins.push(pin);
         }
@@ -233,23 +239,25 @@ export default {
               skey
             ].areas[akey].subAreas) {
               if (
-                this.$store.state.filter.countries[key].regions[skey].areas[akey]
-                  .subAreas[subkey].fill
+                this.$store.state.filter.countries[key].regions[skey].areas[
+                  akey
+                ].subAreas[subkey].fill
               ) {
                 let title = {
                   type: "Feature",
                   geometry: {
                     type: "Point",
-                    coordinates:[ this.$store.state.filter.countries[key].regions[skey]
-                      .areas[akey].subAreas[subkey].fill.titleLoc[0],
+                    coordinates: [
                       this.$store.state.filter.countries[key].regions[skey]
-                        .areas[akey].subAreas[subkey].fill.titleLoc[1] + offset
-                    ]
+                        .areas[akey].subAreas[subkey].fill.titleLoc[0],
+                      this.$store.state.filter.countries[key].regions[skey]
+                        .areas[akey].subAreas[subkey].fill.titleLoc[1] + offset,
+                    ],
                   },
                   properties: {
                     title: this.$store.state.filter.countries[key].regions[skey]
-                      .areas[akey].subAreas[subkey].name
-                  }
+                      .areas[akey].subAreas[subkey].name,
+                  },
                 };
                 let fill = {
                   type: "Feature",
@@ -259,37 +267,47 @@ export default {
                       [
                         [
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.minLongitude - offset,
+                            .areas[akey].subAreas[subkey].fill.minLongitude -
+                            offset,
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.minLatitude - offset
+                            .areas[akey].subAreas[subkey].fill.minLatitude -
+                            offset,
                         ],
                         [
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.minLongitude - offset,
+                            .areas[akey].subAreas[subkey].fill.minLongitude -
+                            offset,
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.maxLatitude + offset
+                            .areas[akey].subAreas[subkey].fill.maxLatitude +
+                            offset,
                         ],
                         [
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.maxLongitude + offset,
+                            .areas[akey].subAreas[subkey].fill.maxLongitude +
+                            offset,
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.maxLatitude + offset
+                            .areas[akey].subAreas[subkey].fill.maxLatitude +
+                            offset,
                         ],
                         [
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.maxLongitude + offset,
+                            .areas[akey].subAreas[subkey].fill.maxLongitude +
+                            offset,
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.minLatitude - offset
+                            .areas[akey].subAreas[subkey].fill.minLatitude -
+                            offset,
                         ],
                         [
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.minLongitude - offset,
+                            .areas[akey].subAreas[subkey].fill.minLongitude -
+                            offset,
                           this.$store.state.filter.countries[key].regions[skey]
-                            .areas[akey].subAreas[subkey].fill.minLatitude - offset
-                        ]
-                      ]
-                    ]
-                  }
+                            .areas[akey].subAreas[subkey].fill.minLatitude -
+                            offset,
+                        ],
+                      ],
+                    ],
+                  },
                 };
                 this.subAreaNames.push(title);
                 fills.push(fill);
@@ -299,7 +317,7 @@ export default {
         }
       }
       return fills;
-    }
+    },
   },
   methods: {
     createMap() {
@@ -311,7 +329,7 @@ export default {
         container: "map",
         style: "mapbox://styles/mapbox/light-v9",
         center: [-96, 37.8],
-        zoom: 4
+        zoom: 4,
       });
       this.mapLoaded(this.map, mapboxgl);
     },
@@ -321,13 +339,13 @@ export default {
       map.addControl(new mapboxgl.GeolocateControl({}));
       map.on("style.load", () => {
         let popup = new mapboxgl.Popup({
-          closeButton: false
+          closeButton: false,
         });
-       map.loadImage(this.pin, (error, image) => {
+        map.loadImage(this.pin, (error, image) => {
           if (error) throw error;
           map.addImage("pin", image);
         });
-       map.loadImage(this.climbPin, (error, image) => {
+        map.loadImage(this.climbPin, (error, image) => {
           if (error) throw error;
           map.addImage("climbPin", image);
           this.addLayers();
@@ -351,9 +369,9 @@ export default {
           }
         });
 
-        map.on("click", "crags", e => {
+        map.on("click", "crags", (e) => {
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["crags"]
+            layers: ["crags"],
           });
           if (!features.length) {
             return;
@@ -369,16 +387,16 @@ export default {
               subAreaKey: feature.properties.subAreaKey,
               cragKey: feature.properties.cragKey,
               area: feature.properties.area,
-              frame: feature.properties.frame
-            }
+              frame: feature.properties.frame,
+            },
           });
         });
 
         // Change the cursor to a pointer when the it enters a feature in the 'symbols' layer.
-        map.on("mousemove", "crags", e => {
+        map.on("mousemove", "crags", (e) => {
           map.getCanvas().style.cursor = "pointer";
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["crags"]
+            layers: ["crags"],
           });
           if (!features.length) {
             return;
@@ -393,14 +411,14 @@ export default {
         });
 
         // Change it back to a pointer when it leaves.
-        map.on("mouseleave", "crags", e => {
+        map.on("mouseleave", "crags", (e) => {
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
 
-        map.on("click", "cragsText", e => {
+        map.on("click", "cragsText", (e) => {
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["cragsText"]
+            layers: ["cragsText"],
           });
           if (!features.length) {
             return;
@@ -416,16 +434,16 @@ export default {
               subAreaKey: feature.properties.subAreaKey,
               cragKey: feature.properties.cragKey,
               area: feature.properties.area,
-              frame: feature.properties.frame
-            }
+              frame: feature.properties.frame,
+            },
           });
         });
 
         // Change the cursor to a pointer when the it enters a feature in the 'symbols' layer.
-        map.on("mousemove", "cragsText", e => {
+        map.on("mousemove", "cragsText", (e) => {
           map.getCanvas().style.cursor = "pointer";
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["cragsText"]
+            layers: ["cragsText"],
           });
           if (!features.length) {
             return;
@@ -450,17 +468,17 @@ export default {
         });
 
         // Change it back to a pointer when it leaves.
-        map.on("mouseleave", "cragsText", e => {
+        map.on("mouseleave", "cragsText", (e) => {
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
 
-        map.on("mousemove", "subAreasText", e => {
+        map.on("mousemove", "subAreasText", (e) => {
           // Change the cursor style as a UI indicator.
           map.getCanvas().style.cursor = "pointer";
 
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["subAreasText"]
+            layers: ["subAreasText"],
           });
           if (!features.length) {
             return;
@@ -493,9 +511,9 @@ export default {
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
-        map.on("click", "subAreasText", e => {
+        map.on("click", "subAreasText", (e) => {
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["subAreasText"]
+            layers: ["subAreasText"],
           });
           if (!features.length) {
             return;
@@ -508,17 +526,17 @@ export default {
               countryKey: feature.properties.countryKey,
               stateKey: feature.properties.stateKey,
               areaKey: feature.properties.areaKey,
-              area: feature.properties.area
-            }
+              area: feature.properties.area,
+            },
           });
         });
 
-        map.on("mousemove", "areasText", e => {
+        map.on("mousemove", "areasText", (e) => {
           // Change the cursor style as a UI indicator.
           map.getCanvas().style.cursor = "pointer";
 
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["areasText"]
+            layers: ["areasText"],
           });
           if (!features.length) {
             return;
@@ -551,9 +569,9 @@ export default {
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
-        map.on("click", "areasText", e => {
+        map.on("click", "areasText", (e) => {
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["areasText"]
+            layers: ["areasText"],
           });
           if (!features.length) {
             return;
@@ -566,17 +584,17 @@ export default {
               countryKey: feature.properties.countryKey,
               stateKey: feature.properties.stateKey,
               areaKey: feature.properties.areaKey,
-              area: feature.properties.area
-            }
+              area: feature.properties.area,
+            },
           });
         });
 
-        map.on("mousemove", "areas", e => {
+        map.on("mousemove", "areas", (e) => {
           // Change the cursor style as a UI indicator.
           map.getCanvas().style.cursor = "pointer";
 
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["areas"]
+            layers: ["areas"],
           });
           if (!features.length) {
             return;
@@ -598,9 +616,9 @@ export default {
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
-        map.on("click", "areas", e => {
+        map.on("click", "areas", (e) => {
           const features = map.queryRenderedFeatures(e.point, {
-            layers: ["areas"]
+            layers: ["areas"],
           });
           if (!features.length) {
             return;
@@ -613,8 +631,8 @@ export default {
               countryKey: feature.properties.countryKey,
               stateKey: feature.properties.stateKey,
               areaKey: feature.properties.areaKey,
-              area: feature.properties.area
-            }
+              area: feature.properties.area,
+            },
           });
         });
       });
@@ -629,13 +647,13 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: this.cragPins
-          }
+            features: this.cragPins,
+          },
         },
         layout: {
           "icon-image": "climbPin",
-          "icon-size": 0.7
-        }
+          "icon-size": 0.7,
+        },
       });
       this.map.addLayer({
         id: "cragsText",
@@ -645,8 +663,8 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: this.cragPins
-          }
+            features: this.cragPins,
+          },
         },
         layout: {
           "icon-image": "climbPin",
@@ -656,8 +674,8 @@ export default {
           "text-field": "{title}",
           "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
           "text-offset": [0, 0.6],
-          "text-anchor": "top"
-        }
+          "text-anchor": "top",
+        },
       });
       this.map.addLayer({
         id: "areasText",
@@ -668,8 +686,8 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: this.areaPins
-          }
+            features: this.areaPins,
+          },
         },
         layout: {
           "icon-image": "pin",
@@ -677,8 +695,8 @@ export default {
           "text-field": "{title}",
           "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
           "text-offset": [0, 0.6],
-          "text-anchor": "top"
-        }
+          "text-anchor": "top",
+        },
       });
 
       this.map.addLayer({
@@ -690,8 +708,8 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: this.subAreaPins
-          }
+            features: this.subAreaPins,
+          },
         },
         layout: {
           "icon-image": "pin",
@@ -699,8 +717,8 @@ export default {
           "text-field": "{title}",
           "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
           "text-offset": [0, 0.6],
-          "text-anchor": "top"
-        }
+          "text-anchor": "top",
+        },
       });
 
       this.map.addLayer({
@@ -711,13 +729,13 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: this.areaPins
-          }
+            features: this.areaPins,
+          },
         },
         layout: {
           "icon-image": "pin",
-          "icon-size": 0.7
-        }
+          "icon-size": 0.7,
+        },
       });
     },
     addSubAreaLayers() {
@@ -729,13 +747,13 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: this.subAreaFills
-          }
+            features: this.subAreaFills,
+          },
         },
         paint: {
           "fill-color": "#449947",
-          "fill-opacity": 0.4
-        }
+          "fill-opacity": 0.4,
+        },
       });
       this.map.addLayer({
         id: "subAreaNames",
@@ -745,22 +763,22 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: this.subAreaNames
-          }
+            features: this.subAreaNames,
+          },
         },
         layout: {
           "text-field": "{title}",
           "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
           "text-offset": [0, -0.6],
-          "text-anchor": "bottom"
-        }
+          "text-anchor": "bottom",
+        },
       });
-    }
+    },
   },
   created() {
     // this.$store.commit("filter/updateArea", this.areaState);
     this.$store.commit("filter/updateFilterText", "");
-    this.$store.commit("filter/updateBoundsDisable", false)
+    this.$store.commit("filter/updateBoundsDisable", false);
   },
   mounted() {
     this.createMap();
@@ -768,9 +786,9 @@ export default {
   },
   destroyed() {
     this.$store.commit("sidebar/updateSidebar", "defaultV");
-    this.$store.commit("filter/updateBoundsDisable", true)
+    this.$store.commit("filter/updateBoundsDisable", true);
     this.$store.commit("filter/updateMapBounds", undefined);
-  }
+  },
 };
 </script>
 

@@ -5,7 +5,7 @@ export const state = () => ({
     yds_grade: [1, 16],
     boulder: true,
     sport: true,
-    trad: true
+    trad: true,
   },
   boundsDisable: false,
   dataSet: false,
@@ -22,7 +22,7 @@ export const state = () => ({
     model: null,
     parking: null,
     paths: [],
-    walls: []
+    walls: [],
   },
   areaState: {
     name: null,
@@ -31,20 +31,20 @@ export const state = () => ({
     description: null,
     fill: undefined,
     location: null,
-    subAreas: []
+    subAreas: [],
   },
   loadedCrags: [],
-  loadError: undefined
+  loadError: undefined,
 });
 
 export const getters = {
-  filteredRoutes: state => {
+  filteredRoutes: (state) => {
     const filteredRoutes = {
       crags: [],
       subAreas: [],
       areas: [],
       regions: [],
-      countries: []
+      countries: [],
     };
     for (let tkey in state.countries) {
       const countryTotals = {
@@ -52,7 +52,7 @@ export const getters = {
         trad: 0,
         sport: 0,
         boulder: 0,
-        filteredRegions: []
+        filteredRegions: [],
       };
       for (let skey in state.countries[tkey].regions) {
         const stateTotals = {
@@ -60,7 +60,7 @@ export const getters = {
           trad: 0,
           sport: 0,
           boulder: 0,
-          filteredAreas: []
+          filteredAreas: [],
         };
         for (let akey in state.countries[tkey].regions[skey].areas) {
           const areaTotals = {
@@ -74,7 +74,7 @@ export const getters = {
             trad: 0,
             sport: 0,
             boulder: 0,
-            filteredSubAreas: []
+            filteredSubAreas: [],
           };
           for (let subkey in state.countries[tkey].regions[skey].areas[akey]
             .subAreas) {
@@ -92,7 +92,7 @@ export const getters = {
               trad: 0,
               sport: 0,
               boulder: 0,
-              filteredCrags: []
+              filteredCrags: [],
             };
             for (let ckey in state.countries[tkey].regions[skey].areas[akey]
               .subAreas[subkey].crags) {
@@ -123,7 +123,7 @@ export const getters = {
                 trad: 0,
                 sport: 0,
                 boulder: 0,
-                walls: []
+                walls: [],
               };
               for (let wkey in state.countries[tkey].regions[skey].areas[akey]
                 .subAreas[subkey].crags[ckey].walls) {
@@ -132,7 +132,7 @@ export const getters = {
                     state.countries[tkey].regions[skey].areas[akey].subAreas[
                       subkey
                     ].crags[ckey].walls[wkey].name,
-                  routes: []
+                  routes: [],
                 };
                 for (let rkey in state.countries[tkey].regions[skey].areas[akey]
                   .subAreas[subkey].crags[ckey].walls[wkey].routes) {
@@ -292,14 +292,14 @@ export const getters = {
     }
     return filteredRoutes;
   },
-  crag: state => {
+  crag: (state) => {
     let cragTotals = {
       name: state.cragState.name,
       crag: state.cragState,
       trad: 0,
       sport: 0,
       boulder: 0,
-      walls: []
+      walls: [],
     };
     for (let wkey in state.cragState.walls) {
       let filteredWall = {
@@ -307,7 +307,7 @@ export const getters = {
         trad: 0,
         sport: 0,
         boulder: 0,
-        routes: []
+        routes: [],
       };
       for (let rkey in state.cragState.walls[wkey].routes) {
         if (
@@ -367,7 +367,7 @@ export const getters = {
     }
     return cragTotals;
   },
-  area: state => {
+  area: (state) => {
     const areaTotals = {
       name: state.areaState.name,
       slug: state.areaState.areaId,
@@ -375,7 +375,7 @@ export const getters = {
       trad: 0,
       sport: 0,
       boulder: 0,
-      filteredSubAreas: []
+      filteredSubAreas: [],
     };
     for (let subkey in state.areaState.subAreas) {
       const subAreaTotals = {
@@ -388,7 +388,7 @@ export const getters = {
         trad: 0,
         sport: 0,
         boulder: 0,
-        filteredCrags: []
+        filteredCrags: [],
       };
       for (let ckey in state.areaState.subAreas[subkey].crags) {
         const cragTotals = {
@@ -402,12 +402,12 @@ export const getters = {
           trad: 0,
           sport: 0,
           boulder: 0,
-          walls: []
+          walls: [],
         };
         for (let wkey in state.areaState.subAreas[subkey].crags[ckey].walls) {
           const filteredWall = {
             name: state.areaState.subAreas[subkey].crags[ckey].walls[wkey].name,
-            routes: []
+            routes: [],
           };
           for (let rkey in state.areaState.subAreas[subkey].crags[ckey].walls[
             wkey
@@ -506,7 +506,7 @@ export const getters = {
       }
     }
     return areaTotals;
-  }
+  },
 };
 export const mutations = {
   updateFilter: (state, payload) => {
@@ -519,7 +519,7 @@ export const mutations = {
   updateRoutes: (state, payload) => {
     state.countries.push(payload);
   },
-  removeRoutes: state => {
+  removeRoutes: (state) => {
     state.countries = [];
   },
   updateLoadedCrags: (state, payload) => {
@@ -572,5 +572,5 @@ export const mutations = {
   },
   updateLoadError: (state, payload) => {
     state.loadError = payload;
-  }
+  },
 };

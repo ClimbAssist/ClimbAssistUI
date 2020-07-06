@@ -7,7 +7,9 @@
             <v-text-field label="name" v-model="name"></v-text-field>
           </v-layout>
           <v-layout align-center justify-end row>
-            <v-btn @click="submit()" color="primary" :disabled="formCheck">Submit</v-btn>
+            <v-btn @click="submit()" color="primary" :disabled="formCheck"
+              >Submit</v-btn
+            >
           </v-layout>
         </v-container>
       </v-container>
@@ -21,7 +23,7 @@ export default {
   middleware: "authentication",
   data() {
     return {
-      name: ""
+      name: "",
     };
   },
   computed: {
@@ -31,7 +33,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     async submit() {
@@ -54,8 +56,8 @@ export default {
         this.$router.push({
           name: "editor-country-edit",
           params: {
-            edit: countryId.data.countryId
-          }
+            edit: countryId.data.countryId,
+          },
         });
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
@@ -69,7 +71,7 @@ export default {
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
       }
-    }
-  }
+    },
+  },
 };
 </script>

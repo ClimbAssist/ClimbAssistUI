@@ -20,21 +20,21 @@
       <v-btn-toggle light dense mandatory v-model="frameTabs" color="primary">
         <v-btn :color="iconColor[0]" outlined value="info">
           <span :class="bottomBorder[0]">
-          <v-icon :color="iconColor[0]">fa-info</v-icon>
-          <span >Info</span>
+            <v-icon :color="iconColor[0]">fa-info</v-icon>
+            <span>Info</span>
           </span>
         </v-btn>
 
-        <v-btn  :color="iconColor[1]" outlined value="model">
+        <v-btn :color="iconColor[1]" outlined value="model">
           <span :class="bottomBorder[1]">
             <v-icon :color="iconColor[1]">fa-cube</v-icon>
-            <span >Model</span>
+            <span>Model</span>
           </span>
         </v-btn>
 
-        <v-btn  :color="iconColor[2]" outlined value="mapcrag">
+        <v-btn :color="iconColor[2]" outlined value="mapcrag">
           <span :class="bottomBorder[2]">
-              <v-icon :color = "iconColor[2]">fa-map</v-icon>
+            <v-icon :color="iconColor[2]">fa-map</v-icon>
             <span>Map</span>
           </span>
         </v-btn>
@@ -53,27 +53,27 @@ export default {
       },
       set(value) {
         this.$store.commit("frame/cragView", value);
-      }
+      },
     },
     iconColor() {
-      let iconColor = ["grey", "grey", "grey"]
+      let iconColor = ["grey", "grey", "grey"];
       if (this.frameTabs === "info") {
-        iconColor[0] = "primary"
+        iconColor[0] = "primary";
       } else if (this.frameTabs === "model") {
-        iconColor[1] = "primary"
+        iconColor[1] = "primary";
       } else {
-        iconColor[2] = "primary"
+        iconColor[2] = "primary";
       }
       return iconColor;
     },
     bottomBorder() {
-      let bottomBorder = ["bottom-border", "bottom-border", "bottom-border"]
+      let bottomBorder = ["bottom-border", "bottom-border", "bottom-border"];
       if (this.frameTabs === "info") {
-        bottomBorder[0] = "bottom-border-active"
+        bottomBorder[0] = "bottom-border-active";
       } else if (this.frameTabs === "model") {
-        bottomBorder[1] = "bottom-border-active"
+        bottomBorder[1] = "bottom-border-active";
       } else {
-        bottomBorder[2] = "bottom-border-active"
+        bottomBorder[2] = "bottom-border-active";
       }
       return bottomBorder;
     },
@@ -85,8 +85,8 @@ export default {
     },
     sidebar() {
       return this.$store.state.sidebar.sidebar;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

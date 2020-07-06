@@ -4,17 +4,17 @@
     <v-navigation-drawer v-model="drawer" fixed app clipped touchless>
       <v-list>
         <v-list-item-group color="primary" class="text-left">
-        <v-list-item v-if="username" to="/user" router>
-          <v-list-item-icon>
-            <v-icon>
-            fa-user
-          </v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ username }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <!-- <v-list-item v-else to="/user/login" router>
+          <v-list-item v-if="username" to="/user" router>
+            <v-list-item-icon>
+              <v-icon>
+                fa-user
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ username }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <!-- <v-list-item v-else to="/user/login" router>
           <v-list-item-icon>
             <v-icon>
             fa-user
@@ -24,27 +24,27 @@
             <v-list-item-title>login</v-list-item-title>
           </v-list-item-content>
         </v-list-item> -->
-        <v-list-item v-if="isAdministrator" to="/editor" router>
-          <v-list-item-icon>
-            <v-icon>
-            fa-edit
-          </v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>editor</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router>
-          <v-list-item-icon>
-            <v-icon>
-            {{ item.icon }}
-          </v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
+          <v-list-item v-if="isAdministrator" to="/editor" router>
+            <v-list-item-icon>
+              <v-icon>
+                fa-edit
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>editor</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router>
+            <v-list-item-icon>
+              <v-icon>
+                {{ item.icon }}
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
       <hr />
       <div>
@@ -70,7 +70,11 @@
       extension-height="12"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" aria-label="Menu" />
-      <img style="max-width:50px" src="../static/ClimbAssist_Logo_img.png" alt="Climb Assist Logo" />
+      <img
+        style="max-width: 50px;"
+        src="../static/ClimbAssist_Logo_img.png"
+        alt="Climb Assist Logo"
+      />
       <v-flex hidden-sm-and-down shrink>
         <v-toolbar-title>Climb Assist (beta)</v-toolbar-title>
       </v-flex>
@@ -80,20 +84,20 @@
 
       <v-bottom-sheet v-if="!editor" inset v-model="showSheet">
         <template v-slot:activator="{ on }">
-        <v-btn v-on="on" light small fab aria-label="Route Filter">
-          <v-badge :value="resetButton" color="red" right bottom>
-            <template v-slot:badge>
-              <span>!</span>
-            </template>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-icon v-on="on" color="primary">fa-sliders-h</v-icon>
+          <v-btn v-on="on" light small fab aria-label="Route Filter">
+            <v-badge :value="resetButton" color="red" right bottom>
+              <template v-slot:badge>
+                <span>!</span>
               </template>
-              <span>Filter</span>
-            </v-tooltip>
-          </v-badge>
-        </v-btn>
-      </template>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" color="primary">fa-sliders-h</v-icon>
+                </template>
+                <span>Filter</span>
+              </v-tooltip>
+            </v-badge>
+          </v-btn>
+        </template>
 
         <v-container class="sheet-front">
           <v-layout wrap>
@@ -234,8 +238,14 @@
             </v-flex>
           </v-layout>
           <v-layout justify-end row>
-            <v-btn class="mx-2" v-show="resetButton" @click="resetFilter()">reset</v-btn>
-            <v-btn class="mx-2" v-show="submitButton" @click="setFilter()" color="primary"
+            <v-btn class="mx-2" v-show="resetButton" @click="resetFilter()"
+              >reset</v-btn
+            >
+            <v-btn
+              class="mx-2"
+              v-show="submitButton"
+              @click="setFilter()"
+              color="primary"
               >submit</v-btn
             >
           </v-layout>
@@ -249,7 +259,7 @@
       <!--googleoff: index-->
     </v-content>
     <footerBar />
-    <bottomNav class="hidden-md-and-up"/>
+    <bottomNav class="hidden-md-and-up" />
   </v-app>
 </template>
 <script>
@@ -276,18 +286,18 @@ export default {
       {
         icon: "fa-home",
         title: "Home",
-        to: "/"
+        to: "/",
       },
       {
         icon: "fa-list",
         title: "Crag List",
-        to: "/list"
+        to: "/list",
       },
       {
         icon: "fa-map",
         title: "Map",
-        to: "/map"
-      }
+        to: "/map",
+      },
     ],
     //filter
     showSheet: false,
@@ -300,8 +310,8 @@ export default {
       yds_grade: [1, 16],
       boulder: true,
       sport: true,
-      trad: true
-    }
+      trad: true,
+    },
   }),
   mixins: [sampleData, fetch],
   watch: {
@@ -310,9 +320,9 @@ export default {
         if (this.demoDrawer === true) {
           this.drawer = true;
         } else {
-          this.drawer = false
+          this.drawer = false;
         }
-      }
+      },
     },
     demoSheet: {
       handler() {
@@ -321,8 +331,8 @@ export default {
         } else {
           this.showSheet = false;
         }
-      }
-    }
+      },
+    },
   },
   computed: {
     demoDrawer() {
@@ -354,7 +364,7 @@ export default {
       }
     },
     ...mapGetters({
-      filteredRoutes: "filter/filteredRoutes"
+      filteredRoutes: "filter/filteredRoutes",
     }),
     resetButton() {
       if (
@@ -385,7 +395,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     setAgreement() {
@@ -414,7 +424,7 @@ export default {
         yds_grade: [1, 16],
         boulder: true,
         sport: true,
-        trad: true
+        trad: true,
       };
       this.$store.commit("filter/updateFilter", this.filterTemp);
       this.showSheet = false;
@@ -440,7 +450,7 @@ export default {
     async getUser() {
       try {
         const userData = await this.$axios.$get("/v1/user", {
-          progress: false
+          progress: false,
         });
         this.$store.commit("user/updateUsername", userData.data.username);
         this.$store.commit("user/updateEmail", userData.data.email);
@@ -451,7 +461,7 @@ export default {
       } catch (error) {
         this.setAgreement();
       }
-    }
+    },
   },
   components: {
     defaultV: DefaultView,
@@ -464,22 +474,19 @@ export default {
     navbar: Navbar,
     bottomNav: BottomNavbar,
     snackbar: Snackbar,
-    footerBar: FooterBar
+    footerBar: FooterBar,
   },
-  async fetch({store}) {
+  async fetch({ store }) {
     try {
-      const userData = (await axios.get("/v1/user", {
-        progress: false
-      })).data;
+      const userData = (
+        await axios.get("/v1/user", {
+          progress: false,
+        })
+      ).data;
       store.commit("user/updateUsername", userData.data.username);
       store.commit("user/updateEmail", userData.data.email);
-      store.commit(
-        "user/updateIsAdministrator",
-        userData.data.isAdministrator
-      );
-    } catch (error) {
-
-    }
+      store.commit("user/updateIsAdministrator", userData.data.isAdministrator);
+    } catch (error) {}
   },
   created() {
     if (process.env.NODE_ENV !== "development") {
@@ -498,16 +505,12 @@ export default {
         "filter/updateLoadedCrags",
         this.countries[0].regions[0].areas[0].subAreas[0].crags[1]
       );
-      this.$store.commit("editor/updateSampleData", true)
+      this.$store.commit("editor/updateSampleData", true);
       this.$store.commit("user/updateUsername", "testuser");
       this.$store.commit("user/updateEmail", "test@example.com");
-      this.$store.commit(
-        "user/updateIsAdministrator",
-        true
-      );
+      this.$store.commit("user/updateIsAdministrator", true);
     }
-
-  }
+  },
 };
 </script>
 

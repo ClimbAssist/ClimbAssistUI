@@ -102,7 +102,7 @@
           </v-layout>
           <v-container>
             <v-card>
-              <v-card-title class="primary headline  white--text"
+              <v-card-title class="primary headline white--text"
                 >Walls (optional)</v-card-title
               >
             </v-card>
@@ -150,7 +150,7 @@ export default {
       description: null,
       slug: null,
       loading: false,
-      walls: []
+      walls: [],
     };
   },
   computed: {
@@ -286,14 +286,14 @@ export default {
       },
       set(value) {
         this.$store.commit("editor/updateMapSelector", value);
-      }
-    }
+      },
+    },
   },
   watch: {
     name: {
       handler() {
         this.slug = this.string_to_slug(this.name);
-      }
+      },
     },
     subAreaId: {
       handler() {
@@ -303,8 +303,8 @@ export default {
             this.areaIndex
           ].subAreas[this.subAreaIndex]
         );
-      }
-    }
+      },
+    },
   },
   methods: {
     async submit() {
@@ -316,9 +316,9 @@ export default {
         location: {
           longitude: this.location.longitude,
           latitude: this.location.latitude,
-          zoom: this.zoom
+          zoom: this.zoom,
         },
-        parking: []
+        parking: [],
       };
       for (let i in this.parking) {
         if (this.parking[i].latitude) {
@@ -336,16 +336,16 @@ export default {
           for (let i in this.path) {
             try {
               let obj = {
-                cragId: cragId.data.cragId
+                cragId: cragId.data.cragId,
               };
               let pathId = await this.$axios.$put("/v1/paths", obj);
               let points = {
-                newPathPoints: []
+                newPathPoints: [],
               };
               for (let pi in this.path[i]) {
                 let point = {
                   longitude: this.path[i][pi][0],
-                  latitude: this.path[i][pi][1]
+                  latitude: this.path[i][pi][1],
                 };
                 points.newPathPoints.push(point);
               }
@@ -378,26 +378,26 @@ export default {
               if (i == 0 && revWalls.length - 1 > i) {
                 wall = {
                   cragId: cragId.data.cragId,
-                  name: revWalls[i]
+                  name: revWalls[i],
                 };
               } else if (i == 0) {
                 wall = {
                   cragId: cragId.data.cragId,
                   name: revWalls[i],
-                  first: true
+                  first: true,
                 };
               } else if (revWalls.length - 1 > i) {
                 wall = {
                   cragId: cragId.data.cragId,
                   name: revWalls[i],
-                  next: wallIds[parseInt(i) - 1].wallId
+                  next: wallIds[parseInt(i) - 1].wallId,
                 };
               } else {
                 wall = {
                   cragId: cragId.data.cragId,
                   name: revWalls[i],
                   next: wallIds[parseInt(i) - 1].wallId,
-                  first: true
+                  first: true,
                 };
               }
 
@@ -430,7 +430,7 @@ export default {
             let wall = {
               cragId: cragId.data.cragId,
               name: this.name,
-              first: true
+              first: true,
             };
             await this.$axios.$put("/v1/walls", wall);
             this.$store.commit("snackbar/updateType", "success");
@@ -467,8 +467,8 @@ export default {
         this.$router.push({
           name: "editor-crag-edit",
           params: {
-            edit: cragId.data.cragId
-          }
+            edit: cragId.data.cragId,
+          },
         });
       } catch (error) {
         console.log(error.response.data.error.message);
@@ -522,7 +522,7 @@ export default {
         .replace(/-+/g, "-"); // collapse dashes
 
       return str;
-    }
+    },
   },
   created() {
     this.$store.commit("editor/updateMapTile", "outdoors-v11");
@@ -532,15 +532,15 @@ export default {
     this.$store.commit("editor/updateZoom", undefined);
     this.$store.commit("editor/updateLocation", {
       lng: undefined,
-      lat: undefined
+      lat: undefined,
     });
     this.$store.commit("editor/updateMapSelector", "location");
     this.$store.commit("editor/clearParking");
     this.$store.commit("editor/clearPath");
   },
   components: {
-    mapcreate: MapCreate
+    mapcreate: MapCreate,
   },
-  mixins: [fetch]
+  mixins: [fetch],
 };
 </script>

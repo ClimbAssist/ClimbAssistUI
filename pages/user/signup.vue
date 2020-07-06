@@ -17,7 +17,7 @@
                     v-model="username"
                     :rules="[
                       rules.required('Enter user name'),
-                      rules.username('invalid user name')
+                      rules.username('invalid user name'),
                     ]"
                     label="User Name"
                     hint="Must be at least 5 characters using letters, numbers, underscores, or hyphens"
@@ -30,7 +30,7 @@
                     v-model="email"
                     :rules="[
                       rules.required('Enter your email address'),
-                      rules.email('invalid email address')
+                      rules.email('invalid email address'),
                     ]"
                     validate-on-blur
                     label="Email"
@@ -43,7 +43,7 @@
                     :append-icon="show ? 'fa-eye' : 'fa-eye-slash'"
                     :rules="[
                       rules.required('Enter a password'),
-                      rules.pass('invalid password')
+                      rules.pass('invalid password'),
                     ]"
                     :type="show ? 'text' : 'password'"
                     label="Password"
@@ -53,7 +53,7 @@
                 <v-flex xs12>
                   <VMessages
                     :value="[
-                      'Use 8 or more characters with a mix of letters, numbers & symbols'
+                      'Use 8 or more characters with a mix of letters, numbers & symbols',
                     ]"
                   />
                 </v-flex>
@@ -108,14 +108,15 @@ export default {
       email: undefined,
       password: undefined,
       rules: {
-        required: msg => v => !!v || msg,
-        username: msg => v => /^[_A-z0-9'-]{5,}$/.test(v) || msg,
-        email: msg => v =>
+        required: (msg) => (v) => !!v || msg,
+        username: (msg) => (v) => /^[_A-z0-9'-]{5,}$/.test(v) || msg,
+        email: (msg) => (v) =>
           /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg,
-        pass: msg => v => /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg
+        pass: (msg) => (v) =>
+          /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg,
       },
       show: false,
-      recaptchaRes: undefined
+      recaptchaRes: undefined,
     };
     return data;
   },
@@ -123,7 +124,7 @@ export default {
   computed: {
     siteKey() {
       return this.$store.state.contact.recaptchaKey;
-    }
+    },
   },
   methods: {
     submit() {
@@ -134,9 +135,9 @@ export default {
           username: this.username,
           email: this.email,
           password: this.password,
-          recaptchaRes: this.recaptchaRes
+          recaptchaRes: this.recaptchaRes,
         })
-        .then(res => {
+        .then((res) => {
           this.$store.commit("snackbar/updateType", "success");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit(
@@ -149,7 +150,7 @@ export default {
 
           this.$router.push("/user/confirmation");
         })
-        .catch(err => {
+        .catch((err) => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit("snackbar/updateMessage", err.message);
@@ -161,7 +162,7 @@ export default {
     },
     onVerify(response) {
       this.recaptchaRes = response;
-    }
+    },
   },
   async fetch({ store }) {
     if (process.env.NODE_ENV === "development") {
@@ -177,6 +178,6 @@ export default {
       }
     }
   },
-  components: { VueRecaptcha }
+  components: { VueRecaptcha },
 };
 </script>

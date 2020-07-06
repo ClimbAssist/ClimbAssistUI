@@ -1,5 +1,10 @@
 <template>
-  <v-bottom-navigation v-if="sidebar === 'frameV'" app v-model="frameTabs" color="white">
+  <v-bottom-navigation
+    v-if="sidebar === 'frameV'"
+    app
+    v-model="frameTabs"
+    color="white"
+  >
     <v-btn color="green" text value="info" data-testid="bottom-nav-info-button">
       <span>Info</span>
       <v-icon>fa-info</v-icon>
@@ -28,11 +33,11 @@ export default {
       },
       set(value) {
         this.$store.commit("frame/cragView", value);
-      }
+      },
     },
     sidebar() {
       return this.$store.state.sidebar.sidebar;
-    }
-  }
+    },
+  },
 };
 </script>

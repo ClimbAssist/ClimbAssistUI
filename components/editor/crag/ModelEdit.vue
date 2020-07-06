@@ -33,21 +33,17 @@ export default {
       light: null,
       controls: null,
       controls2: null,
-      lastModelAngle: null
+      lastModelAngle: null,
     };
   },
   watch: {
     meshScale: {
       handler() {
         if (this.mesh) {
-          this.mesh.scale.set(
-            this.meshScale,
-            this.meshScale,
-            this.meshScale
-          );
+          this.mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
         }
-      }
-    }
+      },
+    },
   },
   computed: {
     crag() {
@@ -75,10 +71,10 @@ export default {
       // }
       var nav = topNav[0].clientHeight;
       return nav;
-    }
+    },
   },
   methods: {
-    init: function() {
+    init: function () {
       let container = document.getElementById("container");
 
       this.scene = new THREE.Scene();
@@ -165,7 +161,7 @@ export default {
       // });
       this.onWindowResize();
     },
-    animate: function() {
+    animate: function () {
       if (this.play) {
         requestAnimationFrame(this.animate);
         if (this.light) {
@@ -234,7 +230,7 @@ export default {
         this.renderer.setScissorTest(false);
       }
     },
-    onWindowResize: function() {
+    onWindowResize: function () {
       if (this.play) {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
@@ -251,10 +247,10 @@ export default {
         this.camera2.updateProjectionMatrix();
       }
     },
-    loadModel: function() {
+    loadModel: function () {
       let loader = new GLTFLoader();
 
-      loader.load(this.crag.model.modelLocation, gltf => {
+      loader.load(this.crag.model.modelLocation, (gltf) => {
         this.mesh = gltf.scene.children[0];
         this.mesh.layers.set(1);
         this.mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
@@ -263,12 +259,12 @@ export default {
         // this.loadDecals()
       });
     },
-    loadNorth: function() {
+    loadNorth: function () {
       let loader = new GLTFLoader();
 
       loader.load(
         "https://s3-us-west-2.amazonaws.com/models-172776452117-us-west-2/north.glb",
-        gltf => {
+        (gltf) => {
           this.north = gltf.scene.children[0];
           this.north.scale.set(5, 5, 5);
           let northAngle = this.modelAngle + Math.PI;
@@ -276,12 +272,12 @@ export default {
           this.north.layers.set(10);
           this.scene.add(this.north);
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
     },
-    checkScaleDistance: function() {
+    checkScaleDistance: function () {
       if (
         this.camera.position.distanceTo(this.camera.target).toFixed(0) >= 80 &&
         this.camera.position.distanceTo(this.camera.target).toFixed(0) <= 120
@@ -294,7 +290,7 @@ export default {
       } else {
         this.scaleFactor = 1;
       }
-    }
+    },
   },
   created() {
     if (this.$store.state.editor.cragStateEditor.model.scale) {
@@ -303,10 +299,7 @@ export default {
         this.$store.state.editor.cragStateEditor.model.scale
       );
     } else {
-      this.$store.commit(
-        "editor/updateScale",
-        1.0
-      );
+      this.$store.commit("editor/updateScale", 1.0);
     }
     if (this.$store.state.editor.cragStateEditor.model.light) {
       this.$store.commit(
@@ -314,10 +307,7 @@ export default {
         this.$store.state.editor.cragStateEditor.model.light
       );
     } else {
-      this.$store.commit(
-        "editor/updateLight",
-        1.0
-      );
+      this.$store.commit("editor/updateLight", 1.0);
     }
     if (this.$store.state.editor.cragStateEditor.model.modelAngle) {
       this.$store.commit(
@@ -325,15 +315,12 @@ export default {
         this.$store.state.editor.cragStateEditor.model.modelAngle
       );
     } else {
-      this.$store.commit(
-        "editor/updateModelAngle",
-        0.0
-      );
+      this.$store.commit("editor/updateModelAngle", 0.0);
     }
     if (this.$store.state.editor.cragStateEditor.model.azimuth) {
       let azimuth = [
         this.$store.state.editor.cragStateEditor.model.azimuth.minimum,
-        this.$store.state.editor.cragStateEditor.model.azimuth.maximum
+        this.$store.state.editor.cragStateEditor.model.azimuth.maximum,
       ];
       this.$store.commit("editor/updateAzimuth", azimuth);
     } else {
@@ -353,7 +340,7 @@ export default {
     // this.loadDecals()
     this.play = true;
     this.animate();
-  }
+  },
 };
 </script>
 

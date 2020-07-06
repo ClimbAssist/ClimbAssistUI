@@ -10,17 +10,16 @@ import Info from "../../../components/area/Info.vue";
 import axios from "axios";
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     areaTabs() {
       return this.$store.state.area.areaTabs;
-    }
+    },
   },
   components: {
     areamap: AreaMap,
-    info: Info
+    info: Info,
   },
   async fetch({ store, params }) {
     if (
@@ -35,7 +34,8 @@ export default {
           .areas[params.areaKey]
       );
     } else {
-      const api = (await axios.get("/v1/areas/" + params.area + "?depth=4")).data;
+      const api = (await axios.get("/v1/areas/" + params.area + "?depth=4"))
+        .data;
 
       let area = api.data;
       if (!area.subAreas) {
@@ -46,7 +46,7 @@ export default {
         minLatitude: undefined,
         maxLatitude: undefined,
         minLongitude: undefined,
-        maxLongitude: undefined
+        maxLongitude: undefined,
       };
 
       for (let subi in area.subAreas) {
@@ -65,7 +65,7 @@ export default {
             }
             for (let wkey in area.subAreas[subi].crags[ckey].walls) {
               if (!area.subAreas[subi].crags[ckey].walls[wkey].routes) {
-                area.subAreas[subi].crags[ckey].walls[wkey].routes = []
+                area.subAreas[subi].crags[ckey].walls[wkey].routes = [];
               }
             }
             if (
@@ -118,12 +118,12 @@ export default {
             maxLongitude: maxLongitude,
             minLatitude: minLatitude,
             maxLatitude: maxLatitude,
-            titleLoc: titleLoc
+            titleLoc: titleLoc,
           };
 
           area.subAreas[subi].location = {
             latitude: subAreaLat,
-            longitude: subAreaLong
+            longitude: subAreaLong,
           };
         } else if (area.subAreas[subi].crags.length > 0) {
           area.subAreas[subi].location = area.subAreas[subi].crags[0].location;
@@ -189,7 +189,7 @@ export default {
         }
         area.location = {
           latitude: areaLat,
-          longitude: areaLong
+          longitude: areaLong,
         };
       }
       store.commit("filter/updateArea", area);
@@ -211,10 +211,14 @@ export default {
       title: "Climb Assist - " + this.$store.state.filter.areaState.name,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        { hid: 'description', name: 'description', content: this.$store.state.filter.areaState.description }
-      ]
-    }
-  }
+        {
+          hid: "description",
+          name: "description",
+          content: this.$store.state.filter.areaState.description,
+        },
+      ],
+    };
+  },
 };
 </script>
 

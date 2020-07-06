@@ -1,9 +1,9 @@
 <template>
   <v-snackbar v-model="snackbar" top :timeout="timeout" :color="type">
-    <span id="message">{{message}}</span> &nbsp;
-    <nuxt-link id="linkMessage" v-if="link" :to="link"
-      >{{linkMessage}}</nuxt-link
-    >
+    <span id="message">{{ message }}</span> &nbsp;
+    <nuxt-link id="linkMessage" v-if="link" :to="link">{{
+      linkMessage
+    }}</nuxt-link>
     <v-btn text @click="snackbar = false">
       OK
     </v-btn>
@@ -21,8 +21,8 @@ export default {
       set(value) {
         this.$store.commit("snackbar/updateSnackbar", value);
         this.$store.commit("snackbar/updateLink", undefined);
-        this.$store.commit("snackbar/updateLinkMessage", undefined)
-      }
+        this.$store.commit("snackbar/updateLinkMessage", undefined);
+      },
     },
     timeout() {
       return this.$store.state.snackbar.timeout;
@@ -38,18 +38,18 @@ export default {
     },
     linkMessage() {
       return this.$store.state.snackbar.linkMessage;
-    }
+    },
   },
   watch: {
-    snackbar: { handler() {
-      if (this.snackbar) {
-        setTimeout(() => {
-          this.$store.commit("snackbar/updateSnackbar", false);
-
-        }, this.timeout)
-      }
-    }
-  }
-  }
+    snackbar: {
+      handler() {
+        if (this.snackbar) {
+          setTimeout(() => {
+            this.$store.commit("snackbar/updateSnackbar", false);
+          }, this.timeout);
+        }
+      },
+    },
+  },
 };
 </script>

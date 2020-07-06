@@ -114,7 +114,7 @@ export default {
     email: "",
     password: "",
     isLoading: false,
-    dialog: false
+    dialog: false,
   }),
   computed: {},
   methods: {
@@ -122,13 +122,13 @@ export default {
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
         try {
           await this.$axios.post("/v1/user/send-password-reset-email", {
-            email: this.email
+            email: this.email,
           });
           this.$router.push({
             name: "user-password-reset",
             params: {
-              user: this.email
-            }
+              user: this.email,
+            },
           });
         } catch (error) {
           this.$store.commit("snackbar/updateType", "error");
@@ -145,13 +145,13 @@ export default {
       } else {
         try {
           await this.$axios.post("/v1/user/send-password-reset-email", {
-            username: this.email
+            username: this.email,
           });
           this.$router.push({
             name: "user-password-reset",
             params: {
-              user: this.email
-            }
+              user: this.email,
+            },
           });
         } catch (error) {
           this.$store.commit("snackbar/updateType", "error");
@@ -173,7 +173,7 @@ export default {
         try {
           await this.$axios.post("/v1/user/sign-in", {
             email: this.email,
-            password: this.password
+            password: this.password,
           });
 
           const user = await this.$axios.$get("/v1/user");
@@ -218,7 +218,7 @@ export default {
         try {
           await this.$axios.post("/v1/user/sign-in", {
             username: this.email,
-            password: this.password
+            password: this.password,
           });
           const user = await this.$axios.$get("/v1/user");
 
@@ -259,7 +259,7 @@ export default {
         }
         this.isLoading = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>

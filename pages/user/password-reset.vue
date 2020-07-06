@@ -18,7 +18,7 @@
           :type="show ? 'text' : 'password'"
           :rules="[
             rules.required('Enter a password'),
-            rules.pass('invalid password')
+            rules.pass('invalid password'),
           ]"
           class="mb-3"
           label="New Password"
@@ -47,15 +47,16 @@ export default {
     form: false,
     isLoading: false,
     rules: {
-      required: msg => v => !!v || msg,
-      pass: msg => v => /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg
-    }
+      required: (msg) => (v) => !!v || msg,
+      pass: (msg) => (v) =>
+        /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg,
+    },
   }),
-  middleware: 'loggedin',
+  middleware: "loggedin",
   computed: {
     username() {
       return this.$route.params.user;
-    }
+    },
   },
   methods: {
     submit() {
@@ -66,9 +67,9 @@ export default {
           .post("/v1/user/reset-password", {
             email: this.username,
             newPassword: this.password,
-            verificationCode: this.verificationCode
+            verificationCode: this.verificationCode,
           })
-          .then(res => {
+          .then((res) => {
             this.$store.commit("snackbar/updateType", "success");
             this.$store.commit("snackbar/updateTimeout", 10000);
             this.$store.commit(
@@ -81,11 +82,14 @@ export default {
             this.$router.push("/user/login");
           })
 
-          .catch(error => {
+          .catch((error) => {
             this.$store.commit("snackbar/updateType", "error");
             this.$store.commit("snackbar/updateTimeout", 10000);
             if (error.response.status === 401) {
-              this.$store.commit("snackbar/updateMessage", "Incorrect Verification Code");
+              this.$store.commit(
+                "snackbar/updateMessage",
+                "Incorrect Verification Code"
+              );
             } else {
               this.$store.commit("snackbar/updateMessage", error.message);
             }
@@ -99,9 +103,9 @@ export default {
           .post("/v1/user/reset-password", {
             username: this.username,
             newPassword: this.password,
-            verificationCode: this.verificationCode
+            verificationCode: this.verificationCode,
           })
-          .then(res => {
+          .then((res) => {
             this.$store.commit("snackbar/updateType", "success");
             this.$store.commit("snackbar/updateTimeout", 10000);
             this.$store.commit(
@@ -114,11 +118,14 @@ export default {
             this.$router.push("/user/login");
           })
 
-          .catch(error => {
+          .catch((error) => {
             this.$store.commit("snackbar/updateType", "error");
             this.$store.commit("snackbar/updateTimeout", 10000);
             if (error.response.status === 401) {
-              this.$store.commit("snackbar/updateMessage", "Incorrect Verification Code");
+              this.$store.commit(
+                "snackbar/updateMessage",
+                "Incorrect Verification Code"
+              );
             } else {
               this.$store.commit("snackbar/updateMessage", error.message);
             }
@@ -128,7 +135,7 @@ export default {
           })
           .finally(() => (this.isLoading = false));
       }
-    }
-  }
+    },
+  },
 };
 </script>

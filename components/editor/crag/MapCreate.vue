@@ -10,7 +10,7 @@ export default {
       access:
         "pk.eyJ1IjoiY2xpbWJhc3Npc3QiLCJhIjoiY2pmMDZ1ejBvMGpxZDJ3cWpiZ2w3c2w4NiJ9.Xwqm5bhXRQU-LrC2keGw3g",
       crag_pin: require("@/static/map_icon.png"),
-      parking_pin: require("@/static/parking.png")
+      parking_pin: require("@/static/parking.png"),
     };
   },
   computed: {
@@ -31,7 +31,7 @@ export default {
     },
     mapSelector() {
       return this.$store.state.editor.mapSelector;
-    }
+    },
   },
   watch: {
     mapTile: {
@@ -42,18 +42,18 @@ export default {
           this.setParking();
           this.setPath();
         });
-      }
+      },
     },
     path: {
       handler() {
         this.setPath();
-      }
+      },
     },
     parking: {
       handler() {
         this.setParking();
-      }
-    }
+      },
+    },
   },
   methods: {
     createMap() {
@@ -67,14 +67,14 @@ export default {
           style: "mapbox://styles/mapbox/outdoors-v11",
           center: [
             this.subArea.location.longitude,
-            this.subArea.location.latitude
+            this.subArea.location.latitude,
           ],
-          zoom: 12
+          zoom: 12,
         });
       } else {
         this.map = new mapboxgl.Map({
           container: "map",
-          style: "mapbox://styles/mapbox/outdoors-v11"
+          style: "mapbox://styles/mapbox/outdoors-v11",
         });
       }
       this.mapLoaded(this.map, mapboxgl);
@@ -93,7 +93,7 @@ export default {
           map.addImage("parkingPin", image);
         });
 
-        map.on("click", e => {
+        map.on("click", (e) => {
           if (this.mapSelector === "location") {
             this.$store.commit("editor/updateLocation", e.lngLat);
             this.setPin();
@@ -128,17 +128,20 @@ export default {
                 type: "Feature",
                 geometry: {
                   type: "Point",
-                  coordinates: [this.location.longitude, this.location.latitude]
-                }
-              }
-            ]
-          }
+                  coordinates: [
+                    this.location.longitude,
+                    this.location.latitude,
+                  ],
+                },
+              },
+            ],
+          },
         },
         type: "symbol",
         layout: {
           "icon-image": "cragPin",
-          "icon-size": 0.7
-        }
+          "icon-size": 0.7,
+        },
       });
     },
     setParking() {
@@ -152,8 +155,8 @@ export default {
           type: "Feature",
           geometry: {
             type: "Point",
-            coordinates: [this.parking[i].longitude, this.parking[i].latitude]
-          }
+            coordinates: [this.parking[i].longitude, this.parking[i].latitude],
+          },
         };
         parkingPins.push(pin);
       }
@@ -163,14 +166,14 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: parkingPins
-          }
+            features: parkingPins,
+          },
         },
         type: "symbol",
         layout: {
           "icon-image": "parkingPin",
-          "icon-size": 0.7
-        }
+          "icon-size": 0.7,
+        },
       });
     },
     setPath() {
@@ -185,8 +188,8 @@ export default {
             type: "feature",
             geometry: {
               type: "LineString",
-              coordinates: this.path[i]
-            }
+              coordinates: this.path[i],
+            },
           };
           pathLines.push(line);
         }
@@ -199,19 +202,19 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: pathLines
-          }
+            features: pathLines,
+          },
         },
         layout: {
           "line-join": "round",
-          "line-cap": "round"
+          "line-cap": "round",
         },
         paint: {
           "line-color": "#888",
-          "line-width": 8
-        }
+          "line-width": 8,
+        },
       });
-    }
+    },
   },
   mounted() {
     this.createMap();
@@ -220,13 +223,13 @@ export default {
     this.$store.commit("editor/updateZoom", undefined);
     this.$store.commit("editor/updateLocation", {
       lng: undefined,
-      lat: undefined
+      lat: undefined,
     });
     this.$store.commit("editor/clearParking");
     this.$store.commit("editor/clearPath");
     this.$store.commit("editor/updateMapSelector", "location");
     this.$store.commit("editor/clearPath");
-  }
+  },
 };
 </script>
 

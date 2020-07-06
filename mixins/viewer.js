@@ -1,4 +1,4 @@
-export const viewer {
+export const viewer = {
   data: () => ({
     camera: null,
     routeShow: true,
@@ -14,7 +14,7 @@ export const viewer {
     camDistance: null,
     decals: [],
     group: null,
-    groupColors: ['#ffffff', '#FFFF33','#FF9933', '#FF99FF','#FF9999' ],
+    groupColors: ["#ffffff", "#FFFF33", "#FF9933", "#FF99FF", "#FF9999"],
     moved: false,
     selectedObject: null,
     raycaster: null,
@@ -33,14 +33,14 @@ export const viewer {
     intersection: {
       intersects: false,
       point: new THREE.Vector3(),
-      normal: new THREE.Vector3()
+      normal: new THREE.Vector3(),
     },
     mouseHelper: undefined,
     timeout: undefined,
     lastTap: 0,
   }),
   methods: {
-    init: function() {
+    init: function () {
       let container = document.getElementById("container");
 
       this.scene = new THREE.Scene();
@@ -84,7 +84,7 @@ export const viewer {
         this.controls.maxAzimuthAngle = this.crag.crag.model.azimuth.maximum;
       }
 
-      this.controls.maxPolarAngle = Math.PI * 3/4;
+      this.controls.maxPolarAngle = (Math.PI * 3) / 4;
       this.controls.screenSpacePanning = true;
 
       this.controls2 = new Orbitcontrols(
@@ -101,7 +101,9 @@ export const viewer {
       this.controls2.enablePan = false;
       this.controls2.enableZoom = false;
 
-      this.scene.add(new THREE.AmbientLight(0xffffff, this.crag.crag.model.light));
+      this.scene.add(
+        new THREE.AmbientLight(0xffffff, this.crag.crag.model.light)
+      );
 
       this.northAxis = new THREE.Vector3(0, 1, 0);
 
@@ -130,9 +132,13 @@ export const viewer {
       container.addEventListener("mousemove", this.onDocumentMouseMove, false);
       container.addEventListener("mouseup", this.onDocumentMouseclick, false);
       container.addEventListener("dblclick", this.onDocumentDoubleClick, false);
-      container.addEventListener("webglcontextlost", function(event) {
-        event.preventDefault();
-      }, false);
+      container.addEventListener(
+        "webglcontextlost",
+        function (event) {
+          event.preventDefault();
+        },
+        false
+      );
       container.addEventListener("webglcontextrestored", this.init, false);
       container.addEventListener("webglcontextrestored", this.animate, false);
       window.addEventListener("mousedown", () => {
@@ -159,7 +165,7 @@ export const viewer {
       });
       this.onWindowResize();
     },
-    animate: function() {
+    animate: function () {
       if (this.play) {
         requestAnimationFrame(this.animate);
 
@@ -202,13 +208,15 @@ export const viewer {
         this.renderer.setScissorTest(false);
       }
     },
-    onWindowResize: function() {
+    onWindowResize: function () {
       if (this.play) {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
 
         if (this.fullscreenTrigger) {
-          setTimeout(()=>{ this.fullscreenTrigger = false; }, 1000);
+          setTimeout(() => {
+            this.fullscreenTrigger = false;
+          }, 1000);
 
           this.renderer.setSize(window.innerWidth, window.innerHeight);
         } else {
@@ -224,7 +232,7 @@ export const viewer {
         this.camera2.updateProjectionMatrix();
       }
     },
-    loadSprites: function() {
+    loadSprites: function () {
       this.group = new THREE.Group();
       const x = 32;
       const y = 32;
@@ -248,7 +256,7 @@ export const viewer {
             transparent: true,
             depthTest: false,
             depthWrite: false,
-            sizeAttenuation: true
+            sizeAttenuation: true,
           });
 
           // Number definition
@@ -275,7 +283,7 @@ export const viewer {
           ctx.fillText(this.crag.walls[wkey].routes[rkey].routeNum, x, y);
 
           let sprite = new THREE.Sprite(spriteMaterial);
-          sprite.material.color.set(this.groupColors[wkey])
+          sprite.material.color.set(this.groupColors[wkey]);
           sprite.scale.set(1, 1, 1);
           sprite.position.set(
             this.crag.walls[wkey].routes[rkey].center.x,
@@ -312,17 +320,17 @@ export const viewer {
             color = 0xffff00;
           }
           var material = new THREE.LineBasicMaterial({
-            color: color
+            color: color,
           });
           let line = new THREE.Line(geometry, material);
-          let dist =  line.computeLineDistances();
+          let dist = line.computeLineDistances();
           line.layers.set(2);
           this.linesGroup.add(line);
         }
       }
       this.scene.add(this.linesGroup);
     },
-    loadAnchors: function() {
+    loadAnchors: function () {
       this.scene.remove(this.anchorsGroup);
       if (!this.activeRoute) return;
       this.anchorsGroup = new THREE.Group();
@@ -335,9 +343,10 @@ export const viewer {
       for (let akey in this.crag.walls[this.activeRoute.wall].routes[
         this.activeRoute.route
       ].anchors) {
-        if (this.crag.walls[this.activeRoute.wall].routes[
-          this.activeRoute.route
-        ].anchors) {
+        if (
+          this.crag.walls[this.activeRoute.wall].routes[this.activeRoute.route]
+            .anchors
+        ) {
           let anchors = this.crag.walls[this.activeRoute.wall].routes[
             this.activeRoute.route
           ].anchors[akey];
@@ -353,7 +362,7 @@ export const viewer {
             transparent: true,
             depthTest: false,
             depthWrite: false,
-            sizeAttenuation: true
+            sizeAttenuation: true,
           });
 
           // Number definition
@@ -398,6 +407,6 @@ export const viewer {
         }
       }
       this.scene.add(this.anchorsGroup);
-    }
-  }
-}
+    },
+  },
+};

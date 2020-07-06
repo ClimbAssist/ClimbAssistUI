@@ -3,24 +3,13 @@
     <keep-alive>
       <component :is="frameTabs" />
     </keep-alive>
-    <v-overlay
-          :value="displayOverlay"
-          :z-index="zIndex"
-        >
-        <component :is="overlay[overlayIndex]"/>
-      <v-btn
-        @click="displayOverlay = false"
-        class="ma-2 darken-1"
-        color="grey"
-      >
+    <v-overlay :value="displayOverlay" :z-index="zIndex">
+      <component :is="overlay[overlayIndex]" />
+      <v-btn @click="displayOverlay = false" class="ma-2 darken-1" color="grey">
         Stop Tour
       </v-btn>
-      <v-btn
-        color="primary"
-        class="ma-2"
-        @click="nextOverlay()"
-      >
-      {{nextButtonText}}
+      <v-btn color="primary" class="ma-2" @click="nextOverlay()">
+        {{ nextButtonText }}
       </v-btn>
     </v-overlay>
   </div>
@@ -49,7 +38,18 @@ export default {
       absolute: false,
       zIndex: 10,
       nextButtonText: "Next",
-      overlay: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+      overlay: [
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+      ],
     };
   },
   watch: {
@@ -57,8 +57,8 @@ export default {
       handler() {
         this.$store.commit("frame/updateActiveRoute", null);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
     frameTabs() {
@@ -68,29 +68,27 @@ export default {
       return this.$store.state.filter.filter;
     },
     crag() {
-      return this.$store.state.filter.cragState
-    }
+      return this.$store.state.filter.cragState;
+    },
   },
   methods: {
     nextOverlay() {
       this.overlayIndex++;
-      if (this.overlayIndex===1) {
-        this.zIndex=4
+      if (this.overlayIndex === 1) {
+        this.zIndex = 4;
       } else {
-        this.zIndex=5
+        this.zIndex = 5;
       }
       if (this.overlayIndex === 5) {
-        this.$store.commit("frame/cragView", "mapcrag")
+        this.$store.commit("frame/cragView", "mapcrag");
       }
       if (this.overlayIndex === 6) {
-        this.$store.commit("frame/cragView", "model")
+        this.$store.commit("frame/cragView", "model");
       }
       if (this.overlay.length < this.overlayIndex + 1) {
         this.displayOverlay = false;
-      }
-      else if (this.overlay.length === this.overlayIndex + 1)
-      {
-        this.nextButtonText = "done"
+      } else if (this.overlay.length === this.overlayIndex + 1) {
+        this.nextButtonText = "done";
       }
     },
     string_to_slug(str) {
@@ -110,7 +108,7 @@ export default {
         .replace(/-+/g, "-"); // collapse dashes
 
       return str;
-    }
+    },
   },
   components: {
     model: Model,
@@ -125,7 +123,7 @@ export default {
     seven: Seven,
     eight: Eight,
     nine: Nine,
-    ten: Ten
+    ten: Ten,
   },
   async fetch({ store, params }) {
     for (let i in store.state.filter.loadedCrags) {
@@ -141,19 +139,22 @@ export default {
 
     for (let wi in crag.walls) {
       for (let ri in crag.walls[wi].routes) {
-        crag.walls[wi].routes[ri].points = []
+        crag.walls[wi].routes[ri].points = [];
         crag.walls[wi].routes[ri].distance = 0;
         for (let pi in crag.walls[wi].routes[ri].pitches) {
           if (crag.walls[wi].routes[ri].pitches[pi].distance) {
-            crag.walls[wi].routes[ri].distance += crag.walls[wi].routes[ri].pitches[pi].distance
+            crag.walls[wi].routes[ri].distance +=
+              crag.walls[wi].routes[ri].pitches[pi].distance;
           }
-          crag.walls[wi].routes[ri].points = crag.walls[wi].routes[ri].points.concat(crag.walls[wi].routes[ri].pitches[pi].points)
+          crag.walls[wi].routes[ri].points = crag.walls[wi].routes[
+            ri
+          ].points.concat(crag.walls[wi].routes[ri].pitches[pi].points);
         }
       }
     }
     crag.area = {
       name: "Boulder Canyon",
-      areaId: "boulder-canyon"
+      areaId: "boulder-canyon",
     };
     store.commit("filter/updateCrag", crag);
     store.commit("filter/updateLoadedCrags", crag);
@@ -164,7 +165,7 @@ export default {
   },
   mounted() {
     this.$store.commit("sidebar/updateSidebar", "frameV");
-    this.$store.commit("demo/updateDrawer", false)
+    this.$store.commit("demo/updateDrawer", false);
   },
   destroyed() {
     this.$store.commit("sidebar/updateSidebar", "defaultV");
@@ -176,10 +177,14 @@ export default {
       title: "Climb Assist - " + this.$store.state.filter.cragState.name,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        { hid: 'description', name: 'description', content: this.$store.state.filter.cragState.description }
-      ]
-    }
-  }
+        {
+          hid: "description",
+          name: "description",
+          content: this.$store.state.filter.cragState.description,
+        },
+      ],
+    };
+  },
 };
 </script>
 

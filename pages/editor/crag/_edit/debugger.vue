@@ -108,14 +108,14 @@ export default {
     icon: {
       success: "fa-check-square",
       error: "fa-exclamation-triangle",
-      updating: "fa-circle-notch fa-spin"
+      updating: "fa-circle-notch fa-spin",
     },
     status: {
       paths: undefined,
       walls: undefined,
       routes: undefined,
       pitches: undefined,
-      points: undefined
+      points: undefined,
     },
     resources: undefined,
     dbResources: undefined,
@@ -126,7 +126,7 @@ export default {
     logs: [],
     ids: [""],
     backgrounds: [],
-    binary: [true, false]
+    binary: [true, false],
   }),
   computed: {
     resourceCheck() {
@@ -145,7 +145,7 @@ export default {
         }
         return resourceCheck;
       }
-    }
+    },
   },
   methods: {
     async debug() {
@@ -155,7 +155,7 @@ export default {
         walls: undefined,
         routes: undefined,
         pitches: undefined,
-        points: undefined
+        points: undefined,
       };
       this.resources = undefined;
       this.dbResources = undefined;
@@ -439,7 +439,7 @@ export default {
         let background = {
           next: undefined,
           first: undefined,
-          id: undefined
+          id: undefined,
         };
         if (error.includes(resources[i][resourceId])) {
           background.id = "red";
@@ -539,7 +539,7 @@ export default {
         this.logs.push(error.response.data);
         this.debugging = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>

@@ -28,7 +28,7 @@ export default {
       intersection: {
         intersects: false,
         point: new THREE.Vector3(),
-        normal: new THREE.Vector3()
+        normal: new THREE.Vector3(),
       },
       decals: [],
 
@@ -53,15 +53,15 @@ export default {
         Hide: false,
         showAnnotations: true,
         showDecals: true,
-        clear: function() {
+        clear: function () {
           this.removeAnnotations();
           this.removeDecals();
-        }
-      }
+        },
+      },
     };
   },
   methods: {
-    init: function() {
+    init: function () {
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
       this.renderer.setPixelRatio(window.devicePixelRatio);
       this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -117,19 +117,19 @@ export default {
 
       let moved = false;
 
-      controls.addEventListener("change", function() {
+      controls.addEventListener("change", function () {
         moved = true;
       });
 
       window.addEventListener(
         "mousedown",
-        function() {
+        function () {
           moved = false;
         },
         false
       );
 
-      window.addEventListener("mouseup", function() {
+      window.addEventListener("mouseup", function () {
         this.checkMeshIntersection();
         if (!moved && this.intersection.intersects) {
           this.annotate();
@@ -160,10 +160,10 @@ export default {
       gui.add(this.params, "Annotate");
       gui.add(this.params, "Decal");
       gui.add(this.params, "Text");
-      gui.add(this.params, "showAnnotations").onChange(function() {
+      gui.add(this.params, "showAnnotations").onChange(function () {
         this.camera.layers.toggle(1);
       });
-      gui.add(this.params, "showDecals").onChange(function() {
+      gui.add(this.params, "showDecals").onChange(function () {
         this.camera.layers.toggle(2);
       });
       gui.add(this.params, "clear");
@@ -173,7 +173,7 @@ export default {
       this.animate();
     },
     // check for mouse/touch intersection with mesh
-    checkMeshIntersection: function() {
+    checkMeshIntersection: function () {
       if (!this.mesh) return;
       if (!this.params.Annotate && !this.params.Decal) return;
       this.raycaster.setFromCamera(this.mouse, this.camera);
@@ -197,11 +197,11 @@ export default {
         this.intersection.intersects = false;
       }
     },
-    loadLeePerrySmith: function(callback) {
+    loadLeePerrySmith: function (callback) {
       let loader = new GLTFLoader();
       // loader.setDRACOLoader( new THREE.DRACOLoader() );
 
-      loader.load("../../asstes/model/Bell_Buttress.glb", function(gltf) {
+      loader.load("../../asstes/model/Bell_Buttress.glb", function (gltf) {
         this.mesh = gltf.scene.children[0];
         this.scene.add(this.mesh);
         // mesh.scale.set( 1, 1, 1 );
@@ -210,7 +210,7 @@ export default {
     },
 
     // add annotation number
-    annotate: function() {
+    annotate: function () {
       if (!this.params.Annotate) return;
 
       // Sprite
@@ -233,7 +233,7 @@ export default {
         transparent: true,
         depthTest: false,
         depthWrite: false,
-        sizeAttenuation: false
+        sizeAttenuation: false,
       });
 
       let sprite = new THREE.Sprite(spriteMaterial);
@@ -266,8 +266,8 @@ export default {
       this.idx++;
     },
 
-    removeAnnotations: function() {
-      this.annotations.forEach(function(d) {
+    removeAnnotations: function () {
+      this.annotations.forEach(function (d) {
         this.scene.remove(d);
       });
 
@@ -275,24 +275,24 @@ export default {
       this.idx = 1;
     },
 
-    hideAnnotations: function() {
+    hideAnnotations: function () {
       if (!params.Hide) return;
 
-      annotations.forEach(function() {
+      annotations.forEach(function () {
         sprite.material.opacity = 0;
       });
     },
 
-    animate: function() {
+    animate: function () {
       requestAnimationFrame(this.animate);
       this.renderer.render(this.scene, this.camera);
       this.stats.update();
-    }
+    },
   },
   mounted() {
     this.init();
     this.animate();
-  }
+  },
 };
 </script>
 

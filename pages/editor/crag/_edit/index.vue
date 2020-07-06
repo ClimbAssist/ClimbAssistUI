@@ -16,12 +16,12 @@ export default {
   computed: {
     editTabs() {
       return this.$store.state.editor.editTabs;
-    }
+    },
   },
   methods: {},
   components: {
     model: Model,
-    info: Info
+    info: Info,
   },
   async fetch({ store, params, redirect }) {
     if (store.state.editor.sampleData) {
@@ -50,7 +50,7 @@ export default {
             .crags[1].location.longitude,
         lat:
           store.state.filter.countries[0].regions[0].areas[0].subAreas[0]
-            .crags[1].location.latitude
+            .crags[1].location.latitude,
       });
       store.commit(
         "editor/updateSubArea",
@@ -88,7 +88,7 @@ export default {
       if (crag.location.longitude) {
         store.commit("editor/updateLocation", {
           lng: crag.location.longitude,
-          lat: crag.location.latitude
+          lat: crag.location.latitude,
         });
       }
       if (crag.parking) {
@@ -141,11 +141,11 @@ export default {
     this.$store.commit("editor/updateZoom", undefined);
     this.$store.commit("editor/updateLocation", {
       lng: undefined,
-      lat: undefined
+      lat: undefined,
     });
     this.$store.commit("editor/updateMapSelector", "location");
     this.$store.commit("editor/clearParking");
     this.$store.commit("editor/clearPath");
-  }
+  },
 };
 </script>

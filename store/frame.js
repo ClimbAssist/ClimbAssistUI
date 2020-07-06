@@ -1,6 +1,6 @@
 export const state = () => ({
   frameTabs: null,
-  activeRoute: null
+  activeRoute: null,
 });
 export const getters = {};
 export const mutations = {
@@ -9,6 +9,6 @@ export const mutations = {
   },
   updateActiveRoute: (state, payload) => {
     state.activeRoute = payload;
-  }
+  },
 };
 export const actions = {};

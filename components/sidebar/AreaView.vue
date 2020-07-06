@@ -37,8 +37,8 @@ export default {
   name: "areaV",
   computed: {
     ...mapGetters({
-      area: "filter/area"
-    })
-  }
+      area: "filter/area",
+    }),
+  },
 };
 </script>

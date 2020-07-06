@@ -32,8 +32,8 @@
             name: 'editor-country-edit',
             params: {
               countryKey: i,
-              edit: country.countryId
-            }
+              edit: country.countryId,
+            },
           }"
           >edit</v-btn
         >
@@ -49,8 +49,8 @@
               params: {
                 countryKey: i,
                 stateKey: si,
-                edit: state.regionId
-              }
+                edit: state.regionId,
+              },
             }"
             >edit</v-btn
           >
@@ -80,8 +80,8 @@
                         countryKey: i,
                         stateKey: si,
                         areaKey: ai,
-                        edit: area.areaId
-                      }
+                        edit: area.areaId,
+                      },
                     }"
                     >edit</v-btn
                   >
@@ -126,8 +126,8 @@
                         areaKey: ai,
                         subAreaKey: subi,
                         cragKey: ci,
-                        edit: crag.cragId
-                      }
+                        edit: crag.cragId,
+                      },
                     }"
                     >edit crag</v-btn
                   >
@@ -142,8 +142,8 @@
                         areaKey: ai,
                         subAreaKey: subi,
                         cragKey: ci,
-                        edit: crag.cragId
-                      }
+                        edit: crag.cragId,
+                      },
                     }"
                     >edit routes</v-btn
                   >
@@ -164,28 +164,28 @@ export default {
   middleware: "authentication",
   data() {
     return {
-      countries: this.$store.state.filter.countries
+      countries: this.$store.state.filter.countries,
     };
   },
   computed: {
     ...mapGetters({
-      filteredRoutes: "filter/filteredRoutes"
+      filteredRoutes: "filter/filteredRoutes",
     }),
     dataSet() {
       return this.$store.state.filter.dataSet;
-    }
+    },
   },
   methods: {
     deleteWarn(input) {
       confirm("Are you sure you want to delete" + input + "?");
-    }
+    },
   },
   created() {
     this.$store.commit("editor/updateEditor", true);
   },
   destroyed() {
     this.$store.commit("editor/updateEditor", false);
-  }
+  },
 };
 </script>
 <style>

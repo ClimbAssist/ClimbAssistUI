@@ -23,7 +23,7 @@
             name="email"
             :rules="[
               rules.required('Enter an Email'),
-              rules.email('Not a valid email address')
+              rules.email('Not a valid email address'),
             ]"
           />
           <v-select
@@ -74,21 +74,21 @@ export default {
       "Feedback",
       "Volunteer Dev",
       "Volunteer Content",
-      "Volunteer Photos"
+      "Volunteer Photos",
     ],
     body: undefined,
     form: false,
     recaptchaRes: false,
     rules: {
-      required: msg => v => !!v || msg,
-      email: msg => v =>
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg
-    }
+      required: (msg) => (v) => !!v || msg,
+      email: (msg) => (v) =>
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg,
+    },
   }),
   computed: {
     siteKey() {
       return this.$store.state.contact.recaptchaKey;
-    }
+    },
   },
   methods: {
     async sendEmail() {
@@ -96,7 +96,7 @@ export default {
         replyToEmail: this.email,
         subject: "contact form - [" + this.subject + "]",
         emailBody: this.body,
-        recaptchaRes: this.recaptchaRes
+        recaptchaRes: this.recaptchaRes,
       };
       try {
         await this.$axios.$post("/v1/contact", mail);
@@ -126,7 +126,7 @@ export default {
     },
     onVerify(response) {
       this.recaptchaRes = response;
-    }
+    },
   },
   async fetch({ store }) {
     if (process.env.NODE_ENV === "development") {
@@ -142,6 +142,6 @@ export default {
       }
     }
   },
-  components: { VueRecaptcha }
+  components: { VueRecaptcha },
 };
 </script>

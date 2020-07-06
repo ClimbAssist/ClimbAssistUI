@@ -9,26 +9,38 @@ import Model from "../../../../../components/editor/route/ModelEdit.vue";
 import Info from "../../../../../components/editor/route/InfoEdit.vue";
 import axios from "axios";
 export default {
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {};
   },
   computed: {
     editTabs() {
       return this.$store.state.editor.editTabs;
-    }
+    },
   },
   components: {
     model: Model,
-    info: Info
+    info: Info,
   },
   methods: {},
   async fetch({ store, params, redirect }) {
     if (store.state.editor.sampleData) {
-      store.commit("editor/updateCrag", store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1]);
-      store.commit("editor/updateSubArea", store.state.filter.countries[0].regions[0].areas[0].subAreas[0]);
-      store.commit("editor/updateArea", store.state.filter.countries[0].regions[0].areas[0]);
-      store.commit("editor/updateRegion", store.state.filter.countries[0].regions[0]);
+      store.commit(
+        "editor/updateCrag",
+        store.state.filter.countries[0].regions[0].areas[0].subAreas[0].crags[1]
+      );
+      store.commit(
+        "editor/updateSubArea",
+        store.state.filter.countries[0].regions[0].areas[0].subAreas[0]
+      );
+      store.commit(
+        "editor/updateArea",
+        store.state.filter.countries[0].regions[0].areas[0]
+      );
+      store.commit(
+        "editor/updateRegion",
+        store.state.filter.countries[0].regions[0]
+      );
       store.commit("editor/updateCountry", store.state.filter.countries[0]);
       return;
     }
@@ -44,21 +56,22 @@ export default {
           crag.walls[wi].routes = [];
         }
         for (let ri in crag.walls[wi].routes) {
-          crag.walls[wi].routes[ri].points = []
+          crag.walls[wi].routes[ri].points = [];
           if (!crag.walls[wi].routes[ri].pitches) {
-            crag.walls[wi].routes[ri].pitches =[];
+            crag.walls[wi].routes[ri].pitches = [];
           }
           for (let pi in crag.walls[wi].routes[ri].pitches) {
-
             if (!crag.walls[wi].routes[ri].pitches[pi].points) {
               crag.walls[wi].routes[ri].pitches[pi].points = [];
             }
-            crag.walls[wi].routes[ri].points = crag.walls[wi].routes[ri].points.concat(crag.walls[wi].routes[ri].pitches[pi].points)
+            crag.walls[wi].routes[ri].points = crag.walls[wi].routes[
+              ri
+            ].points.concat(crag.walls[wi].routes[ri].pitches[pi].points);
           }
         }
       }
-      console.log("crag")
-      console.log(crag)
+      console.log("crag");
+      console.log(crag);
       store.commit("editor/updateCrag", crag);
 
       let subArea = (await axios.get("/v1/sub-areas/" + crag.subAreaId)).data;
@@ -76,12 +89,13 @@ export default {
       console.log(region);
       store.commit("editor/updateRegion", region.data);
 
-      let country = (await axios.get("/v1/countries/" + region.data.countryId)).data;
+      let country = (await axios.get("/v1/countries/" + region.data.countryId))
+        .data;
       console.info("country");
       console.log(country);
       store.commit("editor/updateCountry", country.data);
-    } catch(error) {
-      redirect('/editor/crag/' + params.edit + '/debugger')
+    } catch (error) {
+      redirect("/editor/crag/" + params.edit + "/debugger");
     }
   },
   created() {
@@ -93,6 +107,6 @@ export default {
   destroyed() {
     this.$store.commit("editor/editView", null);
     this.$store.commit("sidebar/updateSidebar", "defaultV");
-  }
+  },
 };
 </script>

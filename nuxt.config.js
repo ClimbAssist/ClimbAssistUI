@@ -6,7 +6,7 @@ const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
 module.exports = {
   mode: "spa",
   generate: {
-    dir: "dist/static"
+    dir: "dist/static",
   },
   // router: {
   //   base: '/static/'
@@ -19,20 +19,20 @@ module.exports = {
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: pkg.description }
+      { hid: "description", name: "description", content: pkg.description },
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
         rel: "stylesheet",
         href:
-          "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
+          "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons",
       },
       {
         rel: "stylesheet",
-        href: "https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css"
-      }
-    ]
+        href: "https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css",
+      },
+    ],
   },
 
   /*
@@ -58,18 +58,18 @@ module.exports = {
     [
       "@nuxtjs/google-analytics",
       {
-        id: "UA-121073899-1"
-      }
+        id: "UA-121073899-1",
+      },
     ],
     [
       "@nuxtjs/google-adsense",
       {
-        id: "ca-pub-5881021151869346"
-      }
+        id: "ca-pub-5881021151869346",
+      },
     ],
     "@nuxtjs/vuetify",
     "@nuxtjs/axios",
-    "@nuxtjs/pwa"
+    "@nuxtjs/pwa",
   ],
   /*
    ** Axios module configuration
@@ -78,18 +78,18 @@ module.exports = {
     theme: {
       themes: {
         light: {
-          primary: "#449947"
-        }
-      }
+          primary: "#449947",
+        },
+      },
     },
     icons: {
-      iconfont: "fa"
-    }
+      iconfont: "fa",
+    },
   },
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     // proxy: true
-    baseURL: "/"
+    baseURL: "/",
   },
 
   /*
@@ -99,8 +99,8 @@ module.exports = {
     publicPath: "/static/_nuxt",
     plugins: [
       new webpack.ProvidePlugin({
-        mapboxgl: "mapbox-gl"
-      })
+        mapboxgl: "mapbox-gl",
+      }),
     ],
     loaders: {},
 
@@ -113,10 +113,10 @@ module.exports = {
         test: /\.(glb|gltf)$/,
         use: [
           {
-            loader: "file-loader"
-          }
-        ]
+            loader: "file-loader",
+          },
+        ],
       });
-    }
-  }
+    },
+  },
 };

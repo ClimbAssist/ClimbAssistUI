@@ -38,7 +38,7 @@
             </v-btn>
           </v-layout>
           <v-card>
-            <v-card-title class="primary headline  white--text"
+            <v-card-title class="primary headline white--text"
               >Sub-Areas</v-card-title
             >
           </v-card>
@@ -63,25 +63,31 @@
               ></v-textarea>
             </v-flex>
             <v-layout align-center justify-end row>
-            <v-btn
-            class="ma-2"
-              color="primary"
-              :disabled="subAreaCheck[ci]"
-              @click="updateSubArea(ci)"
-            >
-              Update
-            </v-btn>
-            <v-btn
-            class="ma-2"
-              color="red"
-              :disabled="area.subAreas[ci].crags.length > 0"
-              @click="deleteSubArea(ci)"
-            >
-              Delete
-            </v-btn>
+              <v-btn
+                class="ma-2"
+                color="primary"
+                :disabled="subAreaCheck[ci]"
+                @click="updateSubArea(ci)"
+              >
+                Update
+              </v-btn>
+              <v-btn
+                class="ma-2"
+                color="red"
+                :disabled="area.subAreas[ci].crags.length > 0"
+                @click="deleteSubArea(ci)"
+              >
+                Delete
+              </v-btn>
+            </v-layout>
           </v-layout>
-          </v-layout>
-          <v-layout v-for="(subArea, i) in subAreas" :key="i" row wrap class="mx-2">
+          <v-layout
+            v-for="(subArea, i) in subAreas"
+            :key="i"
+            row
+            wrap
+            class="mx-2"
+          >
             <v-flex xs12>
               <v-text-field
                 label="name"
@@ -98,7 +104,7 @@
           </v-layout>
           <v-layout>
             <v-btn
-            class="ma-2"
+              class="ma-2"
               color="primary"
               v-if="subAreas.length > 0"
               @click="addSubArea()"
@@ -114,7 +120,7 @@
               Add sub-area
             </v-btn>
             <v-btn
-            class="ma-2"
+              class="ma-2"
               v-if="subAreas.length > 0"
               color="red"
               @click="subAreas.pop()"
@@ -132,13 +138,13 @@
 import axios from "axios";
 import { fetch } from "../../../mixins/fetchData.js";
 export default {
-  middleware: 'authentication',
+  middleware: "authentication",
   data() {
     return {
       name: undefined,
       description: undefined,
       subAreas: [],
-      currentSubAreas: []
+      currentSubAreas: [],
     };
   },
   computed: {
@@ -175,7 +181,7 @@ export default {
     },
     region() {
       return this.$store.state.editor.region;
-    }
+    },
   },
   methods: {
     getArea() {
@@ -189,7 +195,7 @@ export default {
           name: this.area.subAreas[skey].name,
           description: this.area.subAreas[skey].description,
           subAreaId: this.area.subAreas[skey].subAreaId,
-          areaId: this.area.subAreas[skey].areaId
+          areaId: this.area.subAreas[skey].areaId,
         };
         this.currentSubAreas.push(currentSubArea);
       }
@@ -201,7 +207,7 @@ export default {
             let obj = {
               areaId: this.area.areaId,
               name: this.subAreas[key].name,
-              description: this.subAreas[key].description
+              description: this.subAreas[key].description,
             };
             await this.$axios.put("/v1/sub-areas", obj);
             this.$store.commit("snackbar/updateType", "success");
@@ -243,7 +249,7 @@ export default {
           areaId: this.currentSubAreas[i].areaId,
           subAreaId: this.currentSubAreas[i].subAreaId,
           name: this.currentSubAreas[i].name,
-          description: this.currentSubAreas[i].description
+          description: this.currentSubAreas[i].description,
         };
         await this.$axios.post("/v1/sub-areas", obj);
         this.$store.commit("snackbar/updateType", "success");
@@ -275,7 +281,7 @@ export default {
             areaId: this.area.areaId,
             regionId: this.area.regionId,
             name: this.name,
-            description: this.description
+            description: this.description,
           };
           await this.$axios.post("/v1/areas", obj);
           this.$store.commit("snackbar/updateType", "success");
@@ -313,7 +319,7 @@ export default {
         this.fetchData();
 
         this.$router.push({
-          name: "editor"
+          name: "editor",
         });
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
@@ -363,7 +369,7 @@ export default {
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
       }
-    }
+    },
   },
   async fetch({ store, params }) {
     if (store.state.editor.sampleData) {
@@ -381,13 +387,13 @@ export default {
     console.log("from fresh");
     const api = (await axios.get("/v1/areas/" + params.edit + "?depth=2")).data;
 
-    let area = api.data
+    let area = api.data;
     if (!area.subAreas) {
-      area.subAreas=[];
+      area.subAreas = [];
     }
     for (let si in area.subAreas) {
       if (!area.subAreas[si].crags) {
-        area.subAreas[si].crags = []
+        area.subAreas[si].crags = [];
       }
     }
 
@@ -407,6 +413,6 @@ export default {
   mixins: [fetch],
   created() {
     this.getArea();
-  }
+  },
 };
 </script>

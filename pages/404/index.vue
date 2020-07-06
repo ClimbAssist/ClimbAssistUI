@@ -15,6 +15,6 @@ export default {
   name: "error",
   data: () => ({}),
   props: {},
-  methods: {}
+  methods: {},
 };
 </script>

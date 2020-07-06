@@ -6,10 +6,10 @@ phases:
       nodejs: 10
   build:
     commands:
-    - npm install
-    - npm run build
-    - mv dist/static/static/* dist/static
-    - rm -r dist/static/static
+      - npm install
+      - npm run build
+      - mv dist/static/static/* dist/static
+      - rm -r dist/static/static
 artifacts:
   files:
-  - '**/*'
+    - "**/*"

@@ -7,8 +7,8 @@
           countryKey: area.countryKey,
           stateKey: area.stateKey,
           areaKey: area.areaKey,
-          area: area.slug
-        }
+          area: area.slug,
+        },
       }"
       v-for="(area, index) in filteredRoutes.areas"
       :key="index"
@@ -32,18 +32,18 @@ export default {
   name: "mapareaV",
   computed: {
     ...mapGetters({
-      filteredRoutes: "filter/filteredRoutes"
+      filteredRoutes: "filter/filteredRoutes",
     }),
     dataSet() {
       return this.$store.state.filter.dataSet;
-    }
+    },
   },
   watch: {
-    dataSet:  {
+    dataSet: {
       handler() {
         this.$forceUpdate();
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

@@ -12,7 +12,7 @@ export const state = () => ({
     scale: undefined,
     light: undefined,
     modelAngle: undefined,
-    azimuth: []
+    azimuth: [],
   },
   country: undefined,
   region: undefined,
@@ -20,7 +20,7 @@ export const state = () => ({
   subArea: undefined,
   location: {
     latitude: undefined,
-    longitude: undefined
+    longitude: undefined,
   },
   parking: [],
   parkingIndex: undefined,
@@ -32,7 +32,7 @@ export const state = () => ({
     areaId: undefined,
     name: undefined,
     description: undefined,
-    subAreas: []
+    subAreas: [],
   },
   mapEdit: false,
   mapTile: "outdoors-v11",
@@ -48,16 +48,16 @@ export const state = () => ({
     walls: [],
     parking: undefined,
     paths: undefined,
-    state: undefined
+    state: undefined,
   },
   centerLoc: {
     x: undefined,
     y: undefined,
-    z: undefined
+    z: undefined,
   },
   routeStateEditor: [],
   loading: false,
-  sampleData: false
+  sampleData: false,
 });
 export const getters = {};
 export const mutations = {
@@ -112,22 +112,22 @@ export const mutations = {
   },
   updateRoutes: (state, payload) => {
     state.routeStateEditor = [];
-    const serializePitch = pitch =>
+    const serializePitch = (pitch) =>
       _.defaults(pitch, {
         danger: undefined,
         description: undefined,
         grade: undefined,
-        gradeModifier: undefined
+        gradeModifier: undefined,
       });
 
-    const serializeRoute = route =>
+    const serializeRoute = (route) =>
       _.defaultsDeep(route, {
         style: undefined,
         description: undefined,
         protection: undefined,
         grade: undefined,
         gradeModifier: undefined,
-        pitches: _.map(route.pitches, p => serializePitch(p))
+        pitches: _.map(route.pitches, (p) => serializePitch(p)),
       });
 
     for (let i in payload) {
@@ -148,7 +148,7 @@ export const mutations = {
       state.anchors[key].fixed = payload[key];
     }
   },
-  removeAnchor: state => {
+  removeAnchor: (state) => {
     state.anchors.pop();
   },
   updateCenterLoc: (state, payload) => {
@@ -162,7 +162,7 @@ export const mutations = {
   updatePoints: (state, payload) => {
     state.points = payload;
   },
-  removePoints: state => {
+  removePoints: (state) => {
     state.points.pop();
   },
   updateDistances: (state, payload) => {
@@ -171,7 +171,7 @@ export const mutations = {
   addDistance: (state, payload) => {
     state.distances.push(payload);
   },
-  removeDistance: state => {
+  removeDistance: (state) => {
     state.distances.pop();
   },
   updateCountry: (state, payload) => {
@@ -209,16 +209,16 @@ export const mutations = {
     state.parking[state.parking.length - 1].latitude = payload.lat;
     state.parking[state.parking.length - 1].longitude = payload.lng;
   },
-  addParking: state => {
+  addParking: (state) => {
     state.parking.push({
       latitude: undefined,
-      longitude: undefined
+      longitude: undefined,
     });
   },
-  removeParking: state => {
+  removeParking: (state) => {
     state.parking.pop();
   },
-  clearParking: state => {
+  clearParking: (state) => {
     state.parking = [];
   },
   setCurrentPath: (state, payload) => {
@@ -234,28 +234,28 @@ export const mutations = {
     }
     state.path = path;
   },
-  addPath: state => {
+  addPath: (state) => {
     state.path.push([]);
   },
   addPathPoint: (state, payload) => {
     state.path[state.path.length - 1].push(payload);
   },
-  removePathPoint: state => {
+  removePathPoint: (state) => {
     state.path[state.path.length - 1].pop();
   },
-  removePath: state => {
+  removePath: (state) => {
     state.path.pop();
   },
-  clearPath: state => {
+  clearPath: (state) => {
     state.path = [];
   },
   updateZoom: (state, payload) => {
     state.zoom = payload;
   },
-  updateMapEdit: state => {
+  updateMapEdit: (state) => {
     state.mapEdit = !state.mapEdit;
   },
-  clearMapEdit: state => {
+  clearMapEdit: (state) => {
     state.mapEdit = false;
   },
   updateMapTile: (state, payload) => {
@@ -263,6 +263,6 @@ export const mutations = {
   },
   updateMapSelector: (state, payload) => {
     state.mapSelector = payload;
-  }
+  },
 };
 export const actions = {};

@@ -63,7 +63,7 @@ export default {
   name: "editorcragV",
   data() {
     return {
-      limitRotate: false
+      limitRotate: false,
     };
   },
   watch: {
@@ -73,14 +73,14 @@ export default {
           if (this.azimuth.length == 0) {
             this.$store.commit("editor/updateAzimuth", [
               -Math.PI.toFixed(1),
-              Math.PI.toFixed(1)
+              Math.PI.toFixed(1),
             ]);
           }
         } else {
           this.$store.commit("editor/updateAzimuth", []);
         }
-      }
-    }
+      },
+    },
   },
   computed: {
     modelSet() {
@@ -135,7 +135,7 @@ export default {
       },
       set(value) {
         this.$store.commit("editor/updateModelAngle", value);
-      }
+      },
     },
     scale: {
       get() {
@@ -143,7 +143,7 @@ export default {
       },
       set(value) {
         this.$store.commit("editor/updateScale", value);
-      }
+      },
     },
     light: {
       get() {
@@ -151,7 +151,7 @@ export default {
       },
       set(value) {
         this.$store.commit("editor/updateLight", value);
-      }
+      },
     },
     azimuth: {
       get() {
@@ -165,11 +165,11 @@ export default {
           value[1] = 0.1;
         }
         this.$store.commit("editor/updateAzimuth", value);
-      }
+      },
     },
     editTabs() {
       return this.$store.state.editor.editTabs;
-    }
+    },
   },
   methods: {
     editModel() {
@@ -196,15 +196,15 @@ export default {
         location: {
           latitude: this.crag.location.latitude,
           longitude: this.crag.location.longitude,
-          zoom: this.crag.location.zoom
+          zoom: this.crag.location.zoom,
         },
         model: {
           modelLocation: this.crag.model.modelLocation,
           lowResModelLocation: this.crag.model.lowResModelLocation,
           light: this.light,
           scale: this.scale,
-          modelAngle: this.modelAngle
-        }
+          modelAngle: this.modelAngle,
+        },
       };
       if (this.crag.imageLocation) {
         obj.imageLocation = this.crag.imageLocation;
@@ -212,7 +212,7 @@ export default {
       if (this.azimuth.length > 1) {
         obj.model.azimuth = {
           minimum: this.azimuth[0],
-          maximum: this.azimuth[1]
+          maximum: this.azimuth[1],
         };
       }
       console.log("POST");
@@ -247,10 +247,10 @@ export default {
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
       }
-    }
+    },
   },
   mounted() {
     this.checkazimuth();
-  }
+  },
 };
 </script>

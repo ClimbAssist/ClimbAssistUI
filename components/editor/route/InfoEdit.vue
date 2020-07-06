@@ -38,7 +38,7 @@
                   ><span
                     v-if="
                       routeState[ri].style === 'sport' ||
-                        routeState[ri].style === 'trad'
+                      routeState[ri].style === 'trad'
                     "
                     >5.</span
                   >{{ routeState[ri].grade }}{{ routeState[ri].gradeModifier
@@ -257,7 +257,7 @@
                         gradeModifier: '',
                         danger: '',
                         description: '',
-                        routeId: route.routeId
+                        routeId: route.routeId,
                       })
                     "
                     >Add Pitch</v-btn
@@ -378,7 +378,7 @@
                   pitches.push({
                     grade: '',
                     gradeModifier: '',
-                    description: ''
+                    description: '',
                   })
                 "
                 >Add Pitch</v-btn
@@ -448,7 +448,7 @@ export default {
         "13",
         "14",
         "15",
-        "16"
+        "16",
       ],
       gradeComparison: ["-", "", "+", "a", "b", "c", "d"],
       modList: ["a", "a/b", "b", "b/c", "c", "c/d", "d"],
@@ -460,7 +460,7 @@ export default {
       routeList: [],
       afterList: [],
       newPitch: [],
-      loading: false
+      loading: false,
     };
   },
   computed: {
@@ -662,7 +662,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     editModel(ri) {
@@ -685,8 +685,8 @@ export default {
             grade: "",
             gradeModifier: "",
             description: "",
-            danger: ""
-          }
+            danger: "",
+          },
         ];
       }, 100);
     },
@@ -696,7 +696,7 @@ export default {
       let route = {
         name: this.name,
         wallId: this.crag.walls[this.wallIndex].wallId,
-        style: this.style
+        style: this.style,
       };
 
       if (this.description != "") {
@@ -722,7 +722,7 @@ export default {
             let pitch = {
               grade: parseInt(revPitches[i].grade),
               routeId: routeId.data.routeId,
-              description: revPitches[i].description
+              description: revPitches[i].description,
             };
             if (revPitches[i].danger != "") {
               pitch.danger = revPitches[i].danger;
@@ -759,7 +759,7 @@ export default {
             grade: parseInt(this.pitches[0].grade),
             routeId: routeId.data.routeId,
             description: this.pitches[0].description,
-            first: true
+            first: true,
           };
           if (this.pitches[0].danger != "") {
             pitch.danger = this.pitches[0].danger;
@@ -849,7 +849,7 @@ export default {
         }
         let obj = {
           listNames: ["first"],
-          listIds: [null]
+          listIds: [null],
         };
         for (let key in this.routeState) {
           if (key !== ri) {
@@ -882,7 +882,7 @@ export default {
         let pitch = {
           grade: parseInt(this.newPitch[0].grade),
           description: this.newPitch[0].description,
-          routeId: this.newPitch[0].routeId
+          routeId: this.newPitch[0].routeId,
         };
 
         if (this.newPitch[0].gradeModifier !== "") {
@@ -1360,12 +1360,12 @@ export default {
         .replace(/-+/g, "-"); // collapse dashes
 
       return str;
-    }
+    },
   },
   activated() {
     if (this.wallIndex) {
       this.updateRouteList();
     }
-  }
+  },
 };
 </script>

@@ -6,7 +6,8 @@
 
     <p class="text-left">
       We are currently focusing our efforts on capturing as many of the US crags
-      as possible and developing key app features. In order to improve this guide and keep it to a upt do date, we can use all the help we can get.
+      as possible and developing key app features. In order to improve this
+      guide and keep it to a upt do date, we can use all the help we can get.
     </p>
 
     <p class="text-left">
@@ -19,17 +20,37 @@
       </v-card-title>
       <v-card-text class="text-left">
         <p>
-          This is currently being funded by a few founders who are pouring in time and money to cover the expenses. If you would like to help out it would be much apprecieated!
+          This is currently being funded by a few founders who are pouring in
+          time and money to cover the expenses. If you would like to help out it
+          would be much apprecieated!
         </p>
         <p>
-          You can donate directly with <a target="_blank" href="https://www.paypal.me/ClimbAssist">Paypal</a>
+          You can donate directly with
+          <a target="_blank" href="https://www.paypal.me/ClimbAssist">Paypal</a>
 
-          or check out the swag at <a target="_blank" href="https://climb-assist.myshopify.com">The Store</a>
+          or check out the swag at
+          <a target="_blank" href="https://climb-assist.myshopify.com"
+            >The Store</a
+          >
         </p>
         <p>
-          If you can't contribute financially you can still help us out by <a @click.stop="dialog=true">Subscribing to our Newsletter</a> and following us on <a href="https://facebook.com/climbassist" target="_blank" class="px-2">Facebook</a>
+          If you can't contribute financially you can still help us out by
+          <a @click.stop="dialog = true">Subscribing to our Newsletter</a> and
+          following us on
+          <a
+            href="https://facebook.com/climbassist"
+            target="_blank"
+            class="px-2"
+            >Facebook</a
+          >
           and
-          <a href="https://instagram.com/climbassist" target="_blank" class="px-2">Instagram</a> to keep up with the latest updates!
+          <a
+            href="https://instagram.com/climbassist"
+            target="_blank"
+            class="px-2"
+            >Instagram</a
+          >
+          to keep up with the latest updates!
         </p>
       </v-card-text>
     </v-card>
@@ -49,12 +70,12 @@
 
         <p>
           First and foremost, quality information is how we can make Climb
-          Assist useful. To our dismay, we have not climbed the 150
-          thousand+ routes in the US, so we rely heavily on you to use the app
-          and share your invaluable knowledge. The tools Climb Assist offers
-          will enable us to build the most kicka** guidebook. Please help us
-          make this platform useful to others by sharing your experience and
-          knowledge, and of course, please show your friends!
+          Assist useful. To our dismay, we have not climbed the 150 thousand+
+          routes in the US, so we rely heavily on you to use the app and share
+          your invaluable knowledge. The tools Climb Assist offers will enable
+          us to build the most kicka** guidebook. Please help us make this
+          platform useful to others by sharing your experience and knowledge,
+          and of course, please show your friends!
         </p>
 
         <p>
@@ -72,9 +93,12 @@
       </v-card-title>
       <v-card-text class="text-left">
         <p>
-          The current app is just the beginning and we're looking to do some fun and innovative development. Please reach out to us on the <nuxt-link to="/contact">contact page</nuxt-link> if you are a
-          developer with willing to volunteer your time.
-          we are currently working with or looking for people with experience in one or more of the following:
+          The current app is just the beginning and we're looking to do some fun
+          and innovative development. Please reach out to us on the
+          <nuxt-link to="/contact">contact page</nuxt-link> if you are a
+          developer with willing to volunteer your time. we are currently
+          working with or looking for people with experience in one or more of
+          the following:
         </p>
         <ul>
           <li>WebGL or OpenGL Graphics</li>
@@ -115,13 +139,17 @@
           <li>Experienced</li>
           <li>Safety Conscious</li>
           <li>Considerate of the environment</li>
-          <li>Willing to fly in cold weather conditions and at very early times of the day</li>
+          <li>
+            Willing to fly in cold weather conditions and at very early times of
+            the day
+          </li>
         </ul>
         <br />
         <h3>Terrestrial</h3>
         <p>
           There are much fewer regulations if you are able to capture crags
-          using terrestrial (from the ground) photography. Please reach out to us on the
+          using terrestrial (from the ground) photography. Please reach out to
+          us on the
           <nuxt-link to="/contact">contact page</nuxt-link> if you feel this can
           be safely accomplished at your crag and have a camera which meets the
           general requirements below.
@@ -212,10 +240,10 @@
 export default {
   name: "about",
   data: () => ({
-    dialog: false
+    dialog: false,
   }),
   props: {},
-  methods: {}
+  methods: {},
 };
 </script>
 <style scoped>

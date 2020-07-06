@@ -10,7 +10,7 @@ export default {
       access:
         "pk.eyJ1IjoiY2xpbWJhc3Npc3QiLCJhIjoiY2pmMDZ1ejBvMGpxZDJ3cWpiZ2w3c2w4NiJ9.Xwqm5bhXRQU-LrC2keGw3g",
       crag_pin: require("@/static/map_icon.png"),
-      parking_pin: require("@/static/parking.png")
+      parking_pin: require("@/static/parking.png"),
     };
   },
   computed: {
@@ -39,43 +39,43 @@ export default {
       return this.$store.state.editor.path;
     },
     currentPath() {
-      return this.$store.state.editor.currentPath
-    }
+      return this.$store.state.editor.currentPath;
+    },
   },
   watch: {
     mapEdit: {
       handler() {
         if (this.mapEdit) {
-          this.map.scrollZoom.enable()
-          this.map.boxZoom.enable()
-          this.map.dragPan.enable()
+          this.map.scrollZoom.enable();
+          this.map.boxZoom.enable();
+          this.map.dragPan.enable();
         } else {
-          this.map.scrollZoom.disable()
-          this.map.boxZoom.disable()
-          this.map.dragPan.disable()
+          this.map.scrollZoom.disable();
+          this.map.boxZoom.disable();
+          this.map.dragPan.disable();
         }
-      }
+      },
     },
     mapTile: {
       handler() {
-        this.map.setStyle('mapbox://styles/mapbox/' + this.mapTile);
-      }
+        this.map.setStyle("mapbox://styles/mapbox/" + this.mapTile);
+      },
     },
     path: {
       handler() {
         this.setPath();
-      }
+      },
     },
     parking: {
       handler() {
         this.setParking();
-      }
+      },
     },
     currentPath: {
       handler() {
         this.setPath();
-      }
-    }
+      },
+    },
   },
   methods: {
     createMap() {
@@ -87,11 +87,8 @@ export default {
       this.map = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/mapbox/outdoors-v11",
-        center: [
-          this.crag.location.longitude,
-          this.crag.location.latitude
-        ],
-        zoom: this.crag.location.zoom
+        center: [this.crag.location.longitude, this.crag.location.latitude],
+        zoom: this.crag.location.zoom,
       });
 
       this.mapLoaded(this.map, mapboxgl);
@@ -99,10 +96,10 @@ export default {
     mapLoaded(map, mapboxgl) {
       map.dragRotate.disable();
       map.touchZoomRotate.disableRotation();
-      map.scrollZoom.disable()
-      map.boxZoom.disable()
-      map.dragPan.disable()
-      map.doubleClickZoom.disable()
+      map.scrollZoom.disable();
+      map.boxZoom.disable();
+      map.dragPan.disable();
+      map.doubleClickZoom.disable();
 
       map.addControl(new mapboxgl.FullscreenControl());
       map.on("style.load", () => {
@@ -118,22 +115,21 @@ export default {
         this.setParking();
         this.setPin();
 
-        map.on("click", e => {
+        map.on("click", (e) => {
           if (!this.mapEdit) {
-            return
+            return;
           } else {
             if (this.mapSelector === "location") {
-            this.$store.commit("editor/updateLocation", e.lngLat);
-            this.setPin();
-          } else if (this.mapSelector === "parking") {
-            this.$store.commit("editor/updateParking", e.lngLat);
-            this.setParking();
-          } else if (this.mapSelector === "path") {
-            let point = [e.lngLat.lng, e.lngLat.lat];
-            this.$store.commit("editor/addPathPoint", point);
+              this.$store.commit("editor/updateLocation", e.lngLat);
+              this.setPin();
+            } else if (this.mapSelector === "parking") {
+              this.$store.commit("editor/updateParking", e.lngLat);
+              this.setParking();
+            } else if (this.mapSelector === "path") {
+              let point = [e.lngLat.lng, e.lngLat.lat];
+              this.$store.commit("editor/addPathPoint", point);
+            }
           }
-        }
-          
         });
 
         map.on("zoomend", () => {
@@ -158,17 +154,20 @@ export default {
                 type: "Feature",
                 geometry: {
                   type: "Point",
-                  coordinates: [this.location.longitude, this.location.latitude]
-                }
-              }
-            ]
-          }
+                  coordinates: [
+                    this.location.longitude,
+                    this.location.latitude,
+                  ],
+                },
+              },
+            ],
+          },
         },
         type: "symbol",
         layout: {
           "icon-image": "cragPin",
-          "icon-size": 0.7
-        }
+          "icon-size": 0.7,
+        },
       });
     },
     setParking() {
@@ -182,8 +181,8 @@ export default {
           type: "Feature",
           geometry: {
             type: "Point",
-            coordinates: [this.parking[i].longitude, this.parking[i].latitude]
-          }
+            coordinates: [this.parking[i].longitude, this.parking[i].latitude],
+          },
         };
         parkingPins.push(pin);
       }
@@ -193,14 +192,14 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: parkingPins
-          }
+            features: parkingPins,
+          },
         },
         type: "symbol",
         layout: {
           "icon-image": "parkingPin",
-          "icon-size": 0.7
-        }
+          "icon-size": 0.7,
+        },
       });
     },
     setPath() {
@@ -212,17 +211,20 @@ export default {
       //paths from server
       if (this.currentPath) {
         for (let ci in this.currentPath) {
-          let coordinates = []
+          let coordinates = [];
           for (let pi in this.currentPath[ci].pathPoints) {
-            let geo = [this.currentPath[ci].pathPoints[pi].longitude, this.currentPath[ci].pathPoints[pi].latitude]
-            coordinates.push(geo)
+            let geo = [
+              this.currentPath[ci].pathPoints[pi].longitude,
+              this.currentPath[ci].pathPoints[pi].latitude,
+            ];
+            coordinates.push(geo);
           }
           let currentLine = {
             type: "feature",
             geometry: {
               type: "LineString",
-              coordinates: coordinates
-            }
+              coordinates: coordinates,
+            },
           };
           pathLines.push(currentLine);
         }
@@ -234,8 +236,8 @@ export default {
             type: "feature",
             geometry: {
               type: "LineString",
-              coordinates: this.path[i]
-            }
+              coordinates: this.path[i],
+            },
           };
           pathLines.push(line);
         }
@@ -248,23 +250,23 @@ export default {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: pathLines
-          }
+            features: pathLines,
+          },
         },
         layout: {
           "line-join": "round",
-          "line-cap": "round"
+          "line-cap": "round",
         },
         paint: {
           "line-color": "#888",
-          "line-width": 8
-        }
+          "line-width": 8,
+        },
       });
-    }
+    },
   },
   mounted() {
     this.createMap();
-  }
+  },
 };
 </script>
 

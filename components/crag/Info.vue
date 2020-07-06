@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title>
           <nuxt-link
-            style="text-decoration:none;"
+            style="text-decoration: none;"
             :to="'/areas/' + crag.crag.area.areaId"
           >
             <v-icon color="primary">
@@ -358,13 +358,13 @@ export default {
       apiWalls: null,
       apiRoutes: [],
       ropeShow: 0,
-      boulderShow: 0
+      boulderShow: 0,
       // routeCheck: null
     };
   },
   computed: {
     ...mapGetters({
-      crag: "filter/crag"
+      crag: "filter/crag",
     }),
     activeRoute() {
       return this.$store.state.frame.activeRoute;
@@ -390,7 +390,7 @@ export default {
         trad: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         sport: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         boulder: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        total: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        total: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       };
       for (let wkey in this.crag.walls) {
         for (let rkey in this.crag.walls[wkey].routes) {
@@ -416,7 +416,7 @@ export default {
         }
       }
       return gradeTotals;
-    }
+    },
   },
   methods: {
     checkRoute(wall, route) {
@@ -474,17 +474,17 @@ export default {
       for (let i in this.gradeTotals.total) {
         labels.push("5." + i);
       }
-      let filteredTrad = this.gradeTotals.trad.filter(function(el) {
+      let filteredTrad = this.gradeTotals.trad.filter(function (el) {
         return el != null;
       });
-      let filteredSport = this.gradeTotals.sport.filter(function(el) {
+      let filteredSport = this.gradeTotals.sport.filter(function (el) {
         return el != null;
       });
       let boulderLabels = [];
       for (let i in this.gradeTotals.boulder) {
         boulderLabels.push("V" + i);
       }
-      let filteredBoulder = this.gradeTotals.boulder.filter(function(el) {
+      let filteredBoulder = this.gradeTotals.boulder.filter(function (el) {
         return el != null;
       });
       this.gradeChartRope = new Chart(ctx, {
@@ -497,16 +497,16 @@ export default {
               data: filteredTrad,
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgba(255, 99, 132, 1)",
-              borderWidth: 1
+              borderWidth: 1,
             },
             {
               label: "Sport Routes",
               data: filteredSport,
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderColor: "rgba(54, 162, 235, 1)",
-              borderWidth: 1
-            }
-          ]
+              borderWidth: 1,
+            },
+          ],
         },
         options: {
           scales: {
@@ -514,28 +514,28 @@ export default {
               {
                 gridLines: {
                   display: false,
-                  drawBorder: false
+                  drawBorder: false,
                 },
                 ticks: {
                   display: false,
-                  beginAtZero: true
-                }
-              }
+                  beginAtZero: true,
+                },
+              },
             ],
             xAxes: [
               {
                 gridLines: {
                   display: false,
                   drawBorder: false,
-                  beginAtZero: false
-                }
-              }
-            ]
+                  beginAtZero: false,
+                },
+              },
+            ],
           },
           legend: {
-            display: false
-          }
-        }
+            display: false,
+          },
+        },
       });
 
       ctx = document.getElementById("gradeChartBoulder");
@@ -550,9 +550,9 @@ export default {
               data: filteredBoulder,
               backgroundColor: "rgba(255, 204, 51, 0.2)",
               borderColor: "rgba(255, 255, 51, 1)",
-              borderWidth: 1
-            }
-          ]
+              borderWidth: 1,
+            },
+          ],
         },
         options: {
           scales: {
@@ -560,28 +560,28 @@ export default {
               {
                 gridLines: {
                   display: false,
-                  drawBorder: false
+                  drawBorder: false,
                 },
                 ticks: {
                   display: false,
-                  beginAtZero: true
-                }
-              }
+                  beginAtZero: true,
+                },
+              },
             ],
             xAxes: [
               {
                 gridLines: {
                   display: false,
                   drawBorder: false,
-                  beginAtZero: false
-                }
-              }
-            ]
+                  beginAtZero: false,
+                },
+              },
+            ],
           },
           legend: {
-            display: false
-          }
-        }
+            display: false,
+          },
+        },
       });
       // ctx = document.getElementById("typeChart");
       // let types = [this.crag.trad, this.crag.sport, this.crag.boulder]
@@ -640,7 +640,7 @@ export default {
       //     }
       //   }
       // });
-    }
+    },
   },
   watch: {
     activeRoute: {
@@ -651,20 +651,20 @@ export default {
               this.activeRoute.route
             ].routeId
           );
-          setTimeout(function() {
+          setTimeout(function () {
             elmnt.scrollIntoView(true);
             window.scrollBy(0, -90); // Adjust scrolling with a negative value here
           }, 200);
         }
         this.routeFromPage = false;
-      }
+      },
     },
     gradeTotals: {
       handler() {
-        let filteredTrad = this.gradeTotals.trad.filter(function(el) {
+        let filteredTrad = this.gradeTotals.trad.filter(function (el) {
           return el != null;
         });
-        let filteredSport = this.gradeTotals.sport.filter(function(el) {
+        let filteredSport = this.gradeTotals.sport.filter(function (el) {
           return el != null;
         });
         let labels = [];
@@ -681,7 +681,7 @@ export default {
           boulderLabels.push("V" + i);
         }
 
-        let filteredBoulder = this.gradeTotals.boulder.filter(function(el) {
+        let filteredBoulder = this.gradeTotals.boulder.filter(function (el) {
           return el != null;
         });
         this.gradeChartBoulder.data.datasets[0].data = filteredBoulder;
@@ -690,8 +690,8 @@ export default {
 
         // this.typeChart.data.datasets[0].data = [this.crag.trad, this.crag.sport, this.crag.boulder]
         // this.typeChart.update()
-      }
-    }
+      },
+    },
   },
   created() {
     this.setChartShow();
@@ -705,7 +705,7 @@ export default {
   },
   deactivated() {
     this.infoActive = false;
-  }
+  },
 };
 </script>
 

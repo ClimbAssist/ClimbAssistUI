@@ -34,7 +34,7 @@
       extension-height="12"
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer" />
-      <img style="max-width:50px" src="../static/ClimbAssist_Logo_img.png" />
+      <img style="max-width: 50px;" src="../static/ClimbAssist_Logo_img.png" />
       <v-flex hidden-sm-and-down shrink>
         <v-toolbar-title>Climb Assist</v-toolbar-title>
       </v-flex>
@@ -148,23 +148,23 @@ export default {
       {
         icon: "fa-edit",
         title: "editor",
-        to: "/editor"
+        to: "/editor",
       },
       {
         icon: "fa-home",
         title: "home",
-        to: "/"
+        to: "/",
       },
       {
         icon: "fa-list",
         title: "list",
-        to: "/list"
+        to: "/list",
       },
       {
         icon: "fa-map",
         title: "map",
-        to: "/map"
-      }
+        to: "/map",
+      },
     ],
     cragRoutes: null,
     frameTabs: "info",
@@ -175,7 +175,7 @@ export default {
       yds_grade: [1, 16],
       boulder: true,
       sport: true,
-      trad: true
+      trad: true,
     },
     countries: [
       {
@@ -201,7 +201,7 @@ export default {
                       north: "@/static/model/north.glb", // string
                       // in radians
                       min_azumuth: -Math.PI / 2, // decimal
-                      max_azumuth: Math.PI / 2 // decimal
+                      max_azumuth: Math.PI / 2, // decimal
                     },
                     location: {
                       crag_longitude: -105.353307, // decimal ,
@@ -213,9 +213,9 @@ export default {
                       path_points: [
                         {
                           longitude: "longitude", // decimal
-                          latitude: "latitude" // decimal
-                        }
-                      ]
+                          latitude: "latitude", // decimal
+                        },
+                      ],
                     },
                     walls: [
                       {
@@ -234,22 +234,22 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
+                                user: "user name", // string
                               },
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
+                                user: "user name", // string
                               },
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -257,33 +257,33 @@ export default {
                                 description:
                                   "Bolted slab to a corner to set pro followed by bolted slab to anchors.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "b/c" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                                gradeModifier: "b/c", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
                               },
                               {
                                 description: "Follow the Arete to anchors.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "b/c" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "b/c", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -34.291804689264524, // decimal
                               y: 5.1252091833622355, // decimal
-                              z: 12.772592164960535 // decimal
+                              z: 12.772592164960535, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             decals: [
@@ -295,21 +295,21 @@ export default {
                                 position: {
                                   x: -34.51264075758657, // decimal
                                   y: -3.7173118471933932, // decimal
-                                  z: 14.384959218460395 // decimal
+                                  z: 14.384959218460395, // decimal
                                 },
                                 orientation: {
                                   x: -0.17663852454226386, // decimal
                                   y: -0.7283504327666126, // decimal
-                                  z: -0.11826146320292473 // decimal
+                                  z: -0.11826146320292473, // decimal
                                 },
                                 size: {
                                   x: 5, // decimal
                                   y: 5, // decimal
-                                  z: 5 // decimal
+                                  z: 5, // decimal
                                 },
-                                map: "diffuse location" // string
-                              }
-                            ]
+                                map: "diffuse location", // string
+                              },
+                            ],
                           },
                           {
                             name: "The Pitts", // string
@@ -323,14 +323,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -338,35 +338,35 @@ export default {
                                 description:
                                   "Traditionally start in the gully to the right of Bell Air, most opt to do P1 of Bell Air due to the poor quality of the chimney.", // string
                                 grade: 7, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                                gradeModifier: "", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
                               },
                               {
                                 description:
                                   "Climb a short corner then up the main hand crack to the top.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "b" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "b", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -30.89251757281371, // decimal
                               y: 6.2459773821355515, // decimal
-                              z: 12.606131413596962 // decimal
+                              z: 12.606131413596962, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -381,14 +381,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -396,35 +396,35 @@ export default {
                                 description:
                                   "Follow a ramp left to a crack leading to a belay in an alcove.", // string
                                 grade: 10, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "b" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                                gradeModifier: "b", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
                               },
                               {
                                 description:
                                   "Climb a crack leading to the top of Cosmosis.", // string
                                 grade: 9, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -27.666004728232153, // decimal
                               y: 9.521462215388226, // decimal
-                              z: 20.070766225144204 // decimal
+                              z: 20.070766225144204, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -440,14 +440,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -455,29 +455,29 @@ export default {
                                 description:
                                   "Head up from behind a tree close to the wall. Follow the boltline up for a crimpy well protected route. Stay right when the boltline splits after the 8th bolt.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -27.193399957111204, // decimal
                               y: 3.722917390102767, // decimal
-                              z: 22.451980657607116 // decimal
+                              z: 22.451980657607116, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -493,14 +493,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -508,29 +508,29 @@ export default {
                                 description:
                                   "Start as Hound Dog then head left at bolt 8 to a difficult face finish.", // string
                                 grade: 13, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -26.353565000645403, // decimal
                               y: 4.366464003864957, // decimal
-                              z: 24.36608994473032 // decimal
+                              z: 24.36608994473032, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -546,14 +546,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -561,29 +561,29 @@ export default {
                                 description:
                                   "Begin below an overhang. Gain the roof and continue up a crack following the corner to the anchors.", // string
                                 grade: 12, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -25.5763576856447, // decimal
                               y: 4.01666549572145, // decimal
-                              z: 26.221236976701615 // decimal
+                              z: 26.221236976701615, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -599,14 +599,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -614,29 +614,29 @@ export default {
                                 description:
                                   "Start below the overhang and follow the bolted seam to the anchors.", // string
                                 grade: 12, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "c" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "c", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -23.775770542492648, // decimal
                               y: 3.852023200566011, // decimal
-                              z: 27.938688061252773 // decimal
+                              z: 27.938688061252773, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -652,14 +652,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -667,29 +667,29 @@ export default {
                                 description:
                                   "Climb the wide crack out of the overhang. Head right to join the second pitch of Cosmosis or left to the anchors of Hound Dog.", // string
                                 grade: 10, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "b" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "b", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -21.41331349649115, // decimal
                               y: -0.1299052595742456, // decimal
-                              z: 29.657438361400207 // decimal
+                              z: 29.657438361400207, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -705,14 +705,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -720,29 +720,29 @@ export default {
                                 description:
                                   "Climb the arete right of Gates of Eden.", // string
                                 grade: 13, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "b" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "b", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -20.819345782399765, // decimal
                               y: -1.7787086911949546, // decimal
-                              z: 30.463009762765083 // decimal
+                              z: 30.463009762765083, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -758,14 +758,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -773,29 +773,29 @@ export default {
                                 description:
                                   "Climb the chimney. Stemming and crack climbing.", // string
                                 grade: 9, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -19.385388931584096, // decimal
                               y: 0.39593495979628157, // decimal
-                              z: 28.69278375511307 // decimal
+                              z: 28.69278375511307, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -811,14 +811,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -826,29 +826,29 @@ export default {
                                 description:
                                   "Face climb to an arete located right of the chimney.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -18.24527489950414, // decimal
                               y: -2.888562517271743, // decimal
-                              z: 30.09373506222233 // decimal
+                              z: 30.09373506222233, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -864,14 +864,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -879,29 +879,29 @@ export default {
                                 description:
                                   "Head up a flake leading to an overhanging corner. Head to Bell Buster anchors. Often toproped.", // string
                                 grade: 12, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "b" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "b", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -13.337026844784525, // decimal
                               y: 1.0789794369070904, // decimal
-                              z: 31.16949057983168 // decimal
+                              z: 31.16949057983168, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -917,14 +917,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -932,29 +932,29 @@ export default {
                                 description:
                                   "Head up The Spoiles then veer right when the crack splits leading to the anchors for P1 of Cosmosis.", // string
                                 grade: 13, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a R" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a R", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -12.650724718832478, // decimal
                               y: 2.551029067644925, // decimal
-                              z: 32.09512575501667 // decimal
+                              z: 32.09512575501667, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -969,43 +969,43 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
                               {
                                 description: "Climb the bolted arete.", // string
                                 grade: 13, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "c" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "c", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -10.501676439525376, // decimal
                               y: 1.5803805031712346, // decimal
-                              z: 31.933465523063518 // decimal
+                              z: 31.933465523063518, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -1020,14 +1020,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1035,38 +1035,38 @@ export default {
                                 description:
                                   "Climb the right-facing corner to a small roof with the anchors above.", // string
                                 grade: 10, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
                               },
                               {
                                 description:
                                   "Climb the face above to a corner leading to the top.", // string
                                 grade: 9, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: -10.41648723035362, // decimal
                               y: -0.8420367813028315, // decimal
-                              z: 28.625393505605523 // decimal
+                              z: 28.625393505605523, // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
-                          }
-                        ]
+                          },
+                        ],
                       },
                       {
                         name: "Bean Liqour Area", // string
@@ -1084,14 +1084,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1099,29 +1099,29 @@ export default {
                                 description:
                                   "The left-line on Bean Liquor Area climbs a bulge then an arete.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: "x_coord", // decimal
                               y: "y_coord", // decimal
-                              z: "z_coord" // decimal
+                              z: "z_coord", // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -1136,14 +1136,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1151,29 +1151,29 @@ export default {
                                 description:
                                   "Begin on the face then move to a corner leading to an arete to finish.", // string
                                 grade: 10, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "d" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "d", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: "x_coord", // decimal
                               y: "y_coord", // decimal
-                              z: "z_coord" // decimal
+                              z: "z_coord", // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -1188,14 +1188,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1203,29 +1203,29 @@ export default {
                                 description:
                                   "Boltline above block just right of the large tree.", // string
                                 grade: 12, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: "x_coord", // decimal
                               y: "y_coord", // decimal
-                              z: "z_coord" // decimal
+                              z: "z_coord", // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -1240,14 +1240,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1255,29 +1255,29 @@ export default {
                                 description:
                                   "Boltline just right of Nice Doggie following a corner.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a/d" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a/d", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: "x_coord", // decimal
                               y: "y_coord", // decimal
-                              z: "z_coord" // decimal
+                              z: "z_coord", // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -1292,14 +1292,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1307,32 +1307,32 @@ export default {
                                 description:
                                   "Furthest to the right is a bolt line leading to a corner followed by a crack to the anchors.", // string
                                 grade: 12, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: "x_coord", // decimal
                               y: "y_coord", // decimal
-                              z: "z_coord" // decimal
+                              z: "z_coord", // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
-                          }
-                        ]
+                          },
+                        ],
                       },
                       {
                         name: "The Patio Area", // string
@@ -1350,14 +1350,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1365,29 +1365,29 @@ export default {
                                 description:
                                   "Farthest left of the patio area. Climb a bulge to a steep face.", // string
                                 grade: 11, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "c" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "c", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: "x_coord", // decimal
                               y: "y_coord", // decimal
-                              z: "z_coord" // decimal
+                              z: "z_coord", // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
                           },
                           {
@@ -1402,14 +1402,14 @@ export default {
                             photos: [
                               {
                                 src: require("@/static/ClimbAssist_Logo_img.png"), // string
-                                user: "user name" // string
-                              }
+                                user: "user name", // string
+                              },
                             ],
                             comments: [
                               {
                                 comment: "comment",
-                                user: "user name"
-                              }
+                                user: "user name",
+                              },
                             ],
                             // if applicable
                             pitches: [
@@ -1417,42 +1417,42 @@ export default {
                                 description:
                                   "Start below the roof and stay right of the arete. Shares anchors with Carrying Futons.", // string
                                 grade: 12, // string or int V0 through V13 for bouldering 4 through 15 for roped
-                                gradeModifier: "a" // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
-                              }
+                                gradeModifier: "a", // string '-' or '+' for bouldering 'a' 'b' 'c' 'd' for roped
+                              },
                             ],
                             center: {
                               x: "x_coord", // decimal
                               y: "y_coord", // decimal
-                              z: "z_coord" // decimal
+                              z: "z_coord", // decimal
                             },
                             points: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
+                                z: "z_coord", // decimal
+                              },
                             ],
                             // if applicable
                             anchors: [
                               {
                                 x: "x_coord", // decimal
                                 y: "y_coord", // decimal
-                                z: "z_coord" // decimal
-                              }
-                            ]
+                                z: "z_coord", // decimal
+                              },
+                            ],
                             // if applicable
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   }),
   computed: {
     filterText: {
@@ -1461,7 +1461,7 @@ export default {
       },
       set(value) {
         this.$store.commit("filter/updateFilterText", value);
-      }
+      },
     },
     filter() {
       return this.$store.state.filter.filter;
@@ -1470,7 +1470,7 @@ export default {
       return this.$store.state.sidebar.sidebar;
     },
     ...mapGetters({
-      filteredRoutes: "filter/filteredRoutes"
+      filteredRoutes: "filter/filteredRoutes",
     }),
     submitButton() {
       if (
@@ -1486,7 +1486,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     setFilter() {
@@ -1509,7 +1509,7 @@ export default {
         .replace(/-+/g, "-"); // collapse dashes
 
       return str;
-    }
+    },
   },
   components: {
     defaultV: DefaultView,
@@ -1518,11 +1518,11 @@ export default {
     mapareaV: MapViewArea,
     mapcragV: MapViewCrag,
     navbar: Navbar,
-    bottomNav: BottomNavbar
+    bottomNav: BottomNavbar,
   },
   created() {
     this.$store.commit("filter/updateRoutes", this.countries);
-  }
+  },
 };
 </script>
 

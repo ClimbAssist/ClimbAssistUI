@@ -49,7 +49,7 @@
                     :type="show ? 'text' : 'password'"
                     :rules="[
                       rules.required('Enter a password'),
-                      rules.pass('invalid password')
+                      rules.pass('invalid password'),
                     ]"
                     hint="Use 8 or more characters with a mix of letters, numbers and symbols"
                     persistent-hint
@@ -136,24 +136,25 @@ export default {
     form: false,
     isLoading: false,
     rules: {
-      required: msg => v => !!v || msg,
-      pass: msg => v => /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg
-    }
+      required: (msg) => (v) => !!v || msg,
+      pass: (msg) => (v) =>
+        /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg,
+    },
   }),
-  middleware: 'loggedin',
+  middleware: "loggedin",
   computed: {
     username() {
       return this.$store.state.user.username;
     },
     email() {
       return this.$store.state.user.email;
-    }
+    },
   },
   methods: {
     async logout() {
       this.$axios
         .$post("/v1/user/sign-out")
-        .then(res => {
+        .then((res) => {
           this.$store.commit("snackbar/updateType", "success");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit("snackbar/updateMessage", "Logged Out");
@@ -168,7 +169,7 @@ export default {
 
           this.$router.push("/");
         })
-        .catch(err => {
+        .catch((err) => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit("snackbar/updateMessage", err.message);
@@ -180,7 +181,7 @@ export default {
     deleteUser() {
       this.$axios
         .$delete("/v1/user")
-        .then(res => {
+        .then((res) => {
           this.$store.commit("snackbar/updateType", "success");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit("snackbar/updateMessage", "Account Deleted");
@@ -195,7 +196,7 @@ export default {
 
           this.$router.push("/");
         })
-        .catch(err => {
+        .catch((err) => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit("snackbar/updateMessage", err.message);
@@ -210,9 +211,9 @@ export default {
       this.$axios
         .$post("/v1/user/change-password", {
           currentPassword: this.currentPassword,
-          newPassword: this.newPassword
+          newPassword: this.newPassword,
         })
-        .then(res => {
+        .then((res) => {
           this.$store.commit("snackbar/updateType", "success");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit(
@@ -223,7 +224,7 @@ export default {
           this.$store.commit("snackbar/link", undefined);
           this.$store.commit("snackbar/linkMessage", undefined);
         })
-        .catch(err => {
+        .catch((err) => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
           this.$store.commit("snackbar/updateMessage", err.message);
@@ -233,7 +234,7 @@ export default {
         });
       this.isLoading = false;
     },
-    changeEmail() {}
-  }
+    changeEmail() {},
+  },
 };
 </script>

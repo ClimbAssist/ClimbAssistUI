@@ -33,18 +33,20 @@
           </v-list-item-content>
         </v-list-item>
         <div v-for="(crag, index) in subArea.filteredCrags" :key="index">
-          <v-list-item :to="{
-            name: 'crags-frame',
-            params: {
-              countryKey: crag.countryKey,
-              stateKey: crag.stateKey,
-              areaKey: crag.areaKey,
-              subAreaKey: crag.subAreaKey,
-              cragKey: crag.cragKey,
-              area: area.slug,
-              frame: crag.slug
-            }
-          }">
+          <v-list-item
+            :to="{
+              name: 'crags-frame',
+              params: {
+                countryKey: crag.countryKey,
+                stateKey: crag.stateKey,
+                areaKey: crag.areaKey,
+                subAreaKey: crag.subAreaKey,
+                cragKey: crag.cragKey,
+                area: area.slug,
+                frame: crag.slug,
+              },
+            }"
+          >
             <v-list-item-content>
               <v-list-item-title>{{ crag.name }}</v-list-item-title>
               <v-list-item-subtitle
@@ -67,18 +69,18 @@ export default {
   name: "mapcragV",
   computed: {
     ...mapGetters({
-      filteredRoutes: "filter/filteredRoutes"
+      filteredRoutes: "filter/filteredRoutes",
     }),
     dataSet() {
       return this.$store.state.filter.dataSet;
-    }
+    },
   },
   watch: {
-    dataSet:  {
+    dataSet: {
       handler() {
         this.$forceUpdate();
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

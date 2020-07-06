@@ -230,7 +230,7 @@
             </v-btn>
           </v-layout>
           <v-card>
-            <v-card-title class="primary headline  white--text"
+            <v-card-title class="primary headline white--text"
               >Walls</v-card-title
             >
           </v-card>
@@ -305,7 +305,7 @@ export default {
       afterList: [],
       deleteWallCheck: [],
       loading: false,
-      currentParking: []
+      currentParking: [],
     };
   },
   computed: {
@@ -450,8 +450,8 @@ export default {
       },
       set(value) {
         this.$store.commit("editor/updateMapSelector", value);
-      }
-    }
+      },
+    },
   },
   methods: {
     toggleMap() {
@@ -581,16 +581,16 @@ export default {
         this.loading = true;
         for (let i in this.path) {
           let obj = {
-            cragId: this.crag.cragId
+            cragId: this.crag.cragId,
           };
           let pathId = await this.$axios.$put("/v1/paths", obj);
           let points = {
-            newPathPoints: []
+            newPathPoints: [],
           };
           for (let pi in this.path[i]) {
             let point = {
               longitude: this.path[i][pi][0],
-              latitude: this.path[i][pi][1]
+              latitude: this.path[i][pi][1],
             };
             points.newPathPoints.push(point);
           }
@@ -677,7 +677,7 @@ export default {
         if (crag.location.longitude) {
           this.$store.commit("editor/updateLocation", {
             lng: crag.location.longitude,
-            lat: crag.location.latitude
+            lat: crag.location.latitude,
           });
         }
         if (crag.parking) {
@@ -718,7 +718,7 @@ export default {
         this.currentWalls.push(_.clone(this.crag.walls[wkey]));
         let obj = {
           listNames: ["first"],
-          listIds: [null]
+          listIds: [null],
         };
         for (let ci in this.crag.walls) {
           if (wkey !== ci) {
@@ -751,7 +751,7 @@ export default {
         this.loading = true;
         let wall = {
           name: this.walls[0],
-          cragId: this.crag.cragId
+          cragId: this.crag.cragId,
         };
         if (this.currentWalls.length === 0) {
           wall.first = true;
@@ -889,7 +889,7 @@ export default {
         this.fetchData();
 
         this.$router.push({
-          name: "editor"
+          name: "editor",
         });
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
@@ -915,10 +915,10 @@ export default {
           location: {
             latitude: this.location.latitude,
             longitude: this.location.longitude,
-            zoom: this.zoom
+            zoom: this.zoom,
           },
           state: this.state,
-          parking: []
+          parking: [],
         };
         for (let i in this.parking) {
           if (this.parking[i].latitude) {
@@ -934,7 +934,7 @@ export default {
         if (this.crag.model) {
           obj.model = {
             modelLocation: this.crag.model.modelLocation,
-            lowResModelLocation: this.crag.model.lowResModelLocation
+            lowResModelLocation: this.crag.model.lowResModelLocation,
           };
           if (this.crag.model.light) {
             obj.model.light = this.crag.model.light;
@@ -948,7 +948,7 @@ export default {
           if (this.crag.model.azimuth) {
             obj.model.azimuth = {
               minimum: this.crag.model.azimuth.minimum,
-              maximum: this.crag.model.azimuth.maximum
+              maximum: this.crag.model.azimuth.maximum,
             };
           }
         }
@@ -979,7 +979,7 @@ export default {
       let wall = {
         cragId: this.crag.cragId,
         wallId: this.currentWalls[ci].wallId,
-        name: this.currentWalls[ci].name
+        name: this.currentWalls[ci].name,
       };
 
       if (
@@ -999,7 +999,7 @@ export default {
           afterWall = {
             wallId: this.currentWalls[0].wallId,
             cragId: this.crag.cragId,
-            name: this.currentWalls[0].name
+            name: this.currentWalls[0].name,
           };
           if (
             this.currentWalls[0].next === wall.wallId &&
@@ -1028,7 +1028,7 @@ export default {
                 wallId: this.currentWalls[i].wallId,
                 cragId: this.crag.cragId,
                 name: this.currentWalls[i].name,
-                next: wall.wallId
+                next: wall.wallId,
               };
               if (i == 1 && ci == 0) {
                 afterWall.first = true;
@@ -1044,7 +1044,7 @@ export default {
             wallId: this.currentWalls[1].wallId,
             cragId: this.crag.cragId,
             name: this.currentWalls[1].name,
-            first: true
+            first: true,
           };
           if (this.currentWalls.length > 2) {
             previousWall.next = this.currentWalls[2].wallId;
@@ -1056,7 +1056,7 @@ export default {
             wallId: this.currentWalls[parseInt(ci) - 1].wallId,
             cragId: this.crag.cragId,
             name: this.currentWalls[parseInt(ci) - 1].name,
-            next: this.currentWalls[parseInt(ci) + 1].wallId
+            next: this.currentWalls[parseInt(ci) + 1].wallId,
           };
           if (parseInt(ci) - 1 === 0) {
             previousWall.first = true;
@@ -1065,7 +1065,7 @@ export default {
           previousWall = {
             wallId: this.currentWalls[parseInt(ci) - 1].wallId,
             cragId: this.crag.cragId,
-            name: this.currentWalls[parseInt(ci) - 1].name
+            name: this.currentWalls[parseInt(ci) - 1].name,
           };
           if (parseInt(ci) - 1 === 0) {
             previousWall.first = true;
@@ -1123,7 +1123,7 @@ export default {
         this.$store.commit("snackbar/updateLinkMessage", undefined);
         console.log(error.response.data.error.message);
       }
-    }
+    },
   },
   created() {
     this.getCrag();
@@ -1132,7 +1132,7 @@ export default {
   },
   mixins: [fetch],
   components: {
-    mapedit: MapEdit
-  }
+    mapedit: MapEdit,
+  },
 };
 </script>

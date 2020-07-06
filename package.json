@@ -3,7 +3,17 @@
   "version": "1.0.0",
   "description": "3D climbing maps and guides",
   "author": "Brian Uyeno, Kyle Cooley",
-  "keywords": "rock, trad, sport, boulder, bouldering, climbing, guides, 3D maps, topos",
+  "keywords": [
+    "rock",
+    "trad",
+    "sport",
+    "boulder",
+    "bouldering",
+    "climbing",
+    "guides",
+    "3D maps",
+    "topos"
+  ],
   "private": true,
   "scripts": {
     "dev": "nuxt --spa",

@@ -3,17 +3,24 @@
     <v-flex xs12 sm10 offset-sm1>
       <v-card>
         <v-card-title>
-
-          <nuxt-link style="text-decoration:none;" :to="'/areas/' + crag.crag.area.areaId">
+          <nuxt-link
+            style="text-decoration:none;"
+            :to="'/areas/' + crag.crag.area.areaId"
+          >
             <v-icon color="primary">
               fa-arrow-left
             </v-icon>
-            {{crag.crag.area.name}}
+            {{ crag.crag.area.name }}
           </nuxt-link>
-        </v-btn>
         </v-card-title>
         <v-container>
-          <v-img :alt="crag.name + 'photo'" :src="crag.crag.imageLocation" aspect-ratio="2" contain lazy>
+          <v-img
+            :alt="crag.name + 'photo'"
+            :src="crag.crag.imageLocation"
+            aspect-ratio="2"
+            contain
+            lazy
+          >
             <v-layout
               slot="placeholder"
               fill-height
@@ -41,7 +48,11 @@
               </v-card-text>
             </v-flex>
             <v-flex xs12 sm8>
-              <v-card-text class="text-sm-left text-xs-center" style="white-space: pre-line;">{{ crag.crag.description }}</v-card-text>
+              <v-card-text
+                class="text-sm-left text-xs-center"
+                style="white-space: pre-line;"
+                >{{ crag.crag.description }}</v-card-text
+              >
             </v-flex>
           </v-layout>
           <v-layout wrap fill-height align-center>
@@ -56,12 +67,18 @@
               </v-card-text>
             </v-flex>
             <v-flex xs4 sm2 fill-height align-self-center>
-              <v-card-text class="text-sm-left text-xs-center" v-if="crag.sport">
+              <v-card-text
+                class="text-sm-left text-xs-center"
+                v-if="crag.sport"
+              >
                 {{ crag.sport }} <span class="sport-style">Sport</span>
               </v-card-text>
             </v-flex>
             <v-flex xs4 sm2>
-              <v-card-text v-if="crag.boulder" class="text-sm-left text-xs-center">
+              <v-card-text
+                v-if="crag.boulder"
+                class="text-sm-left text-xs-center"
+              >
                 {{ crag.boulder }} <span class="boulder-style">Boulder</span>
               </v-card-text>
             </v-flex>
@@ -88,7 +105,7 @@
             <!-- <v-flex sm12 md6>
               <canvas id="typeChart" />
             </v-flex> -->
-            <v-flex sm10 xs12 >
+            <v-flex sm10 xs12>
               <canvas id="gradeChartRope" :height="ropeShow" />
             </v-flex>
           </v-layout>
@@ -96,7 +113,7 @@
             <!-- <v-flex sm12 md6>
               <canvas id="typeChart" />
             </v-flex> -->
-            <v-flex sm10 xs12 >
+            <v-flex sm10 xs12>
               <canvas id="gradeChartBoulder" :height="boulderShow" />
             </v-flex>
           </v-layout>
@@ -110,22 +127,29 @@
               >
             </v-toolbar>
             <v-expansion-panels readonly accordion v-model="panel[i]">
-            <v-expansion-panel  v-for="(route, ri) in wall.routes"
-            :key="ri">
-              <!-- @click="checkRoute(i, ri), (routeFromPage = true)" -->
-              <v-expansion-panel-header
-                :id="wall.routes[ri].routeId"
-                @click="checkRoute(i, ri), (routeFromPage = true)"
-              >
-              <v-flex class="text-left" justify-center>
-                {{ route.name }}<span v-if="route.style==='boulder'"> V</span><span v-if="route.style === 'sport' || route.style==='trad'"> 5.</span>{{ route.grade }}{{ route.gradeModifier }} &nbsp;
-                <span :class="getClass(route.style)">{{ route.style }}</span>
-                <span v-if="route.pitches.length > 1">
-                  &nbsp;({{ route.pitches.length }})</span
+              <v-expansion-panel v-for="(route, ri) in wall.routes" :key="ri">
+                <!-- @click="checkRoute(i, ri), (routeFromPage = true)" -->
+                <v-expansion-panel-header
+                  :id="wall.routes[ri].routeId"
+                  @click="checkRoute(i, ri), (routeFromPage = true)"
                 >
-              </v-flex>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content xs12 sm10 offset-sm1 mb-5>
+                  <v-flex class="text-left" justify-center>
+                    {{ route.name
+                    }}<span v-if="route.style === 'boulder'"> V</span
+                    ><span
+                      v-if="route.style === 'sport' || route.style === 'trad'"
+                    >
+                      5.</span
+                    >{{ route.grade }}{{ route.gradeModifier }} &nbsp;
+                    <span :class="getClass(route.style)">{{
+                      route.style
+                    }}</span>
+                    <span v-if="route.pitches.length > 1">
+                      &nbsp;({{ route.pitches.length }})</span
+                    >
+                  </v-flex>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content xs12 sm10 offset-sm1 mb-5>
                   <v-card>
                     <v-container>
                       <v-layout row>
@@ -160,7 +184,7 @@
                         <v-flex xs12 sm9>
                           <v-card-text>
                             <p class="text-xs-center text-sm-left">
-                              {{route.distance}}m
+                              {{ route.distance }}m
                             </p>
                           </v-card-text>
                         </v-flex>
@@ -191,7 +215,12 @@
                         </v-flex>
                         <v-flex xs12 sm9>
                           <v-card-text>
-                            <p class="text-xs-center text-sm-left" style="white-space: pre-line;">{{ route.description }}</p>
+                            <p
+                              class="text-xs-center text-sm-left"
+                              style="white-space: pre-line;"
+                            >
+                              {{ route.description }}
+                            </p>
                           </v-card-text>
                         </v-flex>
                       </v-layout>
@@ -211,14 +240,22 @@
                           <v-flex v-if="route.pitches.length > 1" xs12 sm3>
                             <v-card-text>
                               <h3 class="text-xs-center text-sm-right">
-                                Pitch {{ pi + 1 }} <span v-if="pitch.distance">({{pitch.distance}}m)</span>:
+                                Pitch {{ pi + 1 }}
+                                <span v-if="pitch.distance"
+                                  >({{ pitch.distance }}m)</span
+                                >:
                               </h3>
                             </v-card-text>
                           </v-flex>
 
                           <v-flex xs12 sm9>
                             <v-card-text>
-                              <p class="text-xs-center text-sm-left" style="white-space: pre-line;">{{ pitch.description }}</p>
+                              <p
+                                class="text-xs-center text-sm-left"
+                                style="white-space: pre-line;"
+                              >
+                                {{ pitch.description }}
+                              </p>
                             </v-card-text>
                           </v-flex>
                         </v-layout>
@@ -420,7 +457,10 @@ export default {
     setChartShow() {
       for (let wi in this.crag.crag.walls) {
         for (let ri in this.crag.crag.walls[wi].routes) {
-          if (this.crag.crag.walls[wi].routes[ri].style === "trad" || this.crag.crag.walls[wi].routes[ri].style === "sport") {
+          if (
+            this.crag.crag.walls[wi].routes[ri].style === "trad" ||
+            this.crag.crag.walls[wi].routes[ri].style === "sport"
+          ) {
             this.ropeShow = 100;
           } else if (this.crag.crag.walls[wi].routes[ri].style === "boulder") {
             this.boulderShow = 100;
@@ -652,7 +692,6 @@ export default {
         // this.typeChart.update()
       }
     }
-
   },
   created() {
     this.setChartShow();
@@ -681,6 +720,6 @@ export default {
   color: #0066ff;
 }
 .boulder-style {
-  color: #EFD369;
+  color: #efd369;
 }
 </style>

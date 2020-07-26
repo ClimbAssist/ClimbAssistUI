@@ -48,17 +48,25 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-  ],
+  plugins: [],
 
   /*
    ** Nuxt.js modules
    */
   buildModules: [
     // Doc: https://axios.nuxtjs.org/usage
-    ['@nuxtjs/google-analytics', {
-      id: 'UA-121073899-1'
-    }],
+    [
+      "@nuxtjs/google-analytics",
+      {
+        id: "UA-121073899-1"
+      }
+    ],
+    [
+      "@nuxtjs/google-adsense",
+      {
+        id: "ca-pub-5881021151869346"
+      }
+    ],
     "@nuxtjs/vuetify",
     "@nuxtjs/axios",
     "@nuxtjs/pwa"
@@ -66,17 +74,17 @@ module.exports = {
   /*
    ** Axios module configuration
    */
-   vuetify: {
-     theme: {
-       themes: {
-         light: {
-           primary: "#449947"
-         }
-       }
-     },
-     icons: {
-       iconfont: 'fa',
-     }
+  vuetify: {
+    theme: {
+      themes: {
+        light: {
+          primary: "#449947"
+        }
+      }
+    },
+    icons: {
+      iconfont: "fa"
+    }
   },
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
@@ -88,14 +96,13 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    publicPath: '/static/_nuxt',
+    publicPath: "/static/_nuxt",
     plugins: [
       new webpack.ProvidePlugin({
         mapboxgl: "mapbox-gl"
       })
     ],
-    loaders: {
-    },
+    loaders: {},
 
     /*
      ** You can extend webpack config here

@@ -41,20 +41,14 @@
       color="rgba(255,255,255,0.7)"
       >fa-undo</v-icon
     >
-    <v-icon
-      v-if="dev"
-      class="lose-ctx-btn"
-      @click="loseContext()"
-      >fa-sad-tear</v-icon>
-      <v-dialog
-        v-model="dialog"
-        max-width="500"
-      >
+    <v-icon v-if="dev" class="lose-ctx-btn" @click="loseContext()"
+      >fa-sad-tear</v-icon
+    >
+    <v-dialog v-model="dialog" max-width="500">
       <v-card>
-        <v-img :src="require('@/static/help.webp')">
-        </v-img>
+        <v-img :src="require('@/static/help.webp')"> </v-img>
       </v-card>
-      </v-dialog>
+    </v-dialog>
     <div id="container"></div>
     <div id="north">
       <p>N</p>
@@ -111,93 +105,88 @@
         pitches
       </span>
     </div>
-    <v-sheet row class="route-info" id="routeInfo" v-if="activeRoute">
+    <v-sheet
+      row
+      class="route-info"
+      id="routeInfo"
+      v-if="activeRoute"
+      max-height="25%"
+    >
       <v-card-text>
-        <p>
+        <h3>
           {{ crag.walls[activeRoute.wall].routes[activeRoute.route].name }}
-          <span
-            v-if="
+        </h3>
+        <span
+          v-if="
+            crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
+              'boulder'
+          "
+          >V</span
+        ><span
+          v-if="
+            crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
+              'trad' ||
               crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
-                'boulder'
-            "
-            >V</span
-          ><span
-            v-if="
-              crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
-                'trad' ||
-                crag.walls[activeRoute.wall].routes[activeRoute.route].style ===
-                  'sport'
-            "
-            >5.</span
-          >{{ crag.walls[activeRoute.wall].routes[activeRoute.route].grade
-          }}{{
-            crag.walls[activeRoute.wall].routes[activeRoute.route].gradeModifier
-          }}
-          {{ crag.walls[activeRoute.wall].routes[activeRoute.route].style }}
+                'sport'
+          "
+          >5.</span
+        >{{ crag.walls[activeRoute.wall].routes[activeRoute.route].grade
+        }}{{
+          crag.walls[activeRoute.wall].routes[activeRoute.route].gradeModifier
+        }}
+        {{ crag.walls[activeRoute.wall].routes[activeRoute.route].style }}
+        {{ crag.walls[activeRoute.wall].routes[activeRoute.route].protection }}
+        <span
+          v-if="
+            crag.walls[activeRoute.wall].routes[activeRoute.route].pitches
+              .length > 1
+          "
+        >
           {{
-            crag.walls[activeRoute.wall].routes[activeRoute.route].protection
+            crag.walls[activeRoute.wall].routes[activeRoute.route].pitches
+              .length
           }}
-          <span
-            v-if="
-              crag.walls[activeRoute.wall].routes[activeRoute.route].pitches
-                .length > 1
-            "
-          >
-            {{
-              crag.walls[activeRoute.wall].routes[activeRoute.route].pitches
-                .length
-            }}
-            pitches
-          </span>
-        </p>
+          pitches
+        </span>
+
         <p
           v-if="
             crag.walls[activeRoute.wall].routes[activeRoute.route].description
           "
         >
           {{
-            crag.walls[activeRoute.wall].routes[activeRoute.route].description.substring(0,200)
+            crag.walls[activeRoute.wall].routes[activeRoute.route].description
           }}
-          <span v-if="crag.walls[activeRoute.wall].routes[activeRoute.route].description.length > 200">...</span>
         </p>
 
         <p></p>
         <p
-        v-if="
-          crag.walls[activeRoute.wall].routes[activeRoute.route].pitches
-            .length === 1
-        "
+          v-for="(pitch, pi) in crag.walls[activeRoute.wall].routes[
+            activeRoute.route
+          ].pitches"
+          :key="pi"
         >
-          <!-- <span
+          <span
             v-if="
               crag.walls[activeRoute.wall].routes[activeRoute.route].pitches
                 .length > 1
             "
           >
             P{{ pi + 1 }}:
-          </span> -->
-          {{
-            crag.walls[activeRoute.wall].routes[activeRoute.route].pitches[0]
-              .description.substring(0,200)
-          }}
-          <span
-            v-if="
-              crag.walls[activeRoute.wall].routes[activeRoute.route].pitches[0]
-                .description.length > 200
-            "
-          >
-            ...
           </span>
+          {{
+            crag.walls[activeRoute.wall].routes[activeRoute.route].pitches[pi]
+              .description
+          }}
         </p>
       </v-card-text>
     </v-sheet>
     <v-sheet row v-if="!mesh" class="loading-info">
       <V-container>
-      <p>Loading Model</p>
-      <v-progress-linear :indeterminate="true"></v-progress-linear>
-    </v-container>
+        <p>Loading Model</p>
+        <v-progress-linear :indeterminate="true"></v-progress-linear>
+      </V-container>
     </v-sheet>
-
   </div>
 </template>
 
@@ -206,7 +195,7 @@ import * as THREE from "three";
 import WebGLDebugUtil from "webgl-debug";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { SimplifyModifier } from 'three/examples/jsm/modifiers/SimplifyModifier';
+import { SimplifyModifier } from "three/examples/jsm/modifiers/SimplifyModifier";
 import { mapGetters } from "vuex";
 // import DecalGeometry from 'three-decal-geometry'
 
@@ -427,12 +416,12 @@ export default {
       return (this.scaleSize * 3.28).toFixed(1);
     },
     dev() {
-      if (process.env.NODE_ENV === 'development') {
-        return true
+      if (process.env.NODE_ENV === "development") {
+        return true;
       } else {
-        return false
+        return false;
       }
-    },
+    }
   },
   methods: {
     init: function() {
@@ -527,7 +516,10 @@ export default {
       container.addEventListener("mousemove", this.onDocumentMouseMove, false);
       container.addEventListener("mouseup", this.onDocumentMouseclick, false);
       container.addEventListener("dblclick", this.onDocumentDoubleClick, false);
-      document.addEventListener("visibilitychange", this.onDocumentVisibilityChange);
+      document.addEventListener(
+        "visibilitychange",
+        this.onDocumentVisibilityChange
+      );
       let ctx = this.renderer.getContext();
       ctx.canvas.addEventListener(
         "webglcontextlost",
@@ -578,7 +570,7 @@ export default {
 
         this.checkAnnotationDistance();
         if (this.moved) {
-          // this.checkAnnotationOpacity();
+          this.checkAnnotationOpacity();
         }
 
         // inset scene
@@ -622,14 +614,14 @@ export default {
     onContextLost(event) {
       event.preventDefault();
       console.log("context lost");
-      this.play=false;
+      this.play = false;
       // animationID would have been set by your call to requestAnimationFrame
       cancelRequestAnimationFrame(this.animationId);
       // refresh page
-      location.reload(true)
+      location.reload(true);
     },
     onContextRestored(event) {
-      console.log("context restored")
+      console.log("context restored");
       //this should restore the renderer and animation
     },
     getNavHeight() {
@@ -694,42 +686,69 @@ export default {
       //     this.scene.add(this.mesh);
       //   });
       // } else {
-        loader.load(this.crag.crag.model.lowResModelLocation, gltf => {
-          this.lowMesh = gltf.scene.children[0];
-          this.lowMesh.layers.set(1);
-          this.lowMesh.scale.set(
-            this.meshScale,
-            this.meshScale,
-            this.meshScale
-          );
-          this.lowMesh.rotateY(this.crag.crag.model.modelAngle);
-          this.scene.add(this.lowMesh);
-          let modifier = new SimplifyModifier();
-          this.simplified = this.lowMesh.clone();
-          let count = Math.floor( this.simplified.geometry.attributes.position.count * 0.4 )
-          this.simplified.geometry = modifier.modify( this.simplified.geometry, count );
-          this.simplified.material.side = THREE.DoubleSide;
-          this.simplified.scale.set(this.meshScale* 0.95, this.meshScale* 0.95, this.meshScale* 0.95)
-          this.simplified.layers.set(11)
+      loader.load(this.crag.crag.model.lowResModelLocation, gltf => {
+        //low res model
+        this.lowMesh = gltf.scene.children[0];
+        this.lowMesh.layers.set(1);
+        this.lowMesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
+        this.lowMesh.rotateY(this.crag.crag.model.modelAngle);
+        this.scene.add(this.lowMesh);
 
-          this.scene.add(this.simplified);
-          // this.loadDecals()
-        });
+        //decimate low res model for raycasting sprite intersects
+        // let modifier = new SimplifyModifier();
+        // this.simplified = this.lowMesh.clone();
+        // this.simplified.geometry = modifier.modify(
+        //   this.simplified.geometry,
+        //   4000
+        // );
+        // this.simplified.geometry = new THREE.Geometry().fromBufferGeometry(
+        //   this.simplified.geometry
+        // );
+        // this.simplified.geometry.computeVertexNormals();
+        // let ratio = 5 / this.meshScale;
+        // for (var i = 0; i < this.simplified.geometry.faces.length; i++) {
+        //   var faceI = this.simplified.geometry.faces[i];
 
-        // let blob = await this.$axios({
-        //   method: "get",
-        //   url: this.crag.crag.model.modelLocation,
-        //   responseType: "blob"
-        // });
-        // let objectURL = URL.createObjectURL(blob.data);
+        //   var vertexArr = [faceI.a, faceI.b, faceI.c];
+        //   for (var j = 0; j < vertexArr.length; j++) {
+        //     var vertexJ = this.simplified.geometry.vertices[vertexArr[j]];
+        //     var normalJ = faceI.vertexNormals[j];
 
-        loader.load(this.crag.crag.model.modelLocation, gltf => {
-          this.mesh = gltf.scene.children[0];
-          this.mesh.layers.set(1);
-          this.mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
-          this.mesh.rotateY(this.crag.crag.model.modelAngle);
-          this.scene.add(this.mesh);
-        });
+        //     if (vertexJ.hasScale) continue;
+
+        //     vertexJ.x -= normalJ.x * ratio;
+        //     vertexJ.y -= normalJ.y * ratio;
+        //     vertexJ.z -= normalJ.z * ratio;
+
+        //     vertexJ.hasScale = true;
+        //   }
+        // }
+        // this.simplified.material.side = THREE.DoubleSide;
+        // this.simplified.scale.set(
+        //   this.meshScale * 0.95,
+        //   this.meshScale * 0.95,
+        //   this.meshScale * 0.95
+        // );
+        // this.simplified.layers.set(11);
+
+        // this.scene.add(this.simplified);
+        // this.loadDecals()
+      });
+
+      // let blob = await this.$axios({
+      //   method: "get",
+      //   url: this.crag.crag.model.modelLocation,
+      //   responseType: "blob"
+      // });
+      // let objectURL = URL.createObjectURL(blob.data);
+
+      loader.load(this.crag.crag.model.modelLocation, gltf => {
+        this.mesh = gltf.scene.children[0];
+        this.mesh.layers.set(1);
+        this.mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
+        this.mesh.rotateY(this.crag.crag.model.modelAngle);
+        this.scene.add(this.mesh);
+      });
       //   let model = {
       //     model: blob,
       //     name: this.cragId
@@ -1005,13 +1024,16 @@ export default {
       if (this.fullscreenView) {
         intersects = this.getIntersects(event.layerX, event.layerY);
       } else {
-        intersects = this.getIntersects(event.layerX, event.layerY + this.navHeight);
+        intersects = this.getIntersects(
+          event.layerX,
+          event.layerY + this.navHeight
+        );
       }
       if (intersects.length > 0) {
         let res = intersects.filter(function(res) {
           return res && res.object;
         })[0];
-        if (res && res.object) {
+        if (res && res.object && res.object.material.opacity > 0) {
           this.selectedObject = res.object;
           this.selectedObject.scale.set(
             this.scaleFactor * 1.5,
@@ -1138,11 +1160,11 @@ export default {
       this.lastTap = currentTime;
     },
     onDocumentVisibilityChange() {
-      if (document.visibilityState === 'hidden') {
-          this.play = false;
-        } else {
-          this.play = true;
-        }
+      if (document.visibilityState === "hidden") {
+        this.play = false;
+      } else {
+        this.play = true;
+      }
     },
     onDocumentMouseclick: function() {
       if (this.moved) return;
@@ -1248,7 +1270,7 @@ export default {
       ctx.fillText("x", x, y);
     },
     checkAnnotationOpacity() {
-      if (!this.mesh || !this.group) return;
+      if (!this.lowMesh || !this.group) return;
       let raycastPos = new THREE.Vector3();
       let cameraPos = new THREE.Vector3();
       let raycastDir = new THREE.Vector3();
@@ -1256,14 +1278,22 @@ export default {
       for (let key in this.group.children) {
         raycastPos.copy(this.group.children[key].position);
         cameraPos.copy(this.camera.position);
-        raycastDir.subVectors(raycastPos, cameraPos).normalize();
-        annotationRaycaster.set(raycastPos, raycastDir )
-        let annotationIntersects = annotationRaycaster.intersectObject(
-          this.simplified
-        );
+        // raycastDir.subVectors(raycastPos, cameraPos).normalize();
+        // annotationRaycaster.set(raycastPos, raycastDir);
+        // let annotationIntersects = annotationRaycaster.intersectObject(
+        //   this.simplified
+        // );
 
-        this.group.children[key].material.opacity =
-          annotationIntersects.length > 0 ? 1 : .5;
+        // this.group.children[key].material.opacity =
+        //   annotationIntersects.length > 0 ? 1 : 0.5;
+
+        let meshDistance = cameraPos.distanceTo(this.lowMesh.position);
+        let spriteDistance = cameraPos.distanceTo(raycastPos);
+        if (spriteDistance > meshDistance) {
+          this.group.children[key].material.opacity = 0;
+        } else {
+          this.group.children[key].material.opacity = 1;
+        }
       }
     },
     resetCam() {
@@ -1337,6 +1367,10 @@ export default {
   top: 125px;
   color: #ffffff;
   left: 25px;
+}
+#routeInfo {
+  overflow: auto;
+  text-align: left;
 }
 .fullscreen-btn {
   position: absolute;

@@ -6,35 +6,35 @@
     <v-container v-if="editTabs === 'model'">
       <v-layout row wrap>
         <v-flex xs12>
-        <v-slider
-          v-model="light"
-          label="Light"
-          :max="6"
-          :min="0.5"
-          :step="0.1"
-        />
-      </v-flex>
+          <v-slider
+            v-model="light"
+            label="Light"
+            :max="6"
+            :min="0.5"
+            :step="0.1"
+          />
+        </v-flex>
         <v-flex xs12>
-        <v-slider
-          v-model="scale"
-          label="Scale"
-          :min="0.1"
-          :step="0.1"
-          :max="10"
-        />
-      </v-flex>
+          <v-slider
+            v-model="scale"
+            label="Scale"
+            :min="0.1"
+            :step="0.1"
+            :max="10"
+          />
+        </v-flex>
         <v-flex xs12>
-        <v-slider
-          v-model="modelAngle"
-          label="Model Rotation"
-          :max="2 * Math.PI"
-          :min="0"
-          :step="0.1"
-        />
-      </v-flex>
-      <v-flex xs12>
-        <v-switch v-model="limitRotate" label="limit Rotation"></v-switch>
-      </v-flex>
+          <v-slider
+            v-model="modelAngle"
+            label="Model Rotation"
+            :max="2 * Math.PI"
+            :min="0"
+            :step="0.1"
+          />
+        </v-flex>
+        <v-flex xs12>
+          <v-switch v-model="limitRotate" label="limit Rotation"></v-switch>
+        </v-flex>
         <v-flex xs12 v-if="azimuth">
           <v-range-slider
             v-model="azimuth"
@@ -46,7 +46,12 @@
         </v-flex>
       </v-layout>
       <v-layout row>
-        <v-btn @click="modelSubmit()" color="primary" :disabled="modelSubmitCheck">Submit</v-btn>
+        <v-btn
+          @click="modelSubmit()"
+          color="primary"
+          :disabled="modelSubmitCheck"
+          >Submit</v-btn
+        >
         <v-btn @click="editInfo()">cancel</v-btn>
       </v-layout>
     </v-container>
@@ -108,15 +113,10 @@ export default {
           (this.crag.model.azimuth && this.azimuth.length === 0)
         ) {
           return false;
-        } else if (
-          this.crag.model.azimuth &&
-          this.azimuth.length > 0
-        ) {
+        } else if (this.crag.model.azimuth && this.azimuth.length > 0) {
           if (
-            this.crag.model.azimuth.minimum !==
-              this.azimuth[0] ||
-            this.crag.model.azimuth.maximum !==
-              this.azimuth[1]
+            this.crag.model.azimuth.minimum !== this.azimuth[0] ||
+            this.crag.model.azimuth.maximum !== this.azimuth[1]
           ) {
             return false;
           } else {
@@ -158,6 +158,12 @@ export default {
         return this.$store.state.editor.modelSettings.azimuth;
       },
       set(value) {
+        if (value[0] > -0.1) {
+          value[0] = -0.1;
+        }
+        if (value[1] < 0.1) {
+          value[1] = 0.1;
+        }
         this.$store.commit("editor/updateAzimuth", value);
       }
     },
@@ -209,9 +215,9 @@ export default {
           maximum: this.azimuth[1]
         };
       }
-      console.log("POST")
-      console.log(obj)
-        try {
+      console.log("POST");
+      console.log(obj);
+      try {
         await this.$axios.$post("/v1/crags", obj);
         this.$store.commit("snackbar/updateType", "success");
         this.$store.commit("snackbar/updateTimeout", 10000);
@@ -220,19 +226,22 @@ export default {
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);
 
-
-        let api = await this.$axios.$get("/v1/crags/" + this.crag.cragId)
+        let api = await this.$axios.$get("/v1/crags/" + this.crag.cragId);
         let crag = api.data;
-        let walls = this.$axios.$get("/v1/crags/" + this.crag.cragId + "/walls?ordered=true");
+        let walls = this.$axios.$get(
+          "/v1/crags/" + this.crag.cragId + "/walls?ordered=true"
+        );
         crag.walls = walls.data;
 
         this.$store.commit("editor/updateCrag", crag);
-        this.editInfo()
-
+        this.editInfo();
       } catch (error) {
         this.$store.commit("snackbar/updateType", "error");
         this.$store.commit("snackbar/updateTimeout", 10000);
-        this.$store.commit("snackbar/updateMessage", "failed to update crag" + error.response.data.error.message);
+        this.$store.commit(
+          "snackbar/updateMessage",
+          "failed to update crag" + error.response.data.error.message
+        );
         this.$store.commit("snackbar/updateSnackbar", true);
         this.$store.commit("snackbar/updateLink", undefined);
         this.$store.commit("snackbar/updateLinkMessage", undefined);

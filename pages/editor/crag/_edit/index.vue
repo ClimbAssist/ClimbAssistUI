@@ -65,6 +65,7 @@ export default {
         store.state.filter.countries[0].regions[0]
       );
       store.commit("editor/updateCountry", store.state.filter.countries[0]);
+      return;
     }
     try {
       const api = (await axios.get("/v1/crags/" + params.edit + "?depth=2"))

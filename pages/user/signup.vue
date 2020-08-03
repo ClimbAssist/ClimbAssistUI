@@ -1,22 +1,19 @@
 <template>
   <section id="signup">
-    <VContainer>
-      <VLayout>
-        <VFlex xs12>
-          <VImg
+    <v-container>
+      <v-card>
+        <v-card-text class="pa-5">
+          <v-img
             :src="require('@/static/logo.png')"
-            class="mb-3"
-            height="200"
-            max-height="200"
-            style="width: 100%;"
-            contain
+            class="mb-3 mx-auto"
+            width="150"
           />
-          <h2>Create your Climb Assist Account!</h2>
-          <VForm ref="form" v-model="form" class="mb-5">
-            <VContainer>
-              <VLayout wrap>
-                <VFlex xs12>
-                  <VTextField
+          <h3>Create your Climb Assist Account!</h3>
+          <v-layout justify-center>
+            <v-flex md8 sm12>
+              <v-form @keyup.enter="submit()">
+                <v-flex xs12>
+                  <v-text-field
                     v-model="username"
                     :rules="[
                       rules.required('Enter user name'),
@@ -27,9 +24,9 @@
                     persistent-hint
                     validate-on-blur
                   />
-                </VFlex>
-                <VFlex xs12>
-                  <VTextField
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
                     v-model="email"
                     :rules="[
                       rules.required('Enter your email address'),
@@ -39,9 +36,9 @@
                     label="Email"
                     name="email"
                   />
-                </VFlex>
-                <VFlex md6 xs12>
-                  <VTextField
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
                     v-model="password"
                     :append-icon="show ? 'fa-eye' : 'fa-eye-slash'"
                     :rules="[
@@ -52,43 +49,35 @@
                     label="Password"
                     @click:append="show = !show"
                   />
-                </VFlex>
-                <VFlex md6 xs12>
-                  <VTextField
-                    v-model="confirmPassword"
-                    :append-icon="showConfirm ? 'fa-eye' : 'fa-eye-slash'"
-                    :rules="[
-                      rules.required('Confirm you password'),
-                      rules.confirm
-                    ]"
-                    :type="showConfirm ? 'text' : 'password'"
-                    label="Confirm password"
-                    validate-on-blur
-                    @click:append="showConfirm = !showConfirm"
-                  />
-                </VFlex>
-                <VFlex xs12>
+                </v-flex>
+                <v-flex xs12>
                   <VMessages
                     :value="[
                       'Use 8 or more characters with a mix of letters, numbers & symbols'
                     ]"
                   />
-                </VFlex>
-              </VLayout>
-              <VLayout align-center justify-space-between pt-3>
-                <VFlex grow>
-                  <BaseText to="/user/signin">
+                </v-flex>
+              </v-form>
+              <v-layout row class="pt-2 pb-2 justify-around">
+                <v-flex md6 lg4 class="pt-2 pb-2">
+                  <span>
                     Already have an account?
-                  </BaseText>
-                  <v-btn color="primary" flat to="/user/login">
+                  </span>
+                  <v-btn color="primary" text to="/user/login">
                     Login
                   </v-btn>
-                </VFlex>
-                <vue-recaptcha sitekey="6Ld-Nl0UAAAAAN2imm8GeEIPU_Ve63A1DJFY33pT" :loadRecaptchaScript="true">
-                </vue-recaptcha>
-                <VFlex shrink>
+                </v-flex>
+                <v-flex md6 lg4 class="pt-2 pb-2">
+                  <vue-recaptcha
+                    :sitekey="siteKey"
+                    @verify="onVerify"
+                    :loadRecaptchaScript="true"
+                  >
+                  </vue-recaptcha>
+                </v-flex>
+                <v-flex md12 lg4 class="pt-2 pb-2">
                   <v-btn
-                    :disabled="!form"
+                    :disabled="!form || !recaptchaRes"
                     :loading="isLoading"
                     color="primary"
                     prominent
@@ -96,20 +85,20 @@
                   >
                     Submit
                   </v-btn>
-                </VFlex>
-              </VLayout>
-            </VContainer>
-          </VForm>
-        </VFlex>
-      </VLayout>
-    </VContainer>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+      </v-card>
+    </v-container>
   </section>
 </template>
 
 <script>
 // Utilities
 import axios from "axios";
-import VueRecaptcha from 'vue-recaptcha';
+import VueRecaptcha from "vue-recaptcha";
 export default {
   data() {
     const data = {
@@ -118,49 +107,74 @@ export default {
       username: undefined,
       email: undefined,
       password: undefined,
-      confirmPassword: undefined,
       rules: {
         required: msg => v => !!v || msg,
         username: msg => v => /^[_A-z0-9'-]{5,}$/.test(v) || msg,
-        confirm: v => (v ? v === this.password : "Passwords do not match"),
         email: msg => v =>
           /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || msg,
         pass: msg => v => /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg
       },
       show: false,
-      showConfirm: false
+      recaptchaRes: undefined
     };
     return data;
   },
-  middleware: 'nocreation',
+  // middleware: "nocreation",
+  computed: {
+    siteKey() {
+      return this.$store.state.contact.recaptchaKey;
+    }
+  },
   methods: {
     submit() {
       if (!this.$refs.form.validate()) return;
       this.isLoading = true;
-      this.$axios.post('/v1/user/register',{
-        username: this.username,
-        email: this.email,
-        password: this.password
-      })
-        .then((res) => {
-          this.$store.commit("snackbar/updateType", "success")
-          this.$store.commit("snackbar/updateTimeout", 10000)
-          this.$store.commit("snackbar/updateMessage",  "Account created. Check your email for verification")
-          this.$store.commit("snackbar/updateSnackbar", true)
-          this.$store.commit("snackbar/link", undefined)
-          this.$store.commit("snackbar/linkMessage", undefined)
+      this.$axios
+        .post("/v1/user/register", {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          recaptchaRes: this.recaptchaRes
+        })
+        .then(res => {
+          this.$store.commit("snackbar/updateType", "success");
+          this.$store.commit("snackbar/updateTimeout", 10000);
+          this.$store.commit(
+            "snackbar/updateMessage",
+            "Account created. Check your email for verification"
+          );
+          this.$store.commit("snackbar/updateSnackbar", true);
+          this.$store.commit("snackbar/link", undefined);
+          this.$store.commit("snackbar/linkMessage", undefined);
 
           this.$router.push("/user/confirmation");
         })
         .catch(err => {
-          this.$store.commit("snackbar/updateType", "error")
-          this.$store.commit("snackbar/updateTimeout", 10000)
-          this.$store.commit("snackbar/updateMessage",  err.message)
-          this.$store.commit("snackbar/updateSnackbar", true)
-          this.$store.commit("snackbar/link", undefined)
-          this.$store.commit("snackbar/linkMessage", undefined)
+          this.$store.commit("snackbar/updateType", "error");
+          this.$store.commit("snackbar/updateTimeout", 10000);
+          this.$store.commit("snackbar/updateMessage", err.message);
+          this.$store.commit("snackbar/updateSnackbar", true);
+          this.$store.commit("snackbar/link", undefined);
+          this.$store.commit("snackbar/linkMessage", undefined);
         })
         .finally(() => (this.isLoading = false));
+    },
+    onVerify(response) {
+      this.recaptchaRes = response;
+    }
+  },
+  async fetch({ store }) {
+    if (process.env.NODE_ENV === "development") {
+      let devKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+      store.commit("contact/updateRecaptchaKey", devKey);
+    } else {
+      try {
+        let api = (await axios.get("/v1/recaptcha-site-key")).data;
+        let siteKey = api.data.siteKey;
+        store.commit("contact/updateRecaptchaKey", siteKey);
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   components: { VueRecaptcha }

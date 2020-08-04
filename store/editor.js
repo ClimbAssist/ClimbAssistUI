@@ -47,7 +47,8 @@ export const state = () => ({
     model: undefined,
     walls: [],
     parking: undefined,
-    paths: undefined
+    paths: undefined,
+    state: undefined
   },
   centerLoc: {
     x: undefined,
@@ -107,6 +108,7 @@ export const mutations = {
     state.cragStateEditor.walls = payload.walls;
     state.cragStateEditor.parking = payload.parking;
     state.cragStateEditor.paths = payload.paths;
+    state.cragStateEditor.state = payload.state;
   },
   updateRoutes: (state, payload) => {
     state.routeStateEditor = [];

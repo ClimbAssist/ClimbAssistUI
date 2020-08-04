@@ -16,6 +16,14 @@
         </v-layout>
         <v-container>
           <v-layout row>
+            <v-select
+              :items="stateList"
+              class="ma-2"
+              v-model="state"
+              label="Status"
+            ></v-select>
+          </v-layout>
+          <v-layout row>
             <v-text-field label="name" v-model="name"></v-text-field>
           </v-layout>
           <v-layout row>
@@ -287,6 +295,8 @@ export default {
     return {
       name: undefined,
       description: undefined,
+      state: undefined,
+      stateList: ["PUBLIC", "IN_REVIEW"],
       walls: [],
       currentWalls: [],
       highResFile: undefined,
@@ -372,7 +382,8 @@ export default {
           this.description !== this.crag.description ||
           this.location.latitude !== this.crag.location.latitude ||
           this.location.longitude !== this.crag.location.longitude ||
-          this.zoom !== this.crag.location.zoom)
+          this.zoom !== this.crag.location.zoom ||
+          this.state !== this.crag.state)
       ) {
         return false;
       } else if (this.parking.length > 0 && this.currentParking.length > 0) {
@@ -699,6 +710,7 @@ export default {
       if (!this.name) {
         this.name = this.crag.name;
         this.description = this.crag.description;
+        this.state = this.crag.state;
       }
       this.currentWalls = [];
       this.afterList = [];
@@ -905,6 +917,7 @@ export default {
             longitude: this.location.longitude,
             zoom: this.zoom
           },
+          state: this.state,
           parking: []
         };
         for (let i in this.parking) {

@@ -86,7 +86,9 @@ export const getters = {
               countryKey: tkey,
               stateKey: skey,
               subAreaKey: subkey,
-              location: state.countries[tkey].regions[skey].areas[akey].subAreas[subkey].location,
+              location:
+                state.countries[tkey].regions[skey].areas[akey].subAreas[subkey]
+                  .location,
               trad: 0,
               sport: 0,
               boulder: 0,
@@ -103,9 +105,10 @@ export const getters = {
                   state.countries[tkey].regions[skey].areas[akey].subAreas[
                     subkey
                   ].crags[ckey].location,
-                subArea: state.countries[tkey].regions[skey].areas[akey].subAreas[
-                  subkey
-                ].name,
+                subArea:
+                  state.countries[tkey].regions[skey].areas[akey].subAreas[
+                    subkey
+                  ].name,
                 area: state.countries[tkey].regions[skey].areas[akey].name,
                 state: state.countries[tkey].regions[skey].name,
                 slug:
@@ -216,6 +219,8 @@ export const getters = {
                     .toUpperCase()
                     .includes(state.filter.filterText.toUpperCase())) &&
                 (cragTotals.trad || cragTotals.sport || cragTotals.boulder) &&
+                state.countries[tkey].regions[skey].areas[akey].subAreas[subkey]
+                  .crags[ckey].state === "PUBLIC" &&
                 (!state.mapBounds ||
                   (((state.mapBounds._ne.lat >
                     state.countries[tkey].regions[skey].areas[akey].subAreas[
@@ -242,12 +247,10 @@ export const getters = {
                       ].crags[ckey].location.longitude >
                         state.mapBounds._sw.lng) ||
                       (state.mapBounds._ne.lng <
-                        state.countries[tkey].regions[skey].areas[akey].subAreas[
-                          subkey
-                        ].crags[ckey].location.longitude &&
-                        state.countries[tkey].regions[skey].areas[akey].subAreas[
-                          subkey
-                        ].crags[ckey].location.longitude <
+                        state.countries[tkey].regions[skey].areas[akey]
+                          .subAreas[subkey].crags[ckey].location.longitude &&
+                        state.countries[tkey].regions[skey].areas[akey]
+                          .subAreas[subkey].crags[ckey].location.longitude <
                           state.mapBounds._sw.lng))))
               ) {
                 subAreaTotals.boulder += cragTotals.boulder;
@@ -268,7 +271,6 @@ export const getters = {
               areaTotals.filteredSubAreas.push(subAreaTotals);
               filteredRoutes.subAreas.push(subAreaTotals);
             }
-
           }
           if (areaTotals.trad || areaTotals.sport || areaTotals.boulder) {
             stateTotals.boulder += areaTotals.boulder;
@@ -497,11 +499,11 @@ export const getters = {
             .includes(state.filter.filterText.toUpperCase())) &&
         (subAreaTotals.trad || subAreaTotals.sport || subAreaTotals.boulder)
       ) {
-      areaTotals.boulder += subAreaTotals.boulder;
-      areaTotals.trad += subAreaTotals.trad;
-      areaTotals.sport += subAreaTotals.sport;
-      areaTotals.filteredSubAreas.push(subAreaTotals);
-    }
+        areaTotals.boulder += subAreaTotals.boulder;
+        areaTotals.trad += subAreaTotals.trad;
+        areaTotals.sport += subAreaTotals.sport;
+        areaTotals.filteredSubAreas.push(subAreaTotals);
+      }
     }
     return areaTotals;
   }
@@ -517,8 +519,8 @@ export const mutations = {
   updateRoutes: (state, payload) => {
     state.countries.push(payload);
   },
-  removeRoutes: (state) => {
-    state.countries = []
+  removeRoutes: state => {
+    state.countries = [];
   },
   updateLoadedCrags: (state, payload) => {
     state.loadedCrags.push(payload);
@@ -527,25 +529,26 @@ export const mutations = {
     state.filter.filterText = payload;
   },
   updateCrag: (state, payload) => {
-      state.cragState.name= payload.name;
-      state.cragState.cragId= payload.cragId;
-      state.cragState.subAreaId= payload.subAreaId;
-      state.cragState.imageLocation= payload.imageLocation;
-      state.cragState.description= payload.description;
-      state.cragState.location= payload.location;
-      state.cragState.model= payload.model;
-      state.cragState.walls= payload.walls;
-      state.cragState.area= payload.area;
-      state.cragState.parking = payload.parking;
-      state.cragState.paths = payload.paths;
+    state.cragState.name = payload.name;
+    state.cragState.cragId = payload.cragId;
+    state.cragState.subAreaId = payload.subAreaId;
+    state.cragState.imageLocation = payload.imageLocation;
+    state.cragState.description = payload.description;
+    state.cragState.location = payload.location;
+    state.cragState.model = payload.model;
+    state.cragState.walls = payload.walls;
+    state.cragState.area = payload.area;
+    state.cragState.parking = payload.parking;
+    state.cragState.paths = payload.paths;
     // state.cragState = payload;
   },
   updateCragPoints: (state, payload) => {
-    state.cragState.walls[payload.wi].routes[payload.ri].points = payload.points;
+    state.cragState.walls[payload.wi].routes[payload.ri].points =
+      payload.points;
   },
   updateArea: (state, payload) => {
     state.areaState.name = payload.name;
-    state.areaState.areaId= payload.areaId;
+    state.areaState.areaId = payload.areaId;
     state.areaState.regionId = payload.regionId;
     state.areaState.description = payload.description;
     state.areaState.location = payload.location;

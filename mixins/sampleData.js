@@ -26,8 +26,9 @@ export const sampleData = {
                     description: "this is a description of the sub area",
                     crags: [
                       {
-                        name: "Sinks Canyon",
-                        cragId: "sinks-canyon",
+                        name: "Fairfield East",
+                        state: "IN_REVIEW",
+                        cragId: "fairfield-east",
                         description: "some desc",
                         model: {
                           modelLocation:
@@ -52,6 +53,7 @@ export const sampleData = {
                       },
                       {
                         name: "Bell Buttress",
+                        state: "PUBLIC",
                         area: {
                           name: "Boulder Canyon",
                           areaId: "boulder-canyon"
@@ -93,69 +95,67 @@ export const sampleData = {
                           {
                             pathId: "path-1",
                             cragId: "bell-buttress",
-                            pathPoints:
-                              [
-                                {
-                                  pathPointId: "someId",
-                                  longitude: -105.41329852798945,
-                                  latitude: 40.00166216568354
-                                },
-                                {
-                                  longitude: -105.4132822201003,
-                                  latitude: 40.00162468887967
-                                },
-                                {
-                                  longitude: -105.41339093936328,
-                                  latitude: 40.00139982763383
-                                },
-                                {
-                                  longitude: -105.41323601441186,
-                                  latitude: 40.00132487372218
-                                },
-                                {
-                                  longitude: -105.41315175698412,
-                                  latitude: 40.00119995034862
-                                },
-                                {
-                                  longitude: -105.41310283331364,
-                                  latitude: 40.00118537594031
-                                },
-                                {
-                                  longitude: -105.41304847368214,
-                                  latitude: 40.00132903783131
-                                },
-                                {
-                                  longitude: -105.41293703643714,
-                                  latitude: 40.0013581865835
-                                }
-                              ]
+                            pathPoints: [
+                              {
+                                pathPointId: "someId",
+                                longitude: -105.41329852798945,
+                                latitude: 40.00166216568354
+                              },
+                              {
+                                longitude: -105.4132822201003,
+                                latitude: 40.00162468887967
+                              },
+                              {
+                                longitude: -105.41339093936328,
+                                latitude: 40.00139982763383
+                              },
+                              {
+                                longitude: -105.41323601441186,
+                                latitude: 40.00132487372218
+                              },
+                              {
+                                longitude: -105.41315175698412,
+                                latitude: 40.00119995034862
+                              },
+                              {
+                                longitude: -105.41310283331364,
+                                latitude: 40.00118537594031
+                              },
+                              {
+                                longitude: -105.41304847368214,
+                                latitude: 40.00132903783131
+                              },
+                              {
+                                longitude: -105.41293703643714,
+                                latitude: 40.0013581865835
+                              }
+                            ]
                           },
                           {
                             pathId: "path-2",
                             cragId: "bell-buttress",
-                            pathPoints:
-                              [
-                                {
-                                  longitude: -105.41350975292636,
-                                  latitude: 40.001089929482816
-                                },
-                                {
-                                  longitude: -105.41348915769497,
-                                  latitude: 40.00125242838993
-                                },
-                                {
-                                  longitude: -105.41343972913315,
-                                  latitude: 40.00117827845145
-                                },
-                                {
-                                  longitude: -105.41319876491559,
-                                  latitude: 40.00106468689887
-                                },
-                                {
-                                  longitude: -105.41309990779656,
-                                  latitude: 40.00117827845145
-                                }
-                              ]
+                            pathPoints: [
+                              {
+                                longitude: -105.41350975292636,
+                                latitude: 40.001089929482816
+                              },
+                              {
+                                longitude: -105.41348915769497,
+                                latitude: 40.00125242838993
+                              },
+                              {
+                                longitude: -105.41343972913315,
+                                latitude: 40.00117827845145
+                              },
+                              {
+                                longitude: -105.41319876491559,
+                                latitude: 40.00106468689887
+                              },
+                              {
+                                longitude: -105.41309990779656,
+                                latitude: 40.00117827845145
+                              }
+                            ]
                           }
                         ],
                         walls: [
@@ -9614,6 +9614,6 @@ export const sampleData = {
     ]
   }),
   methods: {
-    aCommonMethod() { }
+    aCommonMethod() {}
   }
 };

@@ -149,13 +149,10 @@ export default {
 
           this.$router.push("/user/confirmation");
         })
-        .catch(error => {
+        .catch(err => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit(
-            "snackbar/updateMessage",
-            error.response.data.error.message
-          );
+          this.$store.commit("snackbar/updateMessage", err.message);
           this.$store.commit("snackbar/updateSnackbar", true);
           this.$store.commit("snackbar/link", undefined);
           this.$store.commit("snackbar/linkMessage", undefined);

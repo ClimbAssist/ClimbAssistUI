@@ -159,10 +159,7 @@ export default {
           if (error.response.status === "404") {
             this.$store.commit("snackbar/updateMessage", "User does not exist");
           } else {
-            this.$store.commit(
-              "snackbar/updateMessage",
-              error.response.data.error.message
-            );
+            this.$store.commit("snackbar/updateMessage", error.message);
           }
           this.$store.commit("snackbar/updateSnackbar", true);
           this.$store.commit("snackbar/updateLink", undefined);

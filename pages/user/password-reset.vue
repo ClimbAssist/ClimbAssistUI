@@ -51,7 +51,7 @@ export default {
       pass: msg => v => /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg
     }
   }),
-  middleware: "loggedin",
+  middleware: 'loggedin',
   computed: {
     username() {
       return this.$route.params.user;
@@ -85,10 +85,7 @@ export default {
             this.$store.commit("snackbar/updateType", "error");
             this.$store.commit("snackbar/updateTimeout", 10000);
             if (error.response.status === 401) {
-              this.$store.commit(
-                "snackbar/updateMessage",
-                "Incorrect Verification Code"
-              );
+              this.$store.commit("snackbar/updateMessage", "Incorrect Verification Code");
             } else {
               this.$store.commit("snackbar/updateMessage", error.message);
             }
@@ -121,15 +118,9 @@ export default {
             this.$store.commit("snackbar/updateType", "error");
             this.$store.commit("snackbar/updateTimeout", 10000);
             if (error.response.status === 401) {
-              this.$store.commit(
-                "snackbar/updateMessage",
-                "Incorrect Verification Code"
-              );
+              this.$store.commit("snackbar/updateMessage", "Incorrect Verification Code");
             } else {
-              this.$store.commit(
-                "snackbar/updateMessage",
-                error.response.data.error.message
-              );
+              this.$store.commit("snackbar/updateMessage", error.message);
             }
             this.$store.commit("snackbar/updateSnackbar", true);
             this.$store.commit("snackbar/link", undefined);

@@ -140,7 +140,7 @@ export default {
       pass: msg => v => /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$/.test(v) || msg
     }
   }),
-  middleware: 'loggedin',
+  middleware: "loggedin",
   computed: {
     username() {
       return this.$store.state.user.username;
@@ -168,10 +168,13 @@ export default {
 
           this.$router.push("/");
         })
-        .catch(err => {
+        .catch(error => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit("snackbar/updateMessage", err.message);
+          this.$store.commit(
+            "snackbar/updateMessage",
+            error.response.error.message
+          );
           this.$store.commit("snackbar/updateSnackbar", true);
           this.$store.commit("snackbar/link", undefined);
           this.$store.commit("snackbar/linkMessage", undefined);
@@ -195,10 +198,13 @@ export default {
 
           this.$router.push("/");
         })
-        .catch(err => {
+        .catch(error => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit("snackbar/updateMessage", err.message);
+          this.$store.commit(
+            "snackbar/updateMessage",
+            error.response.error.message
+          );
           this.$store.commit("snackbar/updateSnackbar", true);
           this.$store.commit("snackbar/link", undefined);
           this.$store.commit("snackbar/linkMessage", undefined);
@@ -223,10 +229,13 @@ export default {
           this.$store.commit("snackbar/link", undefined);
           this.$store.commit("snackbar/linkMessage", undefined);
         })
-        .catch(err => {
+        .catch(error => {
           this.$store.commit("snackbar/updateType", "error");
           this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit("snackbar/updateMessage", err.message);
+          this.$store.commit(
+            "snackbar/updateMessage",
+            error.response.error.message
+          );
           this.$store.commit("snackbar/updateSnackbar", true);
           this.$store.commit("snackbar/link", undefined);
           this.$store.commit("snackbar/linkMessage", undefined);

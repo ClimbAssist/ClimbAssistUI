@@ -1,5 +1,5 @@
 <template>
-  <section id="signup">
+  <section id="signup" v-if="!signedUp">
     <v-container>
       <v-card>
         <v-card-text class="pa-5">
@@ -58,15 +58,7 @@
                   />
                 </v-flex>
               </v-form>
-              <v-layout row class="pt-2 pb-2 justify-around">
-                <v-flex md6 lg4 class="pt-2 pb-2">
-                  <span>
-                    Already have an account?
-                  </span>
-                  <v-btn color="primary" text to="/user/login">
-                    Login
-                  </v-btn>
-                </v-flex>
+              <v-layout row class="pt-2 pb-2 justify-center">
                 <v-flex md6 lg4 class="pt-2 pb-2">
                   <vue-recaptcha
                     :sitekey="siteKey"
@@ -93,6 +85,14 @@
       </v-card>
     </v-container>
   </section>
+  <section id="verification" v-else>
+    <v-container>
+      <h2>
+        Thanks for creating an account! Check your email to verify your address
+        before logging in.
+      </h2>
+    </v-container>
+  </section>
 </template>
 
 <script>
@@ -100,6 +100,7 @@
 import axios from "axios";
 import VueRecaptcha from "vue-recaptcha";
 export default {
+  layout: "noFrame",
   data() {
     const data = {
       isLoading: false,
@@ -107,6 +108,7 @@ export default {
       username: undefined,
       email: undefined,
       password: undefined,
+      signedUp: false,
       rules: {
         required: msg => v => !!v || msg,
         username: msg => v => /^[_A-z0-9'-]{5,}$/.test(v) || msg,
@@ -137,17 +139,7 @@ export default {
           recaptchaRes: this.recaptchaRes
         })
         .then(res => {
-          this.$store.commit("snackbar/updateType", "success");
-          this.$store.commit("snackbar/updateTimeout", 10000);
-          this.$store.commit(
-            "snackbar/updateMessage",
-            "Account created. Check your email for verification"
-          );
-          this.$store.commit("snackbar/updateSnackbar", true);
-          this.$store.commit("snackbar/link", undefined);
-          this.$store.commit("snackbar/linkMessage", undefined);
-
-          this.$router.push("/user/confirmation");
+          this.signedUp = true;
         })
         .catch(error => {
           this.$store.commit("snackbar/updateType", "error");

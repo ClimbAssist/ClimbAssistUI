@@ -204,7 +204,8 @@ export default {
           light: this.light,
           scale: this.scale,
           modelAngle: this.modelAngle
-        }
+        },
+        state: this.crag.state
       };
       if (this.crag.imageLocation) {
         obj.imageLocation = this.crag.imageLocation;

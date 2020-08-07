@@ -288,7 +288,9 @@ export const getters = {
           filteredRoutes.regions.push(stateTotals);
         }
       }
-      filteredRoutes.countries.push(countryTotals);
+      if (countryTotals.trad || countryTotals.sport || countryTotals.boulder) {
+        filteredRoutes.countries.push(countryTotals);
+      }
     }
     return filteredRoutes;
   },

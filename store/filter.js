@@ -17,6 +17,7 @@ export const state = () => ({
     cragId: null,
     subAreaId: null,
     imageLocation: null,
+    jpgImageLocation: null,
     description: null,
     location: null,
     model: null,
@@ -535,6 +536,7 @@ export const mutations = {
     state.cragState.cragId = payload.cragId;
     state.cragState.subAreaId = payload.subAreaId;
     state.cragState.imageLocation = payload.imageLocation;
+    state.cragState.jpgImageLocation = payload.jpgImageLocation;
     state.cragState.description = payload.description;
     state.cragState.location = payload.location;
     state.cragState.model = payload.model;

@@ -60,7 +60,8 @@ export const sampleData = {
                         },
                         subAreaId: "boulder-canyon",
                         cragId: "bell-buttress",
-                        imageLocation: require("@/static/photos/bell-buttress-primary.webp"),
+                        imageLocation:  require("@/static/photos/bell-buttress-primary.webp"),
+                        jpgImageLocation: require("@/static/splash.jpg"),
                         description:
                           "This is a description of the crag. There are many interesting things about this crag which include...",
                         model: {
@@ -166,7 +167,8 @@ export const sampleData = {
                               {
                                 name: "Bell Air",
                                 routeId: "bell-air",
-                                mainImageLocation: require("@/static/photos/bell-air-route.webp"),
+                                mainImageLocation: "http://stackoverflow.com/does-not-exist.png",
+                                jpgMainImageLocation: require("@/static/photos/bell-air-route.webp"),
                                 style: "trad",
                                 description:
                                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nec feugiat in fermentum posuere. Viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas. Varius sit amet mattis vulputate enim nulla aliquet. Cras semper auctor neque vitae tempus quam pellentesque nec nam.",

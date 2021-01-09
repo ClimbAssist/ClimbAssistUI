@@ -43,6 +43,7 @@ export const state = () => ({
     name: undefined,
     description: undefined,
     imageLocation: undefined,
+    jpgImageLocation: undefined,
     location: undefined,
     model: undefined,
     walls: [],
@@ -103,6 +104,7 @@ export const mutations = {
     state.cragStateEditor.name = payload.name;
     state.cragStateEditor.description = payload.description;
     state.cragStateEditor.imageLocation = payload.imageLocation;
+    state.cragStateEditor.jpgImageLocation = payload.jpgImageLocation;
     state.cragStateEditor.location = payload.location;
     state.cragStateEditor.model = payload.model;
     state.cragStateEditor.walls = payload.walls;

@@ -80,7 +80,7 @@
                     >Image
                     <input
                       type="file"
-                      accept=".webp"
+                      accept=".jpg"
                       :id="route.routeId"
                       @change="newImage(ri)"
                   /></v-flex>
@@ -979,7 +979,7 @@ export default {
       try {
         this.loading = true;
         var formData = new FormData();
-        formData.set("photo.webp", this.imageFile);
+        formData.set("photo.jpg", this.imageFile);
         await this.$axios.$post(
           "/v1/routes/" +
             this.crag.walls[this.wallIndex].routes[ri].routeId +

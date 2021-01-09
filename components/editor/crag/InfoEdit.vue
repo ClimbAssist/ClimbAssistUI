@@ -80,8 +80,10 @@
               <v-container xs12>
                 <v-img
                   v-if="crag.imageLocation"
-                  :src="crag.imageLocation"
+                  :src="cPicture"
                   aspect-ratio="2"
+                  id="crag-image"
+                  :error="onImgError"
                   contain
                   lazy
                 >
@@ -99,11 +101,12 @@
                   </v-layout>
                 </v-img>
               </v-container>
+              <!-- TODO: add in png -->
               <v-flex xs12
                 >Image
                 <input
                   type="file"
-                  accept=".webp"
+                  accept=".jpg"
                   ref="imageFile"
                   @change="newImage()"
               /></v-flex>
@@ -305,7 +308,8 @@ export default {
       afterList: [],
       deleteWallCheck: [],
       loading: false,
-      currentParking: []
+      currentParking: [],
+      failedImage: false
     };
   },
   computed: {
@@ -451,7 +455,10 @@ export default {
       set(value) {
         this.$store.commit("editor/updateMapSelector", value);
       }
-    }
+    },
+    cPicture() {
+      return this.failedImage ? this.crag.imageLocation : this.crag.jpgImageLocation;
+    },
   },
   methods: {
     toggleMap() {
@@ -492,11 +499,14 @@ export default {
       console.log(this.imageFile);
       this.submitImage();
     },
+    onImgError: function(event) {
+      this.failedImage = true;
+    },
     async submitImage() {
       try {
         this.loading = true;
         var formData = new FormData();
-        formData.set("photo.webp", this.imageFile);
+        formData.set("photo.jpg", this.imageFile);
         await this.$axios.post(
           "/v1/crags/" + this.crag.cragId + "/photo",
           formData

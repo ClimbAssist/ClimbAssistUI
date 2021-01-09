@@ -16,7 +16,8 @@
         <v-container>
           <v-img
             :alt="crag.name + 'photo'"
-            :src="crag.crag.imageLocation"
+            :src="cPicture"
+            v-on:error="onImgError"
             aspect-ratio="2"
             contain
             lazy
@@ -155,7 +156,8 @@
                       <v-layout row>
                         <v-img
                           :alt="route.name + ' route photo'"
-                          :src="route.mainImageLocation"
+                          :src="rPicture[i][ri]"
+                          v-on:error="onImgError(i, ri)"
                           contain
                           max-height="400"
                         >
@@ -358,8 +360,10 @@ export default {
       apiWalls: null,
       apiRoutes: [],
       ropeShow: 0,
-      boulderShow: 0
-      // routeCheck: null
+      boulderShow: 0,
+      failedCragImage: false,
+      failedRouteImage: [],
+      changePic: false
     };
   },
   computed: {
@@ -416,6 +420,27 @@ export default {
         }
       }
       return gradeTotals;
+    },
+    //fallback Images
+    cPicture() {
+      return this.failedCragImage ? this.crag.crag.jpgImageLocation : this.crag.crag.imageLocation;
+    },
+    rPicture() {
+      if (this.changePic) {
+        this.changePic = false
+      }
+      let pictures = []
+      for (let i in this.failedRouteImage) {
+        pictures.push([])
+        for (let ri in this.failedRouteImage[i]) {
+          if (this.failedRouteImage[i][ri]) {
+            pictures[i].push(this.crag.walls[i].routes[ri].jpgMainImageLocation)
+          } else {
+            pictures[i].push(this.crag.walls[i].routes[ri].mainImageLocation)
+          }
+        }
+      }
+      return pictures
     }
   },
   methods: {
@@ -640,6 +665,22 @@ export default {
       //     }
       //   }
       // });
+    },
+    onImgError(wall, route) {
+      if (wall !== undefined && route !== undefined) {
+        this.failedRouteImage[wall][route] = true;
+      } else {
+        this.failedCragImage = true;
+      }
+      this.changePic = true
+    },
+    setImages() {
+      for (let i in this.crag.walls) {
+        this.failedRouteImage.push([])
+        for (let ri in this.crag.walls[i].routes) {
+          this.failedRouteImage[i].push(false)
+        }
+      }
     }
   },
   watch: {
@@ -695,6 +736,7 @@ export default {
   },
   created() {
     this.setChartShow();
+    this.setImages();
   },
   mounted() {
     this.setCharts();

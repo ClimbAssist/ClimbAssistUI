@@ -216,8 +216,6 @@ export default {
           maximum: this.azimuth[1]
         };
       }
-      console.log("POST");
-      console.log(obj);
       try {
         await this.$axios.$post("/v1/crags", obj);
         this.$store.commit("snackbar/updateType", "success");

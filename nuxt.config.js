@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
 
 module.exports = {
-  mode: "spa",
+  // mode: "spa",
   generate: {
     dir: "dist/static"
   },

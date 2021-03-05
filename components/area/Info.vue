@@ -2,7 +2,7 @@
   <v-container fluid>
     <AreaMap />
     <v-card>
-      <v-layout wrap  >
+      <v-layout wrap>
         <v-flex xs12 sm2 offset-sm1>
           <v-card-text>
             <h3 class="text-sm-right text-xs-center">Description:</h3>
@@ -10,7 +10,12 @@
         </v-flex>
         <v-flex xs12 sm8 fill-height>
           <v-card-text>
-            <p class="text-sm-left text-xs-center" style="white-space: pre-line;">{{ area.area.description }}</p>
+            <p
+              class="text-sm-left text-xs-center"
+              style="white-space: pre-line;"
+            >
+              {{ area.area.description }}
+            </p>
           </v-card-text>
         </v-flex>
       </v-layout>
@@ -51,55 +56,86 @@
           <v-toolbar dark color="primary">
             <v-toolbar-title>{{ area.name }}</v-toolbar-title>
           </v-toolbar>
-          <v-layout >
-            <v-expansion-panels v-if="area.area.subAreas.length > 1 || area.area.subAreas[0].name!==area.name">
+          <v-layout v-if="ropeShow || boulderShow">
+            <v-expansion-panels
+              v-if="
+                area.area.subAreas.length > 1 ||
+                  area.area.subAreas[0].name !== area.name
+              "
+            >
               <v-expansion-panel
                 v-for="(subArea, subi) in area.filteredSubAreas"
                 :key="subi"
               >
                 <v-expansion-panel-header>
                   <v-flex class="text-left" justify-center>
-                    {{ subArea.name }} - <span v-if="subArea.trad">{{ subArea.trad }} <span class="trad-style"> trad </span></span>
-                    <span v-if="subArea.sport">{{ subArea.sport }} <span class="sport-style"> sport  </span></span> <span v-if="subArea.boulder">{{ subArea.boulder }} <span class="boulder-style"> boulder  </span></span>
+                    {{ subArea.name }} -
+                    <span v-if="subArea.trad"
+                      >{{ subArea.trad }}
+                      <span class="trad-style"> trad </span></span
+                    >
+                    <span v-if="subArea.sport"
+                      >{{ subArea.sport }}
+                      <span class="sport-style"> sport </span></span
+                    >
+                    <span v-if="subArea.boulder"
+                      >{{ subArea.boulder }}
+                      <span class="boulder-style"> boulder </span></span
+                    >
                   </v-flex>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                <v-layout wrap >
-                  <v-flex xs12 sm2 offset-sm1>
-                    <v-card-text>
-                      <h3 class="text-sm-right text-xs-center">Description:</h3>
-                    </v-card-text>
-                  </v-flex>
-                  <v-flex xs12 sm8 fill-height>
-                    <v-card-text class="text-sm-left text-xs-center" style="white-space: pre-line;">{{ subArea.subArea.description }}</v-card-text>
-                  </v-flex>
-                </v-layout>
-                <v-layout
-                v-for="(crag, ci) in subArea.filteredCrags"
-                :key="ci"
-                >
-                  <nuxt-link
-                    :to="{
-                      name: 'crags-frame',
-                      params: {
-                        subAreaKey: subArea.subAreaKey,
-                        cragKey: crag.cragKey,
-                        area: area.slug,
-                        frame: crag.slug
-                      }
-                    }"
-                    >{{ crag.name }}</nuxt-link
-                  >&nbsp; - &nbsp;<span v-if="crag.trad">{{ crag.trad }} <span class="trad-style"> trad </span> </span>
-                    <span v-if="crag.sport">{{ crag.sport }}<span class="sport-style"> sport </span></span> <span v-if="crag.boulder"> {{ crag.boulder }} <span class="boulder-style"> boulder </span> </span>
+                  <v-layout wrap>
+                    <v-flex xs12 sm2 offset-sm1>
+                      <v-card-text>
+                        <h3 class="text-sm-right text-xs-center">
+                          Description:
+                        </h3>
+                      </v-card-text>
+                    </v-flex>
+                    <v-flex xs12 sm8 fill-height>
+                      <v-card-text
+                        class="text-sm-left text-xs-center"
+                        style="white-space: pre-line;"
+                        >{{ subArea.subArea.description }}</v-card-text
+                      >
+                    </v-flex>
+                  </v-layout>
+                  <v-layout
+                    v-for="(crag, ci) in subArea.filteredCrags"
+                    :key="ci"
+                  >
+                    <nuxt-link
+                      :to="{
+                        name: 'crags-frame',
+                        params: {
+                          subAreaKey: subArea.subAreaKey,
+                          cragKey: crag.cragKey,
+                          area: area.slug,
+                          frame: crag.slug
+                        }
+                      }"
+                      >{{ crag.name }}</nuxt-link
+                    >&nbsp; - &nbsp;<span v-if="crag.trad"
+                      >{{ crag.trad }} <span class="trad-style"> trad </span>
+                    </span>
+                    <span v-if="crag.sport"
+                      >{{ crag.sport
+                      }}<span class="sport-style"> sport </span></span
+                    >
+                    <span v-if="crag.boulder">
+                      {{ crag.boulder }}
+                      <span class="boulder-style"> boulder </span>
+                    </span>
                   </v-layout>
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
             <v-layout class="pa-2" wrap v-else>
               <v-flex
-              xs12
-              v-for="(crag, ci) in area.filteredSubAreas[0].filteredCrags"
-              :key="ci"
+                xs12
+                v-for="(crag, ci) in area.filteredSubAreas[0].filteredCrags"
+                :key="ci"
               >
                 <nuxt-link
                   :to="{
@@ -111,9 +147,18 @@
                     }
                   }"
                   >{{ crag.name }}</nuxt-link
-                >&nbsp; - &nbsp;<span v-if="crag.trad">{{ crag.trad }} <span class="trad-style"> trad </span> </span>
-                  <span v-if="crag.sport">{{ crag.sport }}<span class="sport-style"> sport </span></span> <span v-if="crag.boulder"> {{ crag.boulder }} <span class="boulder-style"> boulder </span> </span>
-                </v-flex>
+                >&nbsp; - &nbsp;<span v-if="crag.trad"
+                  >{{ crag.trad }} <span class="trad-style"> trad </span>
+                </span>
+                <span v-if="crag.sport"
+                  >{{ crag.sport
+                  }}<span class="sport-style"> sport </span></span
+                >
+                <span v-if="crag.boulder">
+                  {{ crag.boulder }}
+                  <span class="boulder-style"> boulder </span>
+                </span>
+              </v-flex>
             </v-layout>
           </v-layout>
         </v-card>
@@ -183,9 +228,14 @@ export default {
       };
       for (let subkey in this.area.filteredSubAreas) {
         for (let ckey in this.area.filteredSubAreas[subkey].filteredCrags) {
-          for (let wkey in this.area.filteredSubAreas[subkey].filteredCrags[ckey].walls) {
-            for (let rkey in this.area.filteredSubAreas[subkey].filteredCrags[ckey].walls[wkey].routes) {
-              let route = this.area.filteredSubAreas[subkey].filteredCrags[ckey].walls[wkey].routes[rkey];
+          for (let wkey in this.area.filteredSubAreas[subkey].filteredCrags[
+            ckey
+          ].walls) {
+            for (let rkey in this.area.filteredSubAreas[subkey].filteredCrags[
+              ckey
+            ].walls[wkey].routes) {
+              let route = this.area.filteredSubAreas[subkey].filteredCrags[ckey]
+                .walls[wkey].routes[rkey];
               if (route.style === "trad") {
                 gradeTotals.trad[route.grade]++;
                 gradeTotals.total[route.grade]++;
@@ -216,9 +266,13 @@ export default {
     setChartShow() {
       for (let subkey in this.area.area.subAreas) {
         for (let ckey in this.area.area.subAreas[subkey].crags) {
-          for (let wkey in  this.area.area.subAreas[subkey].crags[ckey].walls) {
-            for (let rkey in  this.area.area.subAreas[subkey].crags[ckey].walls[wkey].routes) {
-              let route = this.area.area.subAreas[subkey].crags[ckey].walls[wkey].routes[rkey];
+          for (let wkey in this.area.area.subAreas[subkey].crags[ckey].walls) {
+            for (let rkey in this.area.area.subAreas[subkey].crags[ckey].walls[
+              wkey
+            ].routes) {
+              let route = this.area.area.subAreas[subkey].crags[ckey].walls[
+                wkey
+              ].routes[rkey];
               if (this.ropeShow === 100 && this.boulderShow === 100) {
                 return;
               }
@@ -413,8 +467,10 @@ export default {
     this.setChartShow();
   },
   mounted() {
-    this.setCharts();
-  },
+    if (this.ropeShow || this.boulderShow) {
+      this.setCharts();
+    }
+  }
 };
 </script>
 
@@ -426,6 +482,6 @@ export default {
   color: #0066ff;
 }
 .boulder-style {
-  color: #EFD369;
+  color: #efd369;
 }
 </style>

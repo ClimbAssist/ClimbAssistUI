@@ -37,7 +37,7 @@ describe("BottomNav", () => {
       }
     });
     expect(
-      wrapper.contains("[data-testid=bottom-nav-info-button]")
+      wrapper.find("[data-testid=bottom-nav-info-button]").exists()
     ).toBeTruthy();
   });
   it("hides bar off frameV", () => {
@@ -60,7 +60,7 @@ describe("BottomNav", () => {
       }
     });
     expect(
-      wrapper.contains("[data-testid=bottom-nav-info-button]")
+      wrapper.find("[data-testid=bottom-nav-info-button]").exists()
     ).toBeFalsy();
   });
 });

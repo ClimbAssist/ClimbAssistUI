@@ -1,5 +1,5 @@
 <template>
-  <v-footer inset app absolute v-if="visible">
+  <v-footer min-height="50" inset app v-if="visible">
     <v-layout row>
       <v-btn text to="/terms">terms of use</v-btn>
       <v-btn text to="/contact">Contact Us</v-btn>
@@ -7,13 +7,31 @@
         <v-icon left>fas fa-envelope</v-icon>
         subscribe</v-btn
       >
-      <a href="https://facebook.com/climbassist" target="_blank" rel="noopener" class="px-2" alt="Facebook">
+      <a
+        href="https://facebook.com/climbassist"
+        target="_blank"
+        rel="noopener"
+        class="px-2"
+        alt="Facebook"
+      >
         <v-icon large>fab fa-facebook</v-icon>
       </a>
-      <a href="https://instagram.com/climbassist" target="_blank" rel="noopener" class="px-2" alt="instagram">
+      <a
+        href="https://instagram.com/climbassist"
+        target="_blank"
+        rel="noopener"
+        class="px-2"
+        alt="instagram"
+      >
         <v-icon large>fab fa-instagram</v-icon>
       </a>
-      <a href="https://github.com/ClimbAssist" target="_blank" rel="noopener" class="px-2" alt="GitHub">
+      <a
+        href="https://github.com/ClimbAssist"
+        target="_blank"
+        rel="noopener"
+        class="px-2"
+        alt="GitHub"
+      >
         <v-icon large>fab fa-github</v-icon>
       </a>
       <v-dialog v-model="dialog" max-width="500">
@@ -60,7 +78,7 @@
                   />
                   <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
                   <div
-                    style="position: absolute; left: -5000px;"
+                    style="position: absolute; left: -5000px"
                     aria-hidden="true"
                   >
                     <input
@@ -99,7 +117,7 @@ export default {
   data() {
     return {
       dialog: false,
-      width: undefined
+      width: undefined,
     };
   },
   computed: {
@@ -115,24 +133,24 @@ export default {
     visible() {
       if (
         this.editTabs === "model" ||
-        ((this.width < 960 && this.frameTabs === "model") ||
-          this.frameTabs === "mapcrag")
+        (this.width < 960 && this.frameTabs === "model") ||
+        this.frameTabs === "mapcrag"
       ) {
         return false;
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     onWindowResize() {
       this.width = window.innerWidth;
-    }
+    },
   },
   mounted() {
     window.addEventListener("resize", this.onWindowResize, false);
     this.onWindowResize();
-  }
+  },
 };
 </script>
 <style scoped>

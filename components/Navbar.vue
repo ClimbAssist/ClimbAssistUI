@@ -1,40 +1,68 @@
 <template>
   <div>
     <!--googleon: index-->
-    <v-flex hidden-md-and-up>
-      <v-toolbar-title v-if="sidebar === 'frameV'">{{
-        crag.name
-      }}</v-toolbar-title>
-      <v-toolbar-title v-else-if="sidebar === 'areaV'">{{
-        area.name
-      }}</v-toolbar-title>
-      <v-toolbar-title v-else>Climb Assist (beta)</v-toolbar-title>
+    <v-flex hidden-md-and-up data-testid="small">
+      <v-toolbar-title
+        v-if="sidebar === 'frameV'"
+        data-testid="small-crag-name"
+        >{{ crag.name }}</v-toolbar-title
+      >
+      <v-toolbar-title
+        v-else-if="sidebar === 'areaV'"
+        data-testid="small-area-name"
+        >{{ area.name }}</v-toolbar-title
+      >
+      <v-toolbar-title v-else data-testid="small-company-name"
+        >Climb Assist (beta)</v-toolbar-title
+      >
     </v-flex>
     <v-spacer />
-    <v-flex v-if="sidebar === 'areaV'" hidden-sm-and-down>
-      <v-toolbar-title>{{ area.name }}</v-toolbar-title>
+    <v-flex v-if="sidebar === 'areaV'" hidden-sm-and-down data-testid="area">
+      <v-toolbar-title data-testid="area-name">{{ area.name }}</v-toolbar-title>
     </v-flex>
-    <v-flex v-if="sidebar === 'frameV'" hidden-sm-and-down>
-      <v-toolbar-title>{{ crag.name }}</v-toolbar-title>
+    <v-flex v-if="sidebar === 'frameV'" hidden-sm-and-down data-testid="crag">
+      <v-toolbar-title data-testid="crag-name">{{ crag.name }}</v-toolbar-title>
       <!--googleoff: index-->
-      <v-btn-toggle light dense mandatory v-model="frameTabs" color="primary">
-        <v-btn :color="iconColor[0]" outlined value="info">
+      <v-btn-toggle
+        light
+        dense
+        mandatory
+        v-model="frameTabs"
+        color="primary"
+        data-testid="nav-buttons"
+      >
+        <v-btn
+          :color="iconColor[0]"
+          outlined
+          value="info"
+          data-testid="nav-info-button"
+        >
           <span :class="bottomBorder[0]">
-          <v-icon :color="iconColor[0]">fa-info</v-icon>
-          <span >Info</span>
+            <v-icon :color="iconColor[0]">fa-info</v-icon>
+            <span>Info</span>
           </span>
         </v-btn>
 
-        <v-btn  :color="iconColor[1]" outlined value="model">
+        <v-btn
+          :color="iconColor[1]"
+          outlined
+          value="model"
+          data-testid="nav-model-button"
+        >
           <span :class="bottomBorder[1]">
             <v-icon :color="iconColor[1]">fa-cube</v-icon>
-            <span >Model</span>
+            <span>Model</span>
           </span>
         </v-btn>
 
-        <v-btn  :color="iconColor[2]" outlined value="mapcrag">
+        <v-btn
+          :color="iconColor[2]"
+          outlined
+          value="mapcrag"
+          data-testid="nav-map-button"
+        >
           <span :class="bottomBorder[2]">
-              <v-icon :color = "iconColor[2]">fa-map</v-icon>
+            <v-icon :color="iconColor[2]">fa-map</v-icon>
             <span>Map</span>
           </span>
         </v-btn>
@@ -56,24 +84,24 @@ export default {
       }
     },
     iconColor() {
-      let iconColor = ["grey", "grey", "grey"]
+      let iconColor = ["grey", "grey", "grey"];
       if (this.frameTabs === "info") {
-        iconColor[0] = "primary"
+        iconColor[0] = "primary";
       } else if (this.frameTabs === "model") {
-        iconColor[1] = "primary"
+        iconColor[1] = "primary";
       } else {
-        iconColor[2] = "primary"
+        iconColor[2] = "primary";
       }
       return iconColor;
     },
     bottomBorder() {
-      let bottomBorder = ["bottom-border", "bottom-border", "bottom-border"]
+      let bottomBorder = ["bottom-border", "bottom-border", "bottom-border"];
       if (this.frameTabs === "info") {
-        bottomBorder[0] = "bottom-border-active"
+        bottomBorder[0] = "bottom-border-active";
       } else if (this.frameTabs === "model") {
-        bottomBorder[1] = "bottom-border-active"
+        bottomBorder[1] = "bottom-border-active";
       } else {
-        bottomBorder[2] = "bottom-border-active"
+        bottomBorder[2] = "bottom-border-active";
       }
       return bottomBorder;
     },

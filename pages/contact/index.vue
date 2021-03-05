@@ -9,7 +9,39 @@
         />
       </v-flex>
     </v-layout>
-    <v-card>
+    <v-card v-if="userEmail">
+      <v-card-title>
+        Contact Us
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="form" v-model="form">
+          <v-select
+            label="Topic"
+            v-model="subject"
+            :items="subjectList"
+            :rules="[rules.required('Select a Topic')]"
+          />
+          <v-textarea
+            name="input-7-4"
+            label="Message"
+            v-model="body"
+            :rules="[rules.required('Enter a message')]"
+            auto-grow
+          ></v-textarea>
+          <v-layout wrap justify-end class="my-2">
+            <v-btn
+              color="primary"
+              :disabled="!form"
+              class="ml-2"
+              @click="sendEmail()"
+            >
+              Send
+            </v-btn>
+          </v-layout>
+        </v-form>
+      </v-card-text>
+    </v-card>
+    <v-card v-else>
       <v-card-title>
         Contact Us
       </v-card-title>
@@ -88,16 +120,23 @@ export default {
   computed: {
     siteKey() {
       return this.$store.state.contact.recaptchaKey;
+    },
+    userEmail() {
+      return this.$store.state.user.email;
     }
   },
   methods: {
     async sendEmail() {
       let mail = {
-        replyToEmail: this.email,
         subject: "contact form - [" + this.subject + "]",
-        emailBody: this.body,
-        recaptchaRes: this.recaptchaRes
+        emailBody: this.body
       };
+      if (this.userEmail) {
+        mail.replyToEmail = this.userEmail;
+      } else {
+        mail.replyToEmail = this.email;
+        mail.recaptchaRes = this.recaptchaRes;
+      }
       try {
         await this.$axios.$post("/v1/contact", mail);
 

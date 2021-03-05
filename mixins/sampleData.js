@@ -60,7 +60,7 @@ export const sampleData = {
                         },
                         subAreaId: "boulder-canyon",
                         cragId: "bell-buttress",
-                        imageLocation:  require("@/static/photos/bell-buttress-primary.webp"),
+                        imageLocation: require("@/static/photos/bell-buttress-primary.webp"),
                         jpgImageLocation: require("@/static/splash.jpg"),
                         description:
                           "This is a description of the crag. There are many interesting things about this crag which include...",
@@ -167,7 +167,8 @@ export const sampleData = {
                               {
                                 name: "Bell Air",
                                 routeId: "bell-air",
-                                mainImageLocation: "http://stackoverflow.com/does-not-exist.png",
+                                mainImageLocation:
+                                  "http://stackoverflow.com/does-not-exist.png",
                                 jpgMainImageLocation: require("@/static/photos/bell-air-route.webp"),
                                 style: "trad",
                                 description:
@@ -9608,6 +9609,32 @@ export const sampleData = {
                     ]
                   }
                 ]
+              },
+              {
+                name: "Rifle",
+                areaId: "rifle",
+                description:
+                  "This is a description of the area. Statistical information and whatnot will go here... This is a description of the area. Statistical information and whatnot will go here... This is a description of the area. Statistical information and whatnot will go here... \n\n new line",
+                location: {
+                  longitude: -105.417763,
+                  latitude: 39.996589
+                }
+              }
+            ]
+          },
+          {
+            name: "Wyoming",
+            regionId: "wyoming",
+            areas: [
+              {
+                name: "Lander",
+                areaId: "lander",
+                description:
+                  "This is a description of the area. Statistical information and whatnot will go here... This is a description of the area. Statistical information and whatnot will go here... This is a description of the area. Statistical information and whatnot will go here... \n\n new line",
+                location: {
+                  longitude: -105.417763,
+                  latitude: 39.996589
+                }
               }
             ]
           }

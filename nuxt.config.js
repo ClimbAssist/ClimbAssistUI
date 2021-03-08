@@ -78,7 +78,10 @@ module.exports = {
     theme: {
       themes: {
         light: {
-          primary: "#449947"
+          primary: "#449947",
+          trad: "#FF3E49",
+          sport: "#36A2EB",
+          boulder: "#FFFF70"
         }
       }
     },

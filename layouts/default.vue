@@ -280,7 +280,7 @@ import { fetch } from "../mixins/fetchData.js";
 export default {
   name: "App",
   data: () => ({
-    drawer: null,
+    drawer: false,
     //sidebar
     items: [
       {
@@ -479,9 +479,11 @@ export default {
   async fetch({ store }) {
     for (i = 0; i < 2; i++) {
       try {
-        const userData = (await axios.get("/v1/user", {
-          progress: false
-        })).data;
+        const userData = (
+          await axios.get("/v1/user", {
+            progress: false
+          })
+        ).data;
         store.commit("user/updateUsername", userData.data.username);
         store.commit("user/updateEmail", userData.data.email);
         store.commit(

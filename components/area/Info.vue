@@ -1,146 +1,286 @@
 <template>
   <v-container fluid>
-    <AreaMap />
-    <v-card>
+    <v-img
+      src="https://picsum.photos/350/165?random"
+      height="400"
+      width="100%"
+      gradient="to bottom, rgba(0,0,0,.5), rgba(0,0,0,.1)"
+      class="white--text text-center"
+    >
+      <h1 class="mt-10">
+        {{ area.name }}
+      </h1>
+    </v-img>
+    <v-container>
+      <!-- <v-layout wrap>
+        <v-card
+          transition="expand-transition"
+          :max-height="descLimit"
+          style="overflow:hidden; white-space: pre-line;"
+        >
+          {{ area.area.description }}
+        </v-card>
+        <v-row align-content="end" class="pb-4">
+          <v-flex> </v-flex>
+          <v-btn
+            class="ma-2"
+            small
+            :color="descIcon.color"
+            @click="expandDesc = !expandDesc"
+          >
+            <v-icon>{{ descIcon.item }}</v-icon>
+          </v-btn>
+        </v-row>
+      </v-layout> -->
       <v-layout wrap>
-        <v-flex xs12 sm2 offset-sm1>
-          <v-card-text>
-            <h3 class="text-sm-right text-xs-center">Description:</h3>
-          </v-card-text>
-        </v-flex>
-        <v-flex xs12 sm8 fill-height>
-          <v-card-text>
-            <p
-              class="text-sm-left text-xs-center"
-              style="white-space: pre-line;"
-            >
-              {{ area.area.description }}
-            </p>
-          </v-card-text>
-        </v-flex>
+        <v-card
+          transition="expand-transition"
+          :max-height="descLimit"
+          style="overflow:hidden; white-space: pre-line;"
+          class="text-left pa-4"
+        >
+          {{ area.area.description }}
+        </v-card>
+        <v-row align-content="end" class="pb-4">
+          <v-flex> </v-flex>
+          <v-btn
+            class="ma-2"
+            small
+            :color="descIcon.color"
+            @click="expandDesc = !expandDesc"
+          >
+            <v-icon>{{ descIcon.item }}</v-icon>
+          </v-btn>
+        </v-row>
       </v-layout>
-      <v-layout wrap fill-height align-center>
-        <v-flex xs12 sm2 offset-sm1>
-          <v-card-text>
-            <h3 class="text-xs-center text-sm-right">Routes:</h3>
-          </v-card-text>
-        </v-flex>
-        <v-flex xs4 sm2 offset-sm1>
-          <v-card-text v-if="area.trad" class="text-sm-left text-xs-center">
-            {{ area.trad }} <span class="trad-style">Trad</span>
-          </v-card-text>
-        </v-flex>
-        <v-flex xs4 sm2 fill-height align-self-center>
-          <v-card-text class="text-sm-left text-xs-center" v-if="area.sport">
-            {{ area.sport }} <span class="sport-style">Sport</span>
-          </v-card-text>
-        </v-flex>
-        <v-flex xs4 sm2>
-          <v-card-text v-if="area.boulder" class="text-sm-left text-xs-center">
-            {{ area.boulder }} <span class="boulder-style">Boulder</span>
-          </v-card-text>
-        </v-flex>
-      </v-layout>
-      <v-layout row justify-center>
-        <v-flex sm10 xs12>
-          <canvas id="gradeChartRope" :height="ropeShow" />
-        </v-flex>
-      </v-layout>
-      <v-layout row justify-center>
-        <v-flex sm10 xs12>
-          <canvas id="gradeChartBoulder" :height="boulderShow" />
-        </v-flex>
-      </v-layout>
-      <v-container>
-        <v-card>
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>{{ area.name }}</v-toolbar-title>
-          </v-toolbar>
-          <v-layout v-if="ropeShow || boulderShow">
-            <v-expansion-panels
-              v-if="
-                area.area.subAreas.length > 1 ||
-                  area.area.subAreas[0].name !== area.name
-              "
-            >
-              <v-expansion-panel
-                v-for="(subArea, subi) in area.filteredSubAreas"
-                :key="subi"
+      <v-expansion-panels class="pb-4">
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            {{ headline }}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content
+            class="text-left"
+            style="white-space: pre-line;"
+          >
+            {{ area.area.description }}
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-expansion-panels class="pb-4" :value="chartExpand">
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            <v-flex xs12 sm2 offset-sm1>
+              <v-card-text>
+                <h3 class="text-xs-center text-sm-right">Stats:</h3>
+              </v-card-text>
+            </v-flex>
+            <v-flex xs4 sm2 offset-sm1>
+              <v-card-text v-if="area.trad" class="text-sm-left text-xs-center">
+                <v-avatar size="25" class="white--text" color="trad">
+                  {{ area.trad }}</v-avatar
+                >
+                <span>Trad</span>
+              </v-card-text>
+            </v-flex>
+            <v-flex xs4 sm2 fill-height align-self-center>
+              <v-card-text
+                class="text-sm-left text-xs-center"
+                v-if="area.sport"
               >
-                <v-expansion-panel-header>
-                  <v-flex class="text-left" justify-center>
-                    {{ subArea.name }} -
-                    <span v-if="subArea.trad"
-                      >{{ subArea.trad }}
-                      <span class="trad-style"> trad </span></span
-                    >
-                    <span v-if="subArea.sport"
-                      >{{ subArea.sport }}
-                      <span class="sport-style"> sport </span></span
-                    >
-                    <span v-if="subArea.boulder"
-                      >{{ subArea.boulder }}
-                      <span class="boulder-style"> boulder </span></span
-                    >
-                  </v-flex>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-layout wrap>
-                    <v-flex xs12 sm2 offset-sm1>
-                      <v-card-text>
-                        <h3 class="text-sm-right text-xs-center">
-                          Description:
-                        </h3>
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex xs12 sm8 fill-height>
-                      <v-card-text
-                        class="text-sm-left text-xs-center"
-                        style="white-space: pre-line;"
-                        >{{ subArea.subArea.description }}</v-card-text
-                      >
-                    </v-flex>
-                  </v-layout>
-                  <v-layout
-                    v-for="(crag, ci) in subArea.filteredCrags"
-                    :key="ci"
+                <v-avatar size="25" class="white--text" color="sport">
+                  {{ area.sport }} </v-avatar
+                ><span> Sport</span>
+              </v-card-text>
+            </v-flex>
+            <v-flex xs4 sm2>
+              <v-card-text
+                v-if="area.boulder"
+                class="text-sm-left text-xs-center"
+              >
+                <v-avatar size="25" class="white--text" color="boulder">
+                  {{ area.boulder }} </v-avatar
+                ><span> Boulder</span>
+              </v-card-text>
+            </v-flex>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-layout row justify-center>
+              <v-flex sm10 xs12>
+                <canvas id="gradeChartRope" :height="ropeShow" />
+              </v-flex>
+            </v-layout>
+            <v-layout row justify-center>
+              <v-flex sm10 xs12>
+                <canvas id="gradeChartBoulder" :height="boulderShow" />
+              </v-flex>
+            </v-layout>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-card class="pb-4 mb-4">
+        <v-card-title> Topos </v-card-title>
+        <v-card
+          v-for="n in 9"
+          :key="n"
+          class="d-inline-flex pa-4 ma-2"
+          max-width="250"
+          @click="toTopo()"
+          hover
+        >
+          <v-row>
+            <v-img
+              :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+              :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+              aspect-ratio="1"
+              height="200"
+              width="200"
+              class=" ma-2"
+              gradient="to top, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            >
+              <v-card-title class="white--text align-end">
+                Topo Name
+              </v-card-title>
+            </v-img>
+            <v-card-text>
+              <span v-if="area.trad" class="text-sm-left text-xs-center">
+                <v-avatar size="25" class="white--text" color="trad">
+                  {{ area.trad }}</v-avatar
+                >
+                <span>Trad</span>
+              </span>
+
+              <span class="text-sm-left text-xs-center" v-if="area.sport">
+                <v-avatar size="25" class="white--text" color="sport">
+                  {{ area.sport }} </v-avatar
+                ><span> Sport</span>
+              </span>
+
+              <span v-if="area.boulder" class="text-sm-left text-xs-center">
+                <v-avatar size="25" class="white--text" color="boulder">
+                  {{ area.boulder }} </v-avatar
+                ><span> Sport</span>
+              </span>
+            </v-card-text>
+
+            <v-card-text style="white-space: pre-line;">
+              {{ headline }}
+            </v-card-text>
+          </v-row>
+        </v-card>
+      </v-card>
+      <AreaMap />
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-header class="font-weight-bold">
+            Getting There
+          </v-expansion-panel-header>
+          <v-expansion-panel-content class="text-left">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit
+            sed ullamcorper morbi tincidunt ornare massa eget. Egestas diam in
+            arcu cursus euismod quis viverra nibh. Magna fermentum iaculis eu
+            non diam phasellus. Tempor orci dapibus ultrices in iaculis.
+            Elementum integer enim neque volutpat ac tincidunt vitae semper. Leo
+            in vitae turpis massa sed elementum tempus egestas sed. Elit at
+            imperdiet dui accumsan sit.
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <v-slide-group v-model="model" class="pa-4" show-arrows="desktop">
+        <v-slide-item v-for="pi in 9" :key="pi">
+          <v-hover>
+            <template v-slot:default="{ hover, focus }">
+              <v-card
+                color="grey lighten-1"
+                class="ma-4"
+                @click="lightbox = !lightbox"
+              >
+                <v-img
+                  :src="`https://picsum.photos/500/300?image=${pi * 5 + 10}`"
+                  aspect-ratio="1"
+                  height="200"
+                  width="200"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  class="white--text align-end"
+                >
+                </v-img>
+                <v-fade-transition>
+                  <v-overlay v-if="hover || focus" absolute> </v-overlay>
+                </v-fade-transition>
+              </v-card>
+            </template>
+          </v-hover>
+        </v-slide-item>
+      </v-slide-group>
+      <v-overlay :value="lightbox">
+        <v-carousel>
+          <v-carousel-item
+            v-for="i in 9"
+            :key="i"
+            :src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
+          ></v-carousel-item>
+        </v-carousel>
+        <v-btn @click="lightbox = !lightbox">
+          close
+        </v-btn>
+      </v-overlay>
+
+      <v-toolbar dark color="primary">
+        <v-toolbar-title>TODO: Remove with new APIs</v-toolbar-title>
+      </v-toolbar>
+      <v-layout v-if="ropeShow || boulderShow">
+        <v-expansion-panels
+          v-if="
+            area.area.subAreas.length > 1 ||
+              area.area.subAreas[0].name !== area.name
+          "
+        >
+          <v-expansion-panel
+            v-for="(subArea, subi) in area.filteredSubAreas"
+            :key="subi"
+          >
+            <v-expansion-panel-header>
+              <v-flex class="text-left" justify-center>
+                {{ subArea.name }} -
+                <span v-if="subArea.trad"
+                  >{{ subArea.trad }}
+                  <span class="trad-style"> trad </span></span
+                >
+                <span v-if="subArea.sport"
+                  >{{ subArea.sport }}
+                  <span class="sport-style"> sport </span></span
+                >
+                <span v-if="subArea.boulder"
+                  >{{ subArea.boulder }}
+                  <span class="boulder-style"> boulder </span></span
+                >
+              </v-flex>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-layout wrap>
+                <v-flex xs12 sm2 offset-sm1>
+                  <v-card-text>
+                    <h3 class="text-sm-right text-xs-center">
+                      Description:
+                    </h3>
+                  </v-card-text>
+                </v-flex>
+                <v-flex xs12 sm8 fill-height>
+                  <v-card-text
+                    class="text-sm-left text-xs-center"
+                    style="white-space: pre-line;"
+                    >{{ subArea.subArea.description }}</v-card-text
                   >
-                    <nuxt-link
-                      :to="{
-                        name: 'crags-frame',
-                        params: {
-                          subAreaKey: subArea.subAreaKey,
-                          cragKey: crag.cragKey,
-                          area: area.slug,
-                          frame: crag.slug
-                        }
-                      }"
-                      >{{ crag.name }}</nuxt-link
-                    >&nbsp; - &nbsp;<span v-if="crag.trad"
-                      >{{ crag.trad }} <span class="trad-style"> trad </span>
-                    </span>
-                    <span v-if="crag.sport"
-                      >{{ crag.sport
-                      }}<span class="sport-style"> sport </span></span
-                    >
-                    <span v-if="crag.boulder">
-                      {{ crag.boulder }}
-                      <span class="boulder-style"> boulder </span>
-                    </span>
-                  </v-layout>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            <v-layout class="pa-2" wrap v-else>
-              <v-flex
-                xs12
-                v-for="(crag, ci) in area.filteredSubAreas[0].filteredCrags"
-                :key="ci"
-              >
+                </v-flex>
+              </v-layout>
+              <v-layout v-for="(crag, ci) in subArea.filteredCrags" :key="ci">
                 <nuxt-link
                   :to="{
                     name: 'crags-frame',
                     params: {
+                      subAreaKey: subArea.subAreaKey,
                       cragKey: crag.cragKey,
                       area: area.slug,
                       frame: crag.slug
@@ -158,12 +298,40 @@
                   {{ crag.boulder }}
                   <span class="boulder-style"> boulder </span>
                 </span>
-              </v-flex>
-            </v-layout>
-          </v-layout>
-        </v-card>
-      </v-container>
-    </v-card>
+              </v-layout>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        <v-layout class="pa-2" wrap v-else>
+          <v-flex
+            xs12
+            v-for="(crag, ci) in area.filteredSubAreas[0].filteredCrags"
+            :key="ci"
+          >
+            <nuxt-link
+              :to="{
+                name: 'crags-frame',
+                params: {
+                  cragKey: crag.cragKey,
+                  area: area.slug,
+                  frame: crag.slug
+                }
+              }"
+              >{{ crag.name }}</nuxt-link
+            >&nbsp; - &nbsp;<span v-if="crag.trad"
+              >{{ crag.trad }} <span class="trad-style"> trad </span>
+            </span>
+            <span v-if="crag.sport"
+              >{{ crag.sport }}<span class="sport-style"> sport </span></span
+            >
+            <span v-if="crag.boulder">
+              {{ crag.boulder }}
+              <span class="boulder-style"> boulder </span>
+            </span>
+          </v-flex>
+        </v-layout>
+      </v-layout>
+    </v-container>
   </v-container>
 </template>
 
@@ -177,7 +345,12 @@ export default {
   data() {
     return {
       ropeShow: 0,
-      boulderShow: 0
+      boulderShow: 0,
+      expandDesc: false,
+      chartExpand: 0,
+      lightbox: false,
+      headline:
+        "This is the headline of the description, it will be a single line limited to 200 characters that contains key details and will be displayed on the parent page."
     };
   },
   watch: {
@@ -260,6 +433,14 @@ export default {
         }
       }
       return gradeTotals;
+    },
+    descIcon() {
+      return this.expandDesc
+        ? { item: "mdi-minus", color: "red" }
+        : { item: "mdi-plus", color: "primary" };
+    },
+    descLimit() {
+      return this.expandDesc ? undefined : 60;
     }
   },
   methods: {
@@ -273,13 +454,13 @@ export default {
               let route = this.area.area.subAreas[subkey].crags[ckey].walls[
                 wkey
               ].routes[rkey];
-              if (this.ropeShow === 100 && this.boulderShow === 100) {
+              if (this.ropeShow && this.boulderShow) {
                 return;
               }
               if (route.style === "trad" || route.style === "sport") {
-                this.ropeShow = 100;
+                this.ropeShow = "30px";
               } else if (route.style === "boulder") {
-                this.boulderShow = 100;
+                this.boulderShow = "30px";
               }
             }
           }
@@ -315,14 +496,16 @@ export default {
               data: filteredTrad,
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgba(255, 99, 132, 1)",
-              borderWidth: 1
+              borderWidth: 1,
+              barThickness: 20
             },
             {
               label: "Sport Routes",
               data: filteredSport,
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderColor: "rgba(54, 162, 235, 1)",
-              borderWidth: 1
+              borderWidth: 1,
+              barThickness: 20
             }
           ]
         },
@@ -337,7 +520,8 @@ export default {
                 ticks: {
                   display: false,
                   beginAtZero: true
-                }
+                },
+                stacked: true
               }
             ],
             xAxes: [
@@ -346,7 +530,8 @@ export default {
                   display: false,
                   drawBorder: false,
                   beginAtZero: false
-                }
+                },
+                stacked: true
               }
             ]
           },
@@ -401,6 +586,7 @@ export default {
           }
         }
       });
+      this.chartExpand = undefined;
       // ctx = document.getElementById("typeChart");
       // let types = [this.crag.trad, this.crag.sport, this.crag.boulder]
       // this.typeChart = new Chart(ctx, {
@@ -458,6 +644,10 @@ export default {
       //     }
       //   }
       // });
+    },
+    toTopo() {
+      //TODO send to route
+      return;
     }
   },
   components: {

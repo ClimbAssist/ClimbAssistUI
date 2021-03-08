@@ -54,8 +54,10 @@
                   class="ma-4"
                   @click="toArea(i, si, ai, area)"
                 >
-                  <!-- <v-img
-                    src="https://picsum.photos/350/165?random"
+                  <v-img
+                    :src="
+                      `https://picsum.photos/500/300?image=${ai + si * 5 + 10}`
+                    "
                     aspect-ratio="1"
                     height="200"
                     width="200"
@@ -65,12 +67,11 @@
                     <v-card-title>
                       {{ area.name }}
                     </v-card-title></v-img
-                  > -->
-                  <div style="height:200px; width:200px;"></div>
+                  >
 
                   <v-fade-transition>
                     <v-overlay v-if="hover || focus" absolute>
-                      {{ area.description.substring(0, 100) }}
+                      {{ area.description.substring(0, 150) }}
                     </v-overlay>
                   </v-fade-transition>
                   <!-- <v-row class="fill-height" align="center" justify="center">

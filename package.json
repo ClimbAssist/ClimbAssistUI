@@ -20,7 +20,7 @@
     "chart.js": "^2.9.3",
     "cross-env": "^5.2.1",
     "mapbox-gl": "^0.53.0",
-    "nuxt": "^2.10.2",
+    "nuxt": "^2.16.3",
     "three": "^0.108.0",
     "vue-recaptcha": "^1.2.0",
     "webgl-debug": "^2.0.1"
